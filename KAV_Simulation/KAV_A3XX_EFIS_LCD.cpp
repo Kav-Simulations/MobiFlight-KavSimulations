@@ -156,7 +156,7 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
                 setQFE(false);
                 setQNH(true);
             } else {
-                showStd();
+                showStd(true);
             }
         }
     } else if (messageID == -2) {
