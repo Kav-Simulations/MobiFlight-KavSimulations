@@ -82,7 +82,6 @@ void KAV_A3XX_EFIS_LCD::showStd()
 // Show Values
 void KAV_A3XX_EFIS_LCD::showValue(uint16_t value)
 {
-    _value = value;
     if (value > 9999) value = 9999;
     if (value < 2000) {
         // If value is less than 2000, then it's hPa, so no decimal point.
@@ -146,6 +145,7 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         if (data) {
             clearLCD();
         } else {
+            showValue((uint16_t)_value);
             if (_mode == 0) {
                 setQFE(true);
                 setQNH(false);
@@ -166,9 +166,11 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         if (data == 0) {
             setQFE(true);
             setQNH(false);
+            showValue((uint16_t)_value);
         } else if (data == 1) {
             setQFE(false);
             setQNH(true);
+            showValue((uint16_t)_value);
         } else {
             showStd();
         }

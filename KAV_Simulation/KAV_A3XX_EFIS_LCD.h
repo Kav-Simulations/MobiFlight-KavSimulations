@@ -21,7 +21,7 @@ private:
     byte     _CS;
     byte     _CLK;
     byte     _DATA;
-    uint16_t _value;
+    uint16_t _value = 0;
     uint8_t  _mode;
 
     // Methods

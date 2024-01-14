@@ -28,8 +28,8 @@
       },
       {
         "id": 2,
-        "label": "Show STD",
-        "description": "0 = True, 1 = False"
+        "label": "Show Mode",
+        "description": "0 = QFE, 1 = QNH, 2 or 3 = STD"
       }
     ]
   }
