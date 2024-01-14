@@ -67,16 +67,19 @@ void KAV_A3XX_EFIS_LCD::setDot(bool enabled)
     refreshLCD(DIGIT_TWO);
 }
 
-void KAV_A3XX_EFIS_LCD::showStd()
+void KAV_A3XX_EFIS_LCD::showStd(bool enabled)
 {
-    displayDigit(DIGIT_ONE, 5);
-    displayDigit(DIGIT_TWO, 11);
-    displayDigit(DIGIT_THREE, 12);
-    displayDigit(DIGIT_FOUR, 13);
-
-    setDot(false);
-    setQFE(false);
-    setQNH(false);
+    if (enabled) {
+        displayDigit(DIGIT_ONE, 5);
+        displayDigit(DIGIT_TWO, 11);
+        displayDigit(DIGIT_THREE, 12);
+        displayDigit(DIGIT_FOUR, 13);
+        setDot(false);
+        setQFE(false);
+        setQNH(false);
+    } else {
+        showValue(_value);
+    }
 }
 
 // Show Values
@@ -166,13 +169,13 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         if (data == 0) {
             setQFE(true);
             setQNH(false);
-            showValue((uint16_t)_value);
+            showStd(false);
         } else if (data == 1) {
             setQFE(false);
             setQNH(true);
-            showValue((uint16_t)_value);
+            showStd(false);
         } else {
-            showStd();
+            showStd(true);
         }
     }
 }

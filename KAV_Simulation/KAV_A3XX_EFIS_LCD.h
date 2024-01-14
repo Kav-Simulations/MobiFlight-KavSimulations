@@ -45,7 +45,7 @@ public:
     // Set Dot Function
     void setDot(bool enabled);
     // Show Std function
-    void showStd();
+    void showStd(bool enabled);
 
     // Show value, either QFE or QNH
     void showValue(uint16_t value);
