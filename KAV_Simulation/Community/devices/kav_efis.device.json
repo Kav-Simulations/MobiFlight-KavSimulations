@@ -22,14 +22,9 @@
         "description": "will clear the display"
       },
       {
-        "id": 0,
-        "label": "Show QNH Value",
-        "description": "$ will be displayed as QNH value"
-      },
-      {
         "id": 1,
-        "label": "Show QFE Value",
-        "description": "$ will be displayed as QFE value"
+        "label": "Show Value",
+        "description": "$ Value will be displayes either as QNH or QFE"
       },
       {
         "id": 2,
