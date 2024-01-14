@@ -67,27 +67,22 @@ void KAV_A3XX_EFIS_LCD::setDot(bool enabled)
     refreshLCD(DIGIT_TWO);
 }
 
-void KAV_A3XX_EFIS_LCD::showStd(uint16_t state)
+void KAV_A3XX_EFIS_LCD::showStd()
 {
-    if (state == 1) {
-        displayDigit(DIGIT_ONE, 5);
-        displayDigit(DIGIT_TWO, 11);
-        displayDigit(DIGIT_THREE, 12);
-        displayDigit(DIGIT_FOUR, 13);
-    } else {
-        displayDigit(DIGIT_ONE, 13);
-        displayDigit(DIGIT_TWO, 13);
-        displayDigit(DIGIT_THREE, 13);
-        displayDigit(DIGIT_FOUR, 13);
-    }
+    displayDigit(DIGIT_ONE, 5);
+    displayDigit(DIGIT_TWO, 11);
+    displayDigit(DIGIT_THREE, 12);
+    displayDigit(DIGIT_FOUR, 13);
+
     setDot(false);
     setQFE(false);
     setQNH(false);
 }
 
 // Show Values
-void KAV_A3XX_EFIS_LCD::showQNHValue(uint16_t value)
+void KAV_A3XX_EFIS_LCD::showValue(uint16_t value)
 {
+    _value = value;
     if (value > 9999) value = 9999;
     if (value < 2000) {
         // If value is less than 2000, then it's hPa, so no decimal point.
@@ -103,32 +98,8 @@ void KAV_A3XX_EFIS_LCD::showQNHValue(uint16_t value)
     value = value / 10;
     displayDigit(DIGIT_TWO, (value % 10));
     displayDigit(DIGIT_ONE, (value / 10));
-
-    setQFE(false);
-    setQNH(true);
 }
 
-void KAV_A3XX_EFIS_LCD::showQFEValue(uint16_t value)
-{
-    if (value > 9999) value = 9999;
-    if (value < 2000) {
-        // If value is less than 2000, then it's hPa, so no decimal point.
-        setDot(false);
-    } else {
-        // If value is greater than 2000, then it's inHg, so decimal point.
-        setDot(true);
-    }
-
-    displayDigit(DIGIT_FOUR, (value % 10));
-    value = value / 10;
-    displayDigit(DIGIT_THREE, (value % 10));
-    value = value / 10;
-    displayDigit(DIGIT_TWO, (value % 10));
-    displayDigit(DIGIT_ONE, (value / 10));
-
-    setQFE(true);
-    setQNH(false);
-}
 
 // Global Functions
 uint8_t digitPatternEFIS[14] = {
@@ -167,16 +138,39 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         MessageID == -1 will be send from the connector when Mobiflight is closed
         Put in your code to shut down your custom device (e.g. clear a display)
         MessageID == -2 will be send from the connector when PowerSavingMode is entered
+            '1' if PowerSaving is enabled
+            '0' if PowerSaving is disabled
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
-    if (messageID == -1)
+    if (messageID == -1) {
+        if (data) {
+            clearLCD();
+        } else {
+            if (_mode == 0) {
+                setQFE(true);
+                setQNH(false);
+            } else if (_mode == 1) {
+                setQFE(false);
+                setQNH(true);
+            } else {
+                showStd();
+            }
+        }
+    } else if (messageID == -2) {
         return; // Ignore for now, handle this condition later.
-    else if (messageID == -2)
-        return; // Ignore for now, handle this condition later.
-    else if (messageID == 0)
-        showQNHValue((uint16_t)data);
-    else if (messageID == 1)
-        showQFEValue((uint16_t)data);
-    else if (messageID == 2)
-        showStd((uint16_t)data);
+    } else if (messageID == 1) {
+        _value = data;
+        showValue((uint16_t)data);
+    } else if (messageID == 2)  {
+        _mode = (uint8_t)data;
+        if (data == 0) {
+            setQFE(true);
+            setQNH(false);
+        } else if (data == 1) {
+            setQFE(false);
+            setQNH(true);
+        } else {
+            showStd();
+        }
+    }
 }
