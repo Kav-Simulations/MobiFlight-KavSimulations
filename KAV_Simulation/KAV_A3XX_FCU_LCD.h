@@ -23,9 +23,11 @@ private:
     byte    _CLK;
     byte    _DATA;
     bool    trkActive;
+    int16_t _lastHeading;
 
     // Methods
     void displayDigit(uint8_t address, uint8_t digit);
+    void displayString(uint8_t address, char* digits, uint8_t maxDigits);
     void refreshLCD(uint8_t address);
 
 public:
@@ -44,19 +46,22 @@ public:
     void setMachLabel(bool enabled);
     void setSpeedDot(int8_t state);
     void showSpeedValue(uint16_t value);
+    void showSpeedValue(char* data);
 
     // Heading, Track and Latitude Functions
     void setHeadingLabel(bool enabled);
     void setTrackLabel(bool enabled);
     void setLatitudeLabel(bool enabled);
     void setHeadingDot(int8_t state);
-    void showHeadingValue(uint16_t value);
+    void showHeadingValue(int16_t value);
+    void showHeadingValue(char* data);
 
     // Altitude Functions
     void setAltitudeLabel(bool enabled);
     void setLvlChLabel(bool enabled);
     void setAltitudeDot(int8_t state);
     void showAltitudeValue(uint32_t value);
+    void showAltitudeValue(char* data);
 
     // Vertical_Speed & FPA Functions
     void setVrtSpdLabel(bool enabled);
@@ -64,6 +69,7 @@ public:
     void setSignLabel(bool enabled);
     void showVerticalValue(int16_t value);
     void showFPAValue(int8_t value);
+    void showVerticalFPAValue(char* data);
 
     // Preset States
     void setSpeedDashes(int8_t state);
@@ -74,7 +80,8 @@ public:
     void toggleTrkHdgMode(int8_t state);
     void setHeadingMode();
     void setTrackMode();
-    void setSpeedMode(uint16_t value);
-    void setMachMode(uint16_t value);
+    void setSpeedValue(int16_t value);
+    void setMachValue(int16_t value);
     void clearOrReset(bool enabled);
+    void toggleSpeedMachMode(int8_t state);
 };

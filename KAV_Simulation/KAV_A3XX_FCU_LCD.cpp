@@ -1,4 +1,6 @@
 #include "KAV_A3XX_FCU_LCD.h"
+#include "KAV_ReadChar.h"
+
 
 #define SPD_HUN  0
 #define SPD_TEN  1
@@ -96,6 +98,35 @@ void KAV_A3XX_FCU_LCD::showSpeedValue(uint16_t value)
     displayDigit(SPD_HUN, (value / 10));
 }
 
+void KAV_A3XX_FCU_LCD::showSpeedValue(char* data)
+{
+    displayString(SPD_HUN, data, 3);
+/*
+    int16_t value = 0;
+    if (data[0] == '-') {
+        setSpeedDashes(true);
+        return;
+    }
+        
+    if (data[1] == '.') {
+        value = strtoul(&data[2], NULL, 10);
+        SET_BUFF_BIT(SPD_TEN, 0, true); // Decimal-point
+        refreshLCD(SPECIALS);
+    }
+    else {
+        value = strtoul(data, NULL, 10);
+        SET_BUFF_BIT(SPD_TEN, 0, false); // Decimal-point
+        refreshLCD(SPECIALS);
+    }
+    
+    if (value > 999) value = 999;
+    displayDigit(SPD_UNIT, (value % 10));
+    value = value / 10;
+    displayDigit(SPD_TEN, (value % 10));
+    displayDigit(SPD_HUN, (value / 10));
+*/
+}
+
 // Heading
 void KAV_A3XX_FCU_LCD::setHeadingLabel(bool enabled)
 {
@@ -130,13 +161,36 @@ void KAV_A3XX_FCU_LCD::setHeadingDot(int8_t state)
     refreshLCD(HDG_UNIT);
 }
 
-void KAV_A3XX_FCU_LCD::showHeadingValue(uint16_t value)
+void KAV_A3XX_FCU_LCD::showHeadingValue(int16_t value)
 {
+    if (value < 0)
+        return;
     if (value > 999) value = 999;
     displayDigit(HDG_UNIT, (value % 10));
     value = value / 10;
     displayDigit(HDG_TEN, (value % 10));
     displayDigit(HDG_HUN, (value / 10));
+}
+
+void KAV_A3XX_FCU_LCD::showHeadingValue(char* data)
+{
+    displayString(HDG_HUN, data, 3);
+/*
+    int16_t value = 0;
+    if (data[0] == '-') {
+        setHeadingDashes(true);
+        return;
+    }
+    value = strtoul(data, NULL, 10);
+    SET_BUFF_BIT(SPD_TEN, 0, false); // Decimal-point
+    refreshLCD(SPECIALS);
+
+    if (value > 999) value = 999;
+    displayDigit(HDG_UNIT, (value % 10));
+    value = value / 10;
+    displayDigit(HDG_TEN, (value % 10));
+    displayDigit(HDG_HUN, (value / 10));
+*/
 }
 
 // Altitude
@@ -162,6 +216,7 @@ void KAV_A3XX_FCU_LCD::setAltitudeDot(int8_t state)
     SET_BUFF_BIT(VRT_THO, 0, enabled);
     refreshLCD(VRT_THO);
 }
+
 void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
 {
     if (value > 99999) value = 99999;
@@ -173,6 +228,28 @@ void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
     value = value / 10;
     displayDigit(ALT_THO, (value % 10));
     displayDigit(ALT_TTH, (value / 10));
+}
+
+void KAV_A3XX_FCU_LCD::showAltitudeValue(char* data)
+{
+    displayString(ALT_TTH, data, 5);
+
+/*
+    if (data[0] == '-') {
+        setAltitudeDashes(true);
+    }
+    uint32_t value = strtoul(data, NULL, 10);
+
+    if (value > 99999) value = 99999;
+    displayDigit(ALT_UNIT, (value % 10));
+    value = value / 10;
+    displayDigit(ALT_TEN, (value % 10));
+    value = value / 10;
+    displayDigit(ALT_HUN, (value % 10));
+    value = value / 10;
+    displayDigit(ALT_THO, (value % 10));
+    displayDigit(ALT_TTH, (value / 10));
+*/
 }
 
 // Vertical
@@ -224,6 +301,29 @@ void KAV_A3XX_FCU_LCD::showVerticalValue(int16_t value)
     displayDigit(VRT_THO, (value / 10));
 }
 
+void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
+{
+    if (data[0] == '-') {
+        SET_BUFF_BIT(VRT_TEN, 0, false);
+        SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
+        SET_BUFF_BIT(VRT_HUN, 0, false);
+    } else if (data[0] == '0') {
+        SET_BUFF_BIT(VRT_TEN, 0, false);
+        SET_BUFF_BIT(VRT_UNIT, 0, false);
+        SET_BUFF_BIT(VRT_HUN, 0, false);
+    } else {
+        SET_BUFF_BIT(VRT_TEN, 0, vertSignEnabled);
+        SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
+        SET_BUFF_BIT(VRT_HUN, 0, false);
+    }
+    displayString(VRT_THO, (char*)"    ", 4);     // clear position 3 and 4, could be FPA value
+    if (data[0] == '-')
+         displayString(VRT_THO, &data[1], 5);       // sign is considered above
+    else
+        displayString(VRT_THO, data, 5);
+
+}
+
 void KAV_A3XX_FCU_LCD::showFPAValue(int8_t value)
 {
     if (value > 99) value = 99;
@@ -250,57 +350,34 @@ void KAV_A3XX_FCU_LCD::showFPAValue(int8_t value)
 // Preset States
 void KAV_A3XX_FCU_LCD::setSpeedDashes(int8_t state)
 {
-    uint8_t val;
-    bool    enabled;
-    if (state == 0)
-        enabled = false;
-    else
-        enabled = true;
-    if (enabled)
-        val = 10;
-    else
-        val = 11;
-    displayDigit(SPD_HUN, val);
-    displayDigit(SPD_TEN, val);
-    displayDigit(SPD_UNIT, val);
-    SET_BUFF_BIT(SPD_TEN, 0, false); // Clear Mach Decimal-point
-    refreshLCD(SPECIALS);
+    if (state) {
+        SET_BUFF_BIT(SPD_TEN, 0, false); // Clear Mach Decimal-point, MUST be done before displayDigit()
+        refreshLCD(SPECIALS);
+        displayDigit(SPD_HUN, 10);
+        displayDigit(SPD_TEN, 10);
+        displayDigit(SPD_UNIT, 10);
+    }
 }
 
 void KAV_A3XX_FCU_LCD::setHeadingDashes(int8_t state)
 {
-    uint8_t val;
-    bool    enabled;
-    if (state == 0)
-        enabled = false;
-    else
-        enabled = true;
-    if (enabled)
-        val = 10;
-    else
-        val = 11;
-    displayDigit(HDG_HUN, val);
-    displayDigit(HDG_TEN, val);
-    displayDigit(HDG_UNIT, val);
+    if (state) {
+        displayDigit(HDG_HUN, 10);
+        displayDigit(HDG_TEN, 10);
+        displayDigit(HDG_UNIT, 10);
+    }
 }
 
 void KAV_A3XX_FCU_LCD::setAltitudeDashes(int8_t state)
 {
-    uint8_t val;
-    bool    enabled;
     if (state == 0)
-        enabled = false;
-    else
-        enabled = true;
-    if (enabled)
-        val = 10;
-    else
-        val = 11;
-    displayDigit(ALT_TTH, val);
-    displayDigit(ALT_THO, val);
-    displayDigit(ALT_HUN, val);
-    displayDigit(ALT_TEN, val);
-    displayDigit(ALT_UNIT, val);
+        return;
+
+    displayDigit(ALT_TTH, 10);
+    displayDigit(ALT_THO, 10);
+    displayDigit(ALT_HUN, 10);
+    displayDigit(ALT_TEN, 10);
+    displayDigit(ALT_UNIT, 10);
 }
 void KAV_A3XX_FCU_LCD::setVrtSpdDashes(int8_t state)
 {
@@ -358,21 +435,36 @@ void KAV_A3XX_FCU_LCD::setTrackMode()
     trkActive = true;
 }
 
-void KAV_A3XX_FCU_LCD::setSpeedMode(uint16_t value)
+void KAV_A3XX_FCU_LCD::setSpeedValue(int16_t value)
 {
-    setSpeedLabel(true);
-    setMachLabel(false);
+    if (value < 0)
+        return;
+
     SET_BUFF_BIT(SPD_TEN, 0, false); // Decimal-point
+    refreshLCD(SPECIALS);
     showSpeedValue(value);
 }
 
-void KAV_A3XX_FCU_LCD::setMachMode(uint16_t value)
+void KAV_A3XX_FCU_LCD::setMachValue(int16_t value)
 {
-    setSpeedLabel(false);
-    setMachLabel(true);
+    if (value < 0)
+        return;
+
     SET_BUFF_BIT(SPD_TEN, 0, true); // Decimal-point
+    refreshLCD(SPECIALS);
     showSpeedValue(value);
 }
+
+void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(int8_t state) {
+    if (state) { //MachMode
+        setMachLabel(true);
+        setSpeedLabel(false);
+    } else {    //SpeedMode;
+        setMachLabel(false);
+        setSpeedLabel(true);
+    }
+}
+
 
 // Global Functions
 uint8_t digitPatternFCU[13] = {
@@ -390,6 +482,7 @@ uint8_t digitPatternFCU[13] = {
     0b00000000, // blank
     0b11001100, // small 0 (For V/S)
 };
+
 void KAV_A3XX_FCU_LCD::displayDigit(uint8_t address, uint8_t digit)
 {
     // This ensures that anything over 12 is turned to 'blank', and as it's unsigned, anything less than 0 will become 255, and therefore, 'blank'.
@@ -398,6 +491,25 @@ void KAV_A3XX_FCU_LCD::displayDigit(uint8_t address, uint8_t digit)
     buffer[address] = (buffer[address] & 1) | digitPatternFCU[digit];
 
     refreshLCD(address);
+}
+
+void KAV_A3XX_FCU_LCD::displayString(uint8_t address, char* digits, uint8_t maxDigits)
+{
+    uint8_t digitCount = 0;
+    uint8_t charCount = 0;
+    uint8_t setDP = 0;
+
+    // handle sign for VS/FPA in calling function!!
+    do {
+        buffer[address + digitCount] &= 0x01;
+        buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount++]) | setDP;
+        setDP = 0;
+        if (digits[charCount] == '.' && digitCount < maxDigits - 1) {
+            setDP = 0x01;
+            charCount++;
+        }
+        refreshLCD(address + digitCount++);
+    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
 }
 
 void KAV_A3XX_FCU_LCD::clearOrReset(bool enabled)
@@ -410,8 +522,7 @@ void KAV_A3XX_FCU_LCD::clearOrReset(bool enabled)
 
 void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
 {
-    // int32_t data = atoi(setPoint); // This doesn't work for larger numbers. I.e., altitude.
-    int32_t data = strtoul(setPoint, NULL, 10);
+    int32_t data = strtol(setPoint, NULL, 10);
     /* **********************************************************************************
         Each messageID has it's own value
         check for the messageID and define what to do.
@@ -421,44 +532,70 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         MessageID == -2 will be send from the connector when PowerSavingMode is entered
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
-    if (messageID == -1)
+    switch (messageID)
+    {
+    case -1:
         return; // Ignore for now, handle this condition later.
-    else if (messageID == -2)
+        break;
+    case -2:
         return; // Ignore for now, handle this condition later.
-    else if (messageID == 0)
-        setSpeedMode((uint16_t)data);
-    else if (messageID == 1)
-        setMachMode((uint16_t)data);
-    else if (messageID == 2)
-        showHeadingValue((uint16_t)data);
-    else if (messageID == 3)
-        showAltitudeValue((uint32_t)data);
-    else if (messageID == 4)
-        showVerticalValue((int16_t)data);
-    else if (messageID == 5)
-        showFPAValue((int8_t)data);
-    else if (messageID == 6)
-        setSpeedDashes((int8_t)data);
-    else if (messageID == 7)
-        setHeadingDashes((int8_t)data);
-    else if (messageID == 8)
-        setAltitudeDashes((int8_t)data);
-    else if (messageID == 9)
+        break;
+    case 0:     // data will be displayed as Speed/Mach/Dash value
+        showSpeedValue(setPoint);
+        break;
+    case 1:     // Set Speed or Mach Label, 0 = Speed Label, 1 = Mach Label
+        toggleSpeedMachMode(data);
+        break;
+    case 2:     // data will be displayed as Heading/Dash value
+        showHeadingValue(setPoint);
+        break;
+    case 3:     // data will be displayed as Altitude
+        showAltitudeValue(setPoint);
+        break;
+    case 4:     // data will be displayed as Vertical/FPA/Dash
+        showVerticalFPAValue(setPoint);
+        break;
+    case 5:     // -> Not used anymore
+        //showFPAValue((int8_t)data);
+        break;
+    case 6:     // -> Not used anymore
+        //setSpeedDashes((int8_t)data);
+        break;
+    case 7:     // -> Not used anymore
+        //setHeadingDashes((int8_t)data);
+        break;
+    case 8:     // -> Not used anymore
+        //setAltitudeDashes((int8_t)data);
+        break;
+    case 9:     // -> Not used anymore
         setVrtSpdDashes((int8_t)data);
-    else if (messageID == 10)
+        break;
+    case 10:    // data = 1 will show speed dot
         setSpeedDot((int8_t)data);
-    else if (messageID == 11)
+        break;
+    case 11:    // data = 1 will show heading dot
         setHeadingDot((int8_t)data);
-    else if (messageID == 12)
+        break;
+    case 12:    // data = 1 will show altitude dot
         setAltitudeDot((int8_t)data);
-    else if (messageID == 13)
+        break;
+    case 13:    // Toggle Trk/Hdg mode, 0 = set heading mode, 1 = set Track Mode
         toggleTrkHdgMode((int8_t)data);
-    else if (messageID == 14)
-        setSpeedLabel((int8_t)data);
-    else if (messageID == 15)
-        setMachLabel((int8_t)data);
-    else if (messageID == 16)
-        showSpeedValue((uint16_t)data);
-    else if (messageID == 17)
+        break;
+    case 14:    // -> Not used anymore
+        //setSpeedLabel((int8_t)data);
+        break;
+    case 15:    // -> Not used anymore
+        //setMachLabel((int8_t)data);
+        break;
+    case 16:
+        // Not used anymore
+        break;
+    case 17:    // Clear or Reset LCD, 0 = Clear LCD, 1 = Reset starting labels
         clearOrReset((int8_t)data);
+        break;
+    
+    default:
+        break;
+    }
 }
