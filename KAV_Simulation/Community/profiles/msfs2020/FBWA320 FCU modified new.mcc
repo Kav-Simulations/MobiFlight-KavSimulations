@@ -104,6 +104,7 @@
         <modifiers>
           <transformation active="True" expression="Round($, 0)" />
           <comparison active="True" value="0" operand="&lt;" ifValue="'---'" elseValue="$" />
+          <comparison active="True" value="360" operand="=" ifValue="0" elseValue="" />
           <padding active="True" direction="Left" length="3" character="0" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="2" value="$" />
@@ -239,15 +240,41 @@
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_AUTOPILOT_FPA_SELECTED)" UUID="78986662-976f-4743-9f21-4f9f191f5385" />
         <test type="Float" value="1" />
         <modifiers>
-          <transformation active="True" expression="Round($, 1)" />
-          <comparison active="True" value="0" operand="=" ifValue="'+0.0'" elseValue="$" />
-          <comparison active="True" value="0" operand="&gt;=" ifValue="'+$'" elseValue="" />
+          <transformation active="True" expression="Round(Abs($), 1)" />
+          <comparison active="True" value="0" operand="=" ifValue="'0.0'" elseValue="$" />
+          <comparison active="True" value="1" operand="=" ifValue="'1.0'" elseValue="$" />
+          <comparison active="True" value="2" operand="=" ifValue="'2.0'" elseValue="$" />
+          <comparison active="True" value="3" operand="=" ifValue="'3.0'" elseValue="$" />
+          <comparison active="True" value="4" operand="=" ifValue="'4.0'" elseValue="$" />
+          <comparison active="True" value="5" operand="=" ifValue="'5.0'" elseValue="$" />
+          <comparison active="True" value="6" operand="=" ifValue="'6.0'" elseValue="$" />
+          <comparison active="True" value="7" operand="=" ifValue="'7.0'" elseValue="$" />
+          <comparison active="True" value="8" operand="=" ifValue="'8.0'" elseValue="$" />
+          <comparison active="True" value="9" operand="=" ifValue="'9.0'" elseValue="$" />
+          <padding active="True" direction="Right" length="6" character=" " />
+          <transformation active="True" expression="if (# &lt; 0, '-$', '+$')" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="4" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
           <precondition type="config" active="true" ref="ac4a3707-edb9-43d0-8888-8528cc9bc9e7" operand="=" value="0" logic="and" />
           <precondition type="config" active="true" ref="7f01367f-bbf2-491b-8711-eadbfb6c3a49" operand="=" value="1" logic="and" />
+        </preconditions>
+        <configrefs>
+          <configref active="True" ref="de956b07-4e88-4cbf-8bb8-a93814c94d2a" placeholder="#" testvalue="1" />
+        </configrefs>
+      </settings>
+    </config>
+    <config guid="de956b07-4e88-4cbf-8bb8-a93814c94d2a">
+      <active>true</active>
+      <description>FCU - FPA Value helper</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:A32NX_AUTOPILOT_FPA_SELECTED)" UUID="78986662-976f-4743-9f21-4f9f191f5385" />
+        <test type="Float" value="1" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
+        <preconditions>
+          <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
