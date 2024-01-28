@@ -49,4 +49,8 @@ public:
     void showQFEValue(uint16_t value);
     // Show QNH function
     void showQNHValue(uint16_t value);
+
+    // Show string on display
+    void showQFE_QNHValue(char* value);
+    void displayString(uint8_t address, char* digits, uint8_t maxDigits);
 };

@@ -1,4 +1,5 @@
 #include "KAV_A3XX_EFIS_LCD.h"
+#include "KAV_ReadChar.h"
 
 #define DIGIT_ONE   0
 #define DIGIT_TWO   1
@@ -130,6 +131,34 @@ void KAV_A3XX_EFIS_LCD::showQFEValue(uint16_t value)
     setQNH(false);
 }
 
+void KAV_A3XX_EFIS_LCD::showQFE_QNHValue(char* value)
+{
+    displayString(DIGIT_FOUR, value, 4);
+}
+
+void KAV_A3XX_EFIS_LCD::displayString(uint8_t address, char* digits, uint8_t maxDigits)
+{
+    uint8_t digitCount = 0;
+    uint8_t charCount = 0;
+    uint8_t setDP = 0;
+
+    do {
+        buffer[address + digitCount] &= 0x01;
+        buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount++]) | setDP;
+        if (digits[charCount] == '.' && digitCount < maxDigits - 1) {
+            setDP = 1;
+            charCount++;
+        } else {
+            setDP = 0;
+        }
+        digitCount++;
+    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
+
+    for (uint8_t i = 0; i < maxDigits; i++) {
+        refreshLCD(address + i);
+    }
+}
+
 // Global Functions
 uint8_t digitPatternEFIS[14] = {
     0b11101011, // 0
@@ -147,6 +176,7 @@ uint8_t digitPatternEFIS[14] = {
     0b01100111, // d
     0b00000000, // blank
 };
+
 void KAV_A3XX_EFIS_LCD::displayDigit(uint8_t address, uint8_t digit)
 {
     // This ensures that anything over 12 is turned to 'blank', and as it's unsigned, anything less than 0 will become 255, and therefore, 'blank'.
@@ -179,4 +209,10 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         showQFEValue((uint16_t)data);
     else if (messageID == 2)
         showStd((uint16_t)data);
+    else if (messageID == 2)
+        setQNH((bool)data);
+    else if (messageID == 2)
+        setQFE((bool)data);
+    else if (messageID == 2)
+        showQFE_QNHValue(setPoint);
 }
