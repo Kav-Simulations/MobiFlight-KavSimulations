@@ -2,4 +2,4 @@
 
 #include <Arduino.h>
 
-uint8_t readCharFromFlash(uint8_t value);
+uint8_t readFCUCharFromFlash(uint8_t value);

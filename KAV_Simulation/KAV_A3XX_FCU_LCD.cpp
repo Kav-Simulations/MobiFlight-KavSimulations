@@ -461,7 +461,7 @@ void KAV_A3XX_FCU_LCD::displayString(uint8_t address, char* digits, uint8_t maxD
     // handle sign for VS/FPA is done in showVerticalFPAValue()
     do {
         buffer[address + digitCount] &= 0x01;
-        buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount++]) | setDP;
+        buffer[address + digitCount] |= readFCUCharFromFlash((uint8_t)digits[charCount++]) | setDP;
         if (digits[charCount] == '.' && digitCount < maxDigits - 1) {
             setDP = 1;
             charCount++;

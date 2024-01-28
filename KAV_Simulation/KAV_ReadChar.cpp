@@ -56,6 +56,6 @@ const static byte digitPatternLongFCU[128] PROGMEM = {
 };
 
 
-uint8_t readCharFromFlash(uint8_t value) {
+uint8_t readFCUCharFromFlash(uint8_t value) {
     return pgm_read_byte_near(digitPatternLongFCU + (value & 0x7F));
 }
