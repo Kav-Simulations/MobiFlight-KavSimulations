@@ -3,7 +3,7 @@
   <outputs>
     <config guid="7db8da5f-020b-4185-91cd-604111ba6edd">
       <active>false</active>
-      <description>GLARESHIELD CONFIG</description>
+      <description>FCU CONFIG</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="LVAR" Value="" />
         <test type="Float" value="1" />
@@ -26,10 +26,10 @@
           <comparison active="True" value="0" operand="&lt;" ifValue="'---'" elseValue="$" />
           <padding active="True" direction="Left" length="3" character="0" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="0" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="18" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
-          <precondition type="config" active="true" ref="97f70f49-f7c5-4c92-af0a-a88bcdab7ecc" operand="=" value="0" logic="and" />
+          <precondition type="config" active="true" ref="97f70f49-f7c5-4c92-af0a-a88bcdab7ecc" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -45,10 +45,10 @@
           <comparison active="True" value="0" operand="&lt;" ifValue="'---'" elseValue="$" />
           <padding active="True" direction="Right" length="4" character="0" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="0" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="18" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
-          <precondition type="config" active="true" ref="97f70f49-f7c5-4c92-af0a-a88bcdab7ecc" operand="=" value="1" logic="and" />
+          <precondition type="config" active="true" ref="97f70f49-f7c5-4c92-af0a-a88bcdab7ecc" operand="=" value="0" logic="and" />
         </preconditions>
         <configrefs />
       </settings>
@@ -69,12 +69,28 @@
     </config>
     <config guid="97f70f49-f7c5-4c92-af0a-a88bcdab7ecc">
       <active>true</active>
-      <description>FCU - Set Speed/Mach Label</description>
+      <description>FCU - Set Speed Label</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT MANAGED SPEED IN MACH,Bool)" UUID="1a2d4936-4073-410f-8081-bf186601a2a2" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <comparison active="True" value="1" operand="=" ifValue="0" elseValue="1" />
+        </modifiers>
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="14" value="$" />
+        <preconditions>
+          <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
+        </preconditions>
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="5c7d2d7c-d849-4a62-a2f5-7bddef3f1c57">
+      <active>true</active>
+      <description>FCU - Set Mach Label</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT MANAGED SPEED IN MACH,Bool)" UUID="1a2d4936-4073-410f-8081-bf186601a2a2" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="1" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="15" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
         </preconditions>
@@ -87,10 +103,8 @@
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="LVAR" Value="" />
         <test type="Float" value="1" />
-        <modifiers>
-          <comparison active="True" value="" operand="=" ifValue="1" elseValue="0" />
-        </modifiers>
-        <display type="" serial="-" trigger="change" pin="" pinBrightness="255" />
+        <modifiers />
+        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -107,7 +121,7 @@
           <comparison active="True" value="360" operand="=" ifValue="0" elseValue="" />
           <padding active="True" direction="Left" length="3" character="0" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="2" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="19" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
         </preconditions>
@@ -120,10 +134,7 @@
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_FCU_HDG_MANAGED_DOT)" UUID="015e79b3-c73d-4d04-bfa7-08ec67826b41" />
         <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="False" expression="$" />
-          <comparison active="False" value="" operand="" ifValue="" elseValue="" />
-        </modifiers>
+        <modifiers />
         <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="11" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
@@ -164,7 +175,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK VAR:3,feet)" UUID="5edb0587-91e8-4fd1-8b59-77d639f3b0fa" />
         <test type="Float" value="1" />
         <modifiers />
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="3" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="20" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
         </preconditions>
@@ -210,7 +221,7 @@
           <padding active="True" direction="Left" length="4" character="0" />
           <transformation active="True" expression="if (# &lt; 0, '-$', '+$')" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="4" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="21" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
           <precondition type="config" active="true" ref="ac4a3707-edb9-43d0-8888-8528cc9bc9e7" operand="=" value="0" logic="and" />
@@ -254,7 +265,7 @@
           <padding active="True" direction="Right" length="6" character=" " />
           <transformation active="True" expression="if (# &lt; 0, '-$', '+$')" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="4" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="21" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
           <precondition type="config" active="true" ref="ac4a3707-edb9-43d0-8888-8528cc9bc9e7" operand="=" value="0" logic="and" />
@@ -288,7 +299,7 @@
         <modifiers>
           <comparison active="True" value="1" operand="=" ifValue="'-----'" elseValue="''" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="4" value="$" />
+        <display type="CustomDevice" serial="Kav Mega/ SN-0B2-459" trigger="normal" customType="" customName="FCU LCD" messageType="21" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
           <precondition type="config" active="true" ref="f60e20ae-efd7-428f-9e1b-a1f66c7d8ed5" operand="=" value="1" logic="and" />
@@ -298,7 +309,7 @@
     </config>
     <config guid="f60e20ae-efd7-428f-9e1b-a1f66c7d8ed5">
       <active>true</active>
-      <description>FCU - VS Dashes helper</description>
+      <description>FCU - VS Dashes Mode</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_FCU_VS_MANAGED)" UUID="17c91c46-676d-41d6-9108-893e8d0731ed" />
         <test type="Float" value="1" />

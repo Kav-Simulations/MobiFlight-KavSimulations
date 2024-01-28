@@ -23,7 +23,6 @@ private:
     byte    _CLK;
     byte    _DATA;
     bool    trkActive;
-    int16_t _lastHeading;
 
     // Methods
     void displayDigit(uint8_t address, uint8_t digit);
@@ -47,6 +46,7 @@ public:
     void setSpeedDot(int8_t state);
     void showSpeedValue(uint16_t value);
     void showSpeedValue(char* data);
+    void toggleSpeedMachMode(int8_t state);
 
     // Heading, Track and Latitude Functions
     void setHeadingLabel(bool enabled);
@@ -80,8 +80,7 @@ public:
     void toggleTrkHdgMode(int8_t state);
     void setHeadingMode();
     void setTrackMode();
-    void setSpeedValue(int16_t value);
-    void setMachValue(int16_t value);
+    void setSpeedMode(int16_t value);
+    void setMachMode(int16_t value);
     void clearOrReset(bool enabled);
-    void toggleSpeedMachMode(int8_t state);
 };
