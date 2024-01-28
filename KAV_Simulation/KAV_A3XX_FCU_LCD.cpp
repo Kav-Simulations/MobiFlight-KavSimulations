@@ -249,7 +249,6 @@ void KAV_A3XX_FCU_LCD::showVerticalValue(int16_t value)
 
 void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
 {
-    displayString(VRT_THO, (char*)"    ", 4);       // clear digits
     if (data[0] == '-') {
         SET_BUFF_BIT(VRT_TEN, 0, false);
         SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
