@@ -209,10 +209,10 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         showQFEValue((uint16_t)data);
     else if (messageID == 2)
         showStd((uint16_t)data);
-    else if (messageID == 2)
+    else if (messageID == 3)
         setQNH((bool)data);
-    else if (messageID == 2)
+    else if (messageID == 4)
         setQFE((bool)data);
-    else if (messageID == 2)
+    else if (messageID == 5)
         showQFE_QNHValue(setPoint);
 }
