@@ -4,7 +4,7 @@
     <config guid="83680898-7c53-4764-aa31-b0f6097aff14">
       <active>true</active>
       <description>-</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="LVAR" Value="" />
         <test type="Float" value="1" />
         <modifiers>
@@ -17,9 +17,9 @@
       </settings>
     </config>
     <config guid="6768a80d-bc0c-4302-8e87-2ec2bffbd45d">
-      <active>true</active>
+      <active>false</active>
       <description>EFIS L - State Condition (0=QFE, 1=QNH, 3=STD)</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode)" UUID="08af65f2-159e-45c3-8e94-4360e88046dc" />
         <test type="Float" value="1" />
         <modifiers>
@@ -32,67 +32,59 @@
       </settings>
     </config>
     <config guid="c11ed66b-0a00-4cbd-9ad5-ec40e67bb1a2">
-      <active>true</active>
+      <active>false</active>
       <description>EFIS L - QNH Value</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="if($&lt;100, Round($, 2)*100, $)" />
-          <transformation active="True" expression="$+#" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Glareshield/ SN-346-31C" trigger="normal" customType="" customName="EFIS L" messageType="0" value="$" />
+        <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="0" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="6768a80d-bc0c-4302-8e87-2ec2bffbd45d" operand="=" value="1" logic="and" />
         </preconditions>
-        <configrefs>
-          <configref active="True" ref="71e6c53f-cde0-4f1b-b211-3a159b0ebc7a" placeholder="#" />
-        </configrefs>
+        <configrefs />
       </settings>
     </config>
     <config guid="27cca4b2-6234-47ec-8cd4-5d170b07d2ef">
-      <active>true</active>
+      <active>false</active>
       <description>EFIS L - QFE Value</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="if($&lt;100, Round($, 2)*100, $)" />
-          <transformation active="True" expression="$+#" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Glareshield/ SN-346-31C" trigger="normal" customType="" customName="EFIS L" messageType="1" value="$" />
+        <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="1" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="6768a80d-bc0c-4302-8e87-2ec2bffbd45d" operand="=" value="0" logic="and" />
         </preconditions>
-        <configrefs>
-          <configref active="True" ref="71e6c53f-cde0-4f1b-b211-3a159b0ebc7a" placeholder="#" />
-        </configrefs>
+        <configrefs />
       </settings>
     </config>
     <config guid="44a6944c-e04e-426a-8f9c-38ef03ae7b19">
-      <active>true</active>
+      <active>false</active>
       <description>EFIS L - STD</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="LVAR" Value="" />
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="" UUID="-" />
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="if(C&gt;=2,1,0)" />
-          <transformation active="True" expression="$+#" />
         </modifiers>
-        <display type="CustomDevice" serial="Kav Glareshield/ SN-346-31C" trigger="normal" customType="" customName="EFIS L" messageType="2" value="$" />
+        <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="2" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="6768a80d-bc0c-4302-8e87-2ec2bffbd45d" operand="&gt;=" value="2" logic="or" />
         </preconditions>
         <configrefs>
-          <configref active="True" ref="6768a80d-bc0c-4302-8e87-2ec2bffbd45d" placeholder="C" />
-          <configref active="True" ref="71e6c53f-cde0-4f1b-b211-3a159b0ebc7a" placeholder="#" />
+          <configref active="True" ref="6768a80d-bc0c-4302-8e87-2ec2bffbd45d" placeholder="C" testvalue="1" />
         </configrefs>
       </settings>
     </config>
     <config guid="9353fe39-ff5e-453e-911c-a96702a2d848">
       <active>true</active>
       <description>-</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="LVAR" Value="" />
         <test type="Float" value="1" />
         <modifiers>
@@ -104,10 +96,76 @@
         <configrefs />
       </settings>
     </config>
-    <config guid="514dfa61-d012-4679-9066-bd67fad44972">
+    <config guid="25ce1038-659a-4005-a90d-7a670f0387c2">
       <active>true</active>
-      <description>EFIS R - State Condition (0=QFE, 1=QNH, 3=STD)</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <description>EFIS L - Show QFE/QNH Value</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
+        <test type="Float" value="123" />
+        <modifiers>
+          <transformation active="True" expression="if($&lt;100, Round($, 2)*100, $)" />
+        </modifiers>
+        <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="5" value="$" />
+        <preconditions>
+          <precondition type="config" active="true" ref="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7" operand="=" value="1" logic="and" />
+        </preconditions>
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="f59ea400-6153-4f57-b1d8-b98f2cb11d1b">
+      <active>true</active>
+      <description>EFIS L - Show STD</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
+        <test type="Float" value="123" />
+        <modifiers>
+          <transformation active="True" expression="'Std'" />
+        </modifiers>
+        <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="5" value="$" />
+        <preconditions>
+          <precondition type="config" active="true" ref="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7" operand="&gt;" value="1" logic="and" />
+        </preconditions>
+        <configrefs />
+      </settings>
+    </config>
+    <config guid="c026e25b-2ab3-4d3e-ac81-7464e1bc082d">
+      <active>true</active>
+      <description>EFIS L - Set QFE Label</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="if (# = 0, 1 ,0 )" />
+        </modifiers>
+        <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="4" value="$" />
+        <preconditions>
+          <precondition type="config" active="true" ref="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7" operand="&gt;" value="1" logic="and" />
+        </preconditions>
+        <configrefs>
+          <configref active="True" ref="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7" placeholder="#" testvalue="1" />
+        </configrefs>
+      </settings>
+    </config>
+    <config guid="dc853165-1e17-4813-a517-78de0d41a09f">
+      <active>true</active>
+      <description>EFIS L - Set QNH Label</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <transformation active="True" expression="if (# = 1, 1 ,0 )" />
+        </modifiers>
+        <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="3" value="$" />
+        <preconditions />
+        <configrefs>
+          <configref active="True" ref="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7" placeholder="#" testvalue="1" />
+        </configrefs>
+      </settings>
+    </config>
+    <config guid="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7">
+      <active>true</active>
+      <description>EFIS L - State Condition (0=QFE, 1=QNH, 3=STD) New</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode)" UUID="08af65f2-159e-45c3-8e94-4360e88046dc" />
         <test type="Float" value="1" />
         <modifiers>
@@ -119,86 +177,17 @@
         <configrefs />
       </settings>
     </config>
-    <config guid="3fbdaa99-8a0a-4c37-b0e8-5e13fd62df3e">
+    <config guid="dc38d19a-5646-44e7-99b4-6a89e86dbd5e">
       <active>true</active>
-      <description>EFIS R - QNH Value</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="if($&lt;100, Round($, 2)*100, $)" />
-          <transformation active="True" expression="$+#" />
-        </modifiers>
-        <display type="CustomDevice" serial="Kav Glareshield/ SN-346-31C" trigger="normal" customType="" customName="EFIS R" messageType="0" value="$" />
-        <preconditions>
-          <precondition type="config" active="true" ref="514dfa61-d012-4679-9066-bd67fad44972" operand="=" value="1" logic="and" />
-        </preconditions>
-        <configrefs>
-          <configref active="True" ref="71e6c53f-cde0-4f1b-b211-3a159b0ebc7a" placeholder="#" />
-        </configrefs>
-      </settings>
-    </config>
-    <config guid="0e6d7587-0fa9-4dc9-8b41-c08f45c5e6b1">
-      <active>true</active>
-      <description>EFIS R - QFE Value</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="if($&lt;100, Round($, 2)*100, $)" />
-          <transformation active="True" expression="$+#" />
-        </modifiers>
-        <display type="CustomDevice" serial="Kav Glareshield/ SN-346-31C" trigger="normal" customType="" customName="EFIS R" messageType="1" value="$" />
-        <preconditions>
-          <precondition type="config" active="true" ref="514dfa61-d012-4679-9066-bd67fad44972" operand="=" value="0" logic="and" />
-        </preconditions>
-        <configrefs>
-          <configref active="True" ref="71e6c53f-cde0-4f1b-b211-3a159b0ebc7a" placeholder="#" />
-        </configrefs>
-      </settings>
-    </config>
-    <config guid="5967b60e-2f1a-48c2-8b32-7f43e48a11b1">
-      <active>true</active>
-      <description>EFIS R - STD</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) " UUID="8dae80d7-fb20-471a-bd6e-9c6f135353ad" />
-        <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="if(C&gt;=2,1,0)" />
-          <transformation active="True" expression="$+#" />
-        </modifiers>
-        <display type="CustomDevice" serial="Kav Glareshield/ SN-346-31C" trigger="normal" customType="" customName="EFIS R" messageType="2" value="$" />
-        <preconditions>
-          <precondition type="config" active="true" ref="514dfa61-d012-4679-9066-bd67fad44972" operand="&gt;=" value="2" logic="or" />
-        </preconditions>
-        <configrefs>
-          <configref active="True" ref="514dfa61-d012-4679-9066-bd67fad44972" placeholder="C" />
-          <configref active="True" ref="71e6c53f-cde0-4f1b-b211-3a159b0ebc7a" placeholder="#" />
-        </configrefs>
-      </settings>
-    </config>
-    <config guid="3a6915ed-faf9-43e1-a262-6a51e64156cd">
-      <active>false</active>
       <description>-</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="LVAR" Value="" />
         <test type="Float" value="1" />
-        <modifiers />
-        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
-    <config guid="71e6c53f-cde0-4f1b-b211-3a159b0ebc7a">
-      <active>true</active>
-      <description>Refresh Blink</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="CODE" Value="(L:A32NX_EFIS_L_OPTION)" UUID="a2a19933-8739-4090-bd7e-ebebbbcc334f" />
-        <test type="Float" value="1" />
         <modifiers>
-          <blink active="True" blinkValue="0.1" onOffSequence="50,50" />
+          <transformation active="False" expression="$" />
+          <comparison active="True" value="" operand="=" ifValue="1" elseValue="0" />
         </modifiers>
-        <display type="-" serial="Kav Glareshield/ SN-346-31C" trigger="normal" pin="" pinBrightness="255" />
+        <display type="" serial="-" trigger="change" pin="" pinBrightness="255" />
         <preconditions />
         <configrefs />
       </settings>
@@ -206,7 +195,7 @@
     <config guid="a9c996db-76cb-4e02-98bd-44df3da839a9">
       <active>true</active>
       <description>AC BUS IS ON</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.1.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=0.0.1629.823, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_ELEC_AC_ESS_BUS_IS_POWERED)" UUID="95b6f5a3-c4e8-419d-976e-82a018bdec83" />
         <test type="Float" value="1" />
         <modifiers />
