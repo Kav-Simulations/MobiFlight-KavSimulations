@@ -133,30 +133,7 @@ void KAV_A3XX_EFIS_LCD::showQFEValue(uint16_t value)
 
 void KAV_A3XX_EFIS_LCD::showQFE_QNHValue(char* value)
 {
-    displayString(DIGIT_FOUR, value, 4);
-}
-
-void KAV_A3XX_EFIS_LCD::displayString(uint8_t address, char* digits, uint8_t maxDigits)
-{
-    uint8_t digitCount = 0;
-    uint8_t charCount = 0;
-    uint8_t setDP = 0;
-
-    do {
-        buffer[address + digitCount] &= 0x01;
-        buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount++]) | setDP;
-        if (digits[charCount] == '.' && digitCount < maxDigits - 1) {
-            setDP = 1;
-            charCount++;
-        } else {
-            setDP = 0;
-        }
-        digitCount++;
-    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
-
-    for (uint8_t i = 0; i < maxDigits; i++) {
-        refreshLCD(address + i);
-    }
+    displayString(DIGIT_ONE, value, 4);
 }
 
 // Global Functions
@@ -185,6 +162,39 @@ void KAV_A3XX_EFIS_LCD::displayDigit(uint8_t address, uint8_t digit)
     buffer[address] = (buffer[address] & 16) | digitPatternEFIS[digit];
 
     refreshLCD(address);
+}
+
+void KAV_A3XX_EFIS_LCD::displayString(uint8_t address, char* digits, uint8_t maxDigits)
+{
+    uint8_t digitCount = 0;
+    uint8_t charCount = 0;
+    uint8_t dpDigitMask = (1<<1);       // decimal point only on Digit 1 (2nd Digit)
+
+    do {
+        // Clear decimal point if allowed
+        if ((1 << digitCount) && dpDigitMask)
+            buffer[address + digitCount] = 0x00;
+        else
+            buffer[address + digitCount] &= 0x10;
+
+        // Write character to buffer
+        buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount]);
+        // Check if next character is a decimal point
+        if (digits[charCount + 1] == '.') {
+            // set decimal point only if allowed
+            if (digitCount == 1)
+                buffer[address + digitCount] |= 0x10;
+            // step to next character
+            charCount++;
+        }
+        digitCount++;
+        charCount++;
+    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
+
+    // Refresh LCD area
+    for (uint8_t i = 0; i < maxDigits; i++) {
+        refreshLCD(address + i);
+    }
 }
 
 void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
