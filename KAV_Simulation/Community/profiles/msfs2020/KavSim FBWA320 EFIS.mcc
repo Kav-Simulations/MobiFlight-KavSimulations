@@ -26,7 +26,6 @@
         <modifiers>
           <transformation active="True" expression="Round($, 2)" />
           <transformation active="True" expression="if (Round($,2) - Round($,0) = 0, '$.00', if (Round($,2) - Round($,1) = 0, '$0', $))" />
-          <transformation active="False" expression="if (Round($,2) - Round($,1) = 0, '$0', $)" />
         </modifiers>
         <display type="CustomDevice" serial="Kav RaspiPico/ SN-E6614C311B6BBF32" trigger="normal" customType="" customName="EFIS L" messageType="5" value="$" />
         <preconditions>
