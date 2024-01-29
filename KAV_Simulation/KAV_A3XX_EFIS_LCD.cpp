@@ -172,7 +172,7 @@ void KAV_A3XX_EFIS_LCD::displayString(uint8_t address, char* digits, uint8_t max
 
     do {
         // Clear decimal point if allowed
-        if ((1 << digitCount) && dpDigitMask)
+        if ((1 << digitCount) & dpDigitMask)
             buffer[address + digitCount] = 0x00;
         else
             buffer[address + digitCount] &= 0x10;
