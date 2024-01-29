@@ -252,16 +252,7 @@
         <test type="Float" value="1" />
         <modifiers>
           <transformation active="True" expression="Round(Abs($), 1)" />
-          <comparison active="True" value="0" operand="=" ifValue="'0.0'" elseValue="$" />
-          <comparison active="True" value="1" operand="=" ifValue="'1.0'" elseValue="$" />
-          <comparison active="True" value="2" operand="=" ifValue="'2.0'" elseValue="$" />
-          <comparison active="True" value="3" operand="=" ifValue="'3.0'" elseValue="$" />
-          <comparison active="True" value="4" operand="=" ifValue="'4.0'" elseValue="$" />
-          <comparison active="True" value="5" operand="=" ifValue="'5.0'" elseValue="$" />
-          <comparison active="True" value="6" operand="=" ifValue="'6.0'" elseValue="$" />
-          <comparison active="True" value="7" operand="=" ifValue="'7.0'" elseValue="$" />
-          <comparison active="True" value="8" operand="=" ifValue="'8.0'" elseValue="$" />
-          <comparison active="True" value="9" operand="=" ifValue="'9.0'" elseValue="$" />
+          <transformation active="True" expression="if (Round($,1) - Round($,0) = 0, '$.0', $)" />
           <padding active="True" direction="Right" length="6" character=" " />
           <transformation active="True" expression="if (# &lt; 0, '-$', '+$')" />
         </modifiers>
