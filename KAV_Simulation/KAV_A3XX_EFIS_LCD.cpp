@@ -168,30 +168,25 @@ void KAV_A3XX_EFIS_LCD::displayString(uint8_t address, char* digits, uint8_t max
 {
     uint8_t digitCount = 0;
     uint8_t charCount = 0;
-    uint8_t dpDigitMask = (1<<1);       // decimal point only on Digit 1 (2nd Digit)
+    uint8_t dpDigitMask = (1<<1);               // decimal point only on Digit 1 (2nd Digit)
 
     do {
-        // Clear decimal point if allowed
-        if ((1 << digitCount) & dpDigitMask)
+        if ((1 << digitCount) & dpDigitMask)    // Clear decimal point if allowed
             buffer[address + digitCount] = 0x00;
-        else
+        else                                    //  otherwise keep it, special character
             buffer[address + digitCount] &= 0x10;
 
-        // Write character to buffer
         buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount]);
-        // Check if next character is a decimal point
+
         if (digits[charCount + 1] == '.') {
-            // set decimal point only if allowed
-            if (digitCount == 1)
+            if (digitCount == 1)                // set decimal point only if allowed
                 buffer[address + digitCount] |= 0x10;
-            // step to next character
             charCount++;
         }
         digitCount++;
         charCount++;
     } while (digits[charCount] != 0x00 && digitCount < maxDigits);
 
-    // Refresh LCD area
     for (uint8_t i = 0; i < maxDigits; i++) {
         refreshLCD(address + i);
     }
