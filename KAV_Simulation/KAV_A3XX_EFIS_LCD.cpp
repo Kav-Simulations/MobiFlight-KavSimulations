@@ -42,6 +42,14 @@ void KAV_A3XX_EFIS_LCD::refreshLCD(uint8_t address)
 {
     ht_efis.write(address * 2, buffer[address], 8);
 }
+
+void KAV_A3XX_EFIS_LCD::refreshLCD(uint8_t address, uint8_t digits)
+{
+    for (uint8_t i = 0; i < digits; i++) {
+        refreshLCD(address + i);
+    }
+}
+
 void KAV_A3XX_EFIS_LCD::clearLCD()
 {
     for (uint8_t i = 0; i < ht_efis.MAX_ADDR; i++)
@@ -133,7 +141,8 @@ void KAV_A3XX_EFIS_LCD::showQFEValue(uint16_t value)
 
 void KAV_A3XX_EFIS_LCD::showQFE_QNHValue(char* value)
 {
-    displayString(DIGIT_ONE, value, 4);
+    displayString(buffer, DIGIT_ONE, value, 4, (1<<1));
+    refreshLCD(DIGIT_ONE, 4);
 }
 
 // Global Functions
@@ -162,34 +171,6 @@ void KAV_A3XX_EFIS_LCD::displayDigit(uint8_t address, uint8_t digit)
     buffer[address] = (buffer[address] & 16) | digitPatternEFIS[digit];
 
     refreshLCD(address);
-}
-
-void KAV_A3XX_EFIS_LCD::displayString(uint8_t address, char* digits, uint8_t maxDigits)
-{
-    uint8_t digitCount = 0;
-    uint8_t charCount = 0;
-    uint8_t dpDigitMask = (1<<1);               // decimal point only on Digit 1 (2nd Digit)
-
-    do {
-        if ((1 << digitCount) & dpDigitMask)    // Clear decimal point if allowed
-            buffer[address + digitCount] = 0x00;
-        else                                    //  otherwise keep it, special character
-            buffer[address + digitCount] &= 0x10;
-
-        buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount]);
-
-        if (digits[charCount + 1] == '.') {
-            if (digitCount == 1)                // set decimal point only if allowed
-                buffer[address + digitCount] |= 0x10;
-            charCount++;
-        }
-        digitCount++;
-        charCount++;
-    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
-
-    for (uint8_t i = 0; i < maxDigits; i++) {
-        refreshLCD(address + i);
-    }
 }
 
 void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)

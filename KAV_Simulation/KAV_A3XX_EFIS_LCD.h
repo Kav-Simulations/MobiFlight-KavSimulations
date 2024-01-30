@@ -25,6 +25,7 @@ private:
     // Methods
     void displayDigit(uint8_t address, uint8_t digit);
     void refreshLCD(uint8_t address);
+    void refreshLCD(uint8_t address, uint8_t digits);
 
 public:
     // Constructor
@@ -52,5 +53,4 @@ public:
 
     // Show string on display
     void showQFE_QNHValue(char* value);
-    void displayString(uint8_t address, char* digits, uint8_t maxDigits);
 };
