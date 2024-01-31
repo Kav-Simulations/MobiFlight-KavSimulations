@@ -58,6 +58,13 @@ void KAV_A3XX_FCU_LCD::refreshLCD(uint8_t address)
     ht.write(address * 2, buffer[address], 8);
 }
 
+void KAV_A3XX_FCU_LCD::refreshLCD(uint8_t address, uint8_t digits)
+{
+    for (uint8_t i = 0; i < digits; i++) {
+        refreshLCD(address + i);
+    }
+}
+
 void KAV_A3XX_FCU_LCD::clearLCD()
 {
     for (uint8_t i = 0; i < ht.MAX_ADDR; i++)
@@ -102,7 +109,7 @@ void KAV_A3XX_FCU_LCD::showSpeedValue(char* data)
 {
     buffer[SPD_HUN + 1] &= 0xFE;
     buffer[SPD_HUN + 2] &= 0xFE;
-    displayString(SPD_HUN, data, 3);
+    displayStringFCU(buffer, SPD_HUN, data, 3);
 }
 
 // Heading
@@ -150,7 +157,7 @@ void KAV_A3XX_FCU_LCD::showHeadingValue(int16_t value)
 
 void KAV_A3XX_FCU_LCD::showHeadingValue(char* data)
 {
-    displayString(HDG_HUN, data, 3);
+    displayStringFCU(buffer, HDG_HUN, data, 3);
 }
 
 // Altitude
@@ -192,7 +199,7 @@ void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
 
 void KAV_A3XX_FCU_LCD::showAltitudeValue(char* data)
 {
-    displayString(ALT_TTH, data, 5);
+    displayStringFCU(buffer, ALT_TTH, data, 5);
 
 }
 
@@ -270,22 +277,26 @@ void KAV_A3XX_FCU_LCD::showFPAValue(int8_t value)
 
 void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
 {
+    uint8_t dpMask = (1 << 0);
     if (data[0] == '-') {
         SET_BUFF_BIT(VRT_TEN, 0, false);
         SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
         SET_BUFF_BIT(VRT_HUN, 0, false);
-        displayString(VRT_THO, &data[1], 4);
+        displayStringFCU(buffer, VRT_THO, &data[1], 4, dpMask);
     } else if (data[0] == '+') {
         SET_BUFF_BIT(VRT_TEN, 0, vertSignEnabled);
         SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
         SET_BUFF_BIT(VRT_HUN, 0, false);
-        displayString(VRT_THO, &data[1], 4);
+        displayStringFCU(buffer, VRT_THO, &data[1], 4, dpMask);
     } else {
         SET_BUFF_BIT(VRT_TEN, 0, false);
         SET_BUFF_BIT(VRT_UNIT, 0, false);
         SET_BUFF_BIT(VRT_HUN, 0, false);
-        displayString(VRT_THO, data, 4);
+        displayStringFCU(buffer, VRT_THO, data, 4, dpMask);
     }
+    // sign segments for VS/FPA speed are the decimal points from the digits
+    // which get set outside this function, so refresh always all digits
+    refreshLCD(VRT_THO, 4);
 }
 
 // Preset States
@@ -450,32 +461,6 @@ void KAV_A3XX_FCU_LCD::displayDigit(uint8_t address, uint8_t digit)
     buffer[address] = (buffer[address] & 1) | digitPatternFCU[digit];
 
     refreshLCD(address);
-}
-
-void KAV_A3XX_FCU_LCD::displayString(uint8_t address, char* digits, uint8_t maxDigits)
-{
-    uint8_t digitCount = 0;
-    uint8_t charCount = 0;
-    uint8_t setDP = 0;
-
-    // handle sign for VS/FPA is done in showVerticalFPAValue()
-    do {
-        buffer[address + digitCount] &= 0x01;
-        buffer[address + digitCount] |= readFCUCharFromFlash((uint8_t)digits[charCount++]) | setDP;
-        if (digits[charCount] == '.' && digitCount < maxDigits - 1) {
-            setDP = 1;
-            charCount++;
-        } else {
-            setDP = 0;
-        }
-        digitCount++;
-    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
-
-    // sign segments for VS/FPA speed are the decimal points from the digits
-    // which get set outside this function, so refresh always all digits
-    for (uint8_t i = 0; i < maxDigits; i++) {
-        refreshLCD(address + i);
-    }
 }
 
 void KAV_A3XX_FCU_LCD::clearOrReset(bool enabled)

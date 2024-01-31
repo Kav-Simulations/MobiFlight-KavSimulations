@@ -59,3 +59,27 @@ const static byte digitPatternLongFCU[128] PROGMEM = {
 uint8_t readFCUCharFromFlash(uint8_t value) {
     return pgm_read_byte_near(digitPatternLongFCU + (value & 0x7F));
 }
+
+
+void displayStringFCU(uint8_t *buffer, uint8_t address, char* digits, uint8_t maxDigits, uint8_t dpDigitMask)
+{
+    uint8_t digitCount = 0;
+    uint8_t charCount = 0;
+    uint8_t setDP = 0;
+
+    // handle sign for VS/FPA is done in showVerticalFPAValue()
+    do {
+        buffer[address + digitCount] &= 0x01;
+        buffer[address + digitCount] |= readFCUCharFromFlash((uint8_t)digits[charCount++]) | setDP;
+        if (digits[charCount] == '.') {
+            if ((1 << digitCount) & dpDigitMask) {
+                setDP = 1;
+        Serial.print("Digit: "); Serial.println(digitCount);
+            } else {
+                setDP = 0;
+            }
+            charCount++;
+        }
+        digitCount++;
+    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
+}
