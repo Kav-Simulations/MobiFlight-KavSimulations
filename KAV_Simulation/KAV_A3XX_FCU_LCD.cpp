@@ -109,7 +109,7 @@ void KAV_A3XX_FCU_LCD::showSpeedValue(char* data)
 {
     buffer[SPD_HUN + 1] &= 0xFE;
     buffer[SPD_HUN + 2] &= 0xFE;
-    displayStringFCU(buffer, SPD_HUN, data, 3);
+    displayStringFCU(buffer, SPD_HUN, data, 3, (1 << 0));
     refreshLCD(SPD_HUN, 3);
 }
 

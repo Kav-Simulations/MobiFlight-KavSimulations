@@ -71,12 +71,10 @@ void displayStringFCU(uint8_t *buffer, uint8_t address, char* digits, uint8_t ma
     do {
         buffer[address + digitCount] &= 0x01;
         buffer[address + digitCount] |= readFCUCharFromFlash((uint8_t)digits[charCount++]) | setDP;
+        setDP = 0;
         if (digits[charCount] == '.') {
             if ((1 << digitCount) & dpDigitMask) {
                 setDP = 1;
-        Serial.print("Digit: "); Serial.println(digitCount);
-            } else {
-                setDP = 0;
             }
             charCount++;
         }
