@@ -110,6 +110,7 @@ void KAV_A3XX_FCU_LCD::showSpeedValue(char* data)
     buffer[SPD_HUN + 1] &= 0xFE;
     buffer[SPD_HUN + 2] &= 0xFE;
     displayStringFCU(buffer, SPD_HUN, data, 3);
+    refreshLCD(SPD_HUN, 3);
 }
 
 // Heading
@@ -158,6 +159,7 @@ void KAV_A3XX_FCU_LCD::showHeadingValue(int16_t value)
 void KAV_A3XX_FCU_LCD::showHeadingValue(char* data)
 {
     displayStringFCU(buffer, HDG_HUN, data, 3);
+    refreshLCD(HDG_HUN, 3);
 }
 
 // Altitude
@@ -200,6 +202,7 @@ void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
 void KAV_A3XX_FCU_LCD::showAltitudeValue(char* data)
 {
     displayStringFCU(buffer, ALT_TTH, data, 5);
+    refreshLCD(ALT_TTH, 5);
 
 }
 
