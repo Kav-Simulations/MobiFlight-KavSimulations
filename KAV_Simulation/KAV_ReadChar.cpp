@@ -56,6 +56,26 @@ const static byte digitPatternLongFCU[128] PROGMEM = {
 };
 
 
-uint8_t readFCUCharFromFlash(uint8_t value) {
+uint8_t readFCUPatternFromFlash(uint8_t value) {
     return pgm_read_byte_near(digitPatternLongFCU + (value & 0x7F));
+}
+
+void getFCUDigitPattern(uint8_t *buffer, uint8_t address, char* digits, uint8_t maxDigits)
+{
+    uint8_t digitCount = 0;
+    uint8_t charCount = 0;
+    uint8_t setDP = 0;
+
+    // handle sign for VS/FPA is done in showVerticalFPAValue()
+    do {
+        buffer[address + digitCount] &= 0x01;
+        buffer[address + digitCount] |= readFCUPatternFromFlash((uint8_t)digits[charCount++]) | setDP;
+        if (digits[charCount] == '.' && digitCount < maxDigits - 1) {
+            setDP = 1;
+            charCount++;
+        } else {
+            setDP = 0;
+        }
+        digitCount++;
+    } while (digits[charCount] != 0x00 && digitCount < maxDigits);
 }
