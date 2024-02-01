@@ -285,17 +285,17 @@ void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
         SET_BUFF_BIT(VRT_TEN, 0, false);
         SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
         SET_BUFF_BIT(VRT_HUN, 0, false);
-        getFCUDigitPattern(buffer, VRT_THO, &data[1], 4);
+        getFCUDigitPattern(buffer, VRT_THO, &data[1], 4, dpMask);
     } else if (data[0] == '+') {
         SET_BUFF_BIT(VRT_TEN, 0, vertSignEnabled);
         SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
         SET_BUFF_BIT(VRT_HUN, 0, false);
-        getFCUDigitPattern(buffer, VRT_THO, &data[1], 4);
+        getFCUDigitPattern(buffer, VRT_THO, &data[1], 4, dpMask);
     } else {
         SET_BUFF_BIT(VRT_TEN, 0, false);
         SET_BUFF_BIT(VRT_UNIT, 0, false);
         SET_BUFF_BIT(VRT_HUN, 0, false);
-        getFCUDigitPattern(buffer, VRT_THO, data, 4);
+        getFCUDigitPattern(buffer, VRT_THO, data, 4, dpMask);
     }
     refreshLCD(VRT_THO, 4);
 }
