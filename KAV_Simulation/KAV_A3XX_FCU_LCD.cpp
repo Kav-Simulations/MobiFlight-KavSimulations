@@ -280,6 +280,7 @@ void KAV_A3XX_FCU_LCD::showFPAValue(int8_t value)
 
 void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
 {
+    uint8_t dpMask = (1 << 0);
     if (data[0] == '-') {
         SET_BUFF_BIT(VRT_TEN, 0, false);
         SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
