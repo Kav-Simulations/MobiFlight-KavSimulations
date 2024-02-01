@@ -56,11 +56,11 @@ const static byte digitPatternLongFCU[128] PROGMEM = {
 };
 
 
-uint8_t readCharFromFlash(uint8_t value) {
+uint8_t readPatternFromFlash(uint8_t value) {
     return pgm_read_byte_near(digitPatternLongFCU + (value & 0x7F));
 }
 
-void displayString(uint8_t *buffer, uint8_t address, char* digits, uint8_t maxDigits, uint8_t dpDigitMask)
+void getDigitPattern(uint8_t *buffer, uint8_t address, char* digits, uint8_t maxDigits, uint8_t dpDigitMask)
 {
     uint8_t digitCount = 0;
     uint8_t charCount = 0;
@@ -71,7 +71,7 @@ void displayString(uint8_t *buffer, uint8_t address, char* digits, uint8_t maxDi
         else                                        //  otherwise keep it, special character
             buffer[address + digitCount] &= 0x10;
 
-        buffer[address + digitCount] |= readCharFromFlash((uint8_t)digits[charCount]);
+        buffer[address + digitCount] |= readPatternFromFlash((uint8_t)digits[charCount]);
 
         if (digits[charCount + 1] == '.') {         // check for decimal point
             if ((1 << digitCount) & dpDigitMask)    // set decimal point only if allowed

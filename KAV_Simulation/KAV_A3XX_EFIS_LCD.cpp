@@ -82,9 +82,9 @@ void KAV_A3XX_EFIS_LCD::setDot(bool enabled)
 void KAV_A3XX_EFIS_LCD::showStd(uint16_t state)
 {
     if (state == 1) {
-        displayString(buffer, DIGIT_ONE, (char*)"Std ", 4);
+        getDigitPattern(buffer, DIGIT_ONE, (char*)"Std ", 4);
     } else {
-        displayString(buffer, DIGIT_ONE, (char*)"    ", 4);
+        getDigitPattern(buffer, DIGIT_ONE, (char*)"    ", 4);
     }
     refreshLCD(DIGIT_ONE, 4);
     setDot(false);
@@ -123,7 +123,7 @@ void KAV_A3XX_EFIS_LCD::showQNHValue(float value)
 // value = 1023 for mBar
 void KAV_A3XX_EFIS_LCD::showQNHValue(char* value)
 {
-    displayString(buffer, DIGIT_ONE, value, 4, (1<<1));
+    getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
     refreshLCD(DIGIT_ONE, 4);
 
     setQFElabel(false);
@@ -161,7 +161,7 @@ void KAV_A3XX_EFIS_LCD::showQFEValue(float value)
 // value = 1023 for mBar
 void KAV_A3XX_EFIS_LCD::showQFEValue(char* value)
 {
-    displayString(buffer, DIGIT_ONE, value, 4, (1<<1));
+    getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
     refreshLCD(DIGIT_ONE, 4);
 
     setQFElabel(true);
@@ -174,7 +174,7 @@ void KAV_A3XX_EFIS_LCD::showQFEValue(char* value)
 // no labels get set
 void KAV_A3XX_EFIS_LCD::showQFEQNHValue(char* value)
 {
-    displayString(buffer, DIGIT_ONE, value, 4, (1<<1));
+    getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
     refreshLCD(DIGIT_ONE, 4);
 }
 
@@ -196,22 +196,6 @@ void KAV_A3XX_EFIS_LCD::showQFEQNHValue(uint16_t value)
 }
 
 // Global Functions
-uint8_t digitPatternEFIS[14] = {
-    0b11101011, // 0
-    0b01100000, // 1
-    0b11000111, // 2
-    0b11100101, // 3
-    0b01101100, // 4
-    0b10101101, // 5 or S
-    0b10101111, // 6
-    0b11100000, // 7
-    0b11101111, // 8
-    0b11101101, // 9
-    0b00000100, // -
-    0b00001111, // t
-    0b01100111, // d
-    0b00000000, // blank
-};
 
 void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
 {
