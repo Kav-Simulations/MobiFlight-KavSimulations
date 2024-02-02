@@ -96,20 +96,64 @@ void KAV_A3XX_FCU_LCD::setSpeedDot(int8_t state)
     refreshLCD(HDG_HUN);
 }
 
-void KAV_A3XX_FCU_LCD::showSpeedValue(uint16_t value)
+// value 0 to 999
+// no dot is shown
+void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
 {
-    if (value > 999) value = 999;
-    displayDigit(SPD_UNIT, (value % 10));
-    value = value / 10;
-    displayDigit(SPD_TEN, (value % 10));
-    displayDigit(SPD_HUN, (value / 10));
+    char bufferDigits[10] = {0};
+    setSpeedLabel(true);
+    setMachLabel(false);
+    sprintf(bufferDigits, "%03d", (uint16_t)value);
+    showSpeedMachValue(bufferDigits);
 }
 
-void KAV_A3XX_FCU_LCD::showSpeedValue(char* data)
+// value 0 to 999, dot will be set on first digit
+// no dot is shown
+void KAV_A3XX_FCU_LCD::setMachMode(int16_t value)
 {
-    buffer[SPD_HUN + 1] &= 0xFE;
-    buffer[SPD_HUN + 2] &= 0xFE;
-    getFCUDigitPattern(buffer, SPD_HUN, data, 3);
+    char bufferDigits[100] = {0};
+    float temp = value;
+    temp /= 100;
+    setSpeedLabel(false);
+    setMachLabel(true);
+    //sprintf(bufferDigits, "%05.2F", temp);
+    if (sprintf(bufferDigits, "%f", temp) < 0)
+        Serial.println("Fehler bei der Umwandlung!");
+Serial.print("Value is: "); Serial.println(value);
+Serial.print("Value is: "); Serial.println(temp);
+Serial.print("Buffer is: "); Serial.println(bufferDigits);
+    showSpeedMachValue(bufferDigits);
+}
+
+// value 0 to 999
+// dot will not be set
+void KAV_A3XX_FCU_LCD::showSpeedValue(uint16_t value)
+{
+    char bufferDigits[10] = {0};
+    if (value > 999) value = 999;
+    sprintf(bufferDigits, "%03d", value);
+    showSpeedMachValue(bufferDigits);
+}
+
+// value 0 to 999 for Speed
+// value 0 to 0.99 for Mach
+// dot will be set accordingly
+void KAV_A3XX_FCU_LCD::showSpeedMachValue(float value)
+{
+    char bufferDigits[10] = {0};
+    if (value < 1)
+        sprintf(bufferDigits, "%4.2f", ((double)value)/100);
+    else
+        sprintf(bufferDigits, "%3d", (uint16_t)value);
+    showSpeedMachValue(bufferDigits);
+}
+
+// string will be displayed, build him as required
+void KAV_A3XX_FCU_LCD::showSpeedMachValue(char* data)
+{
+    buffer[SPD_TEN] &= 0xFE;
+    buffer[SPD_UNIT] &= 0xFE;
+    getFCUDigitPattern(buffer, SPD_HUN, data, 3, (1 << 0));
     refreshLCD(SPD_HUN, 3);
 }
 
@@ -411,22 +455,6 @@ void KAV_A3XX_FCU_LCD::setTrackMode()
     trkActive = true;
 }
 
-void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
-{
-    setSpeedLabel(true);
-    setMachLabel(false);
-    SET_BUFF_BIT(SPD_TEN, 0, false); // Decimal-point
-    showSpeedValue(value);
-}
-
-void KAV_A3XX_FCU_LCD::setMachMode(int16_t value)
-{
-    setSpeedLabel(false);
-    setMachLabel(true);
-    SET_BUFF_BIT(SPD_TEN, 0, true); // Decimal-point
-    showSpeedValue(value);
-}
-
 void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(int8_t state) {
     if (state) {
         setMachLabel(true);
@@ -493,7 +521,7 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 1)
         setMachMode((uint16_t)data);
     else if (messageID == 2)
-        showHeadingValue((uint16_t)data);
+        showHeadingValue((int16_t)data);
     else if (messageID == 3)
         showAltitudeValue((uint32_t)data);
     else if (messageID == 4)
@@ -525,7 +553,7 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 17)
         clearOrReset((int8_t)data);
     else if (messageID == 18)
-        showSpeedValue(setPoint);
+        showSpeedMachValue(setPoint);
     else if (messageID == 19)
         showHeadingValue(setPoint);
     else if (messageID == 20)

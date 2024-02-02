@@ -45,7 +45,8 @@ public:
     void setMachLabel(bool enabled);
     void setSpeedDot(int8_t state);
     void showSpeedValue(uint16_t value);
-    void showSpeedValue(char* data);
+    void showSpeedMachValue(float value);
+    void showSpeedMachValue(char* data);
     void toggleSpeedMachMode(int8_t state);
 
     // Heading, Track and Latitude Functions
@@ -54,6 +55,7 @@ public:
     void setLatitudeLabel(bool enabled);
     void setHeadingDot(int8_t state);
     void showHeadingValue(int16_t value);
+    void showHeadingValue(float value);
     void showHeadingValue(char* data);
 
     // Altitude Functions
@@ -61,6 +63,7 @@ public:
     void setLvlChLabel(bool enabled);
     void setAltitudeDot(int8_t state);
     void showAltitudeValue(uint32_t value);
+    void showAltitudeValue(float value);
     void showAltitudeValue(char* data);
 
     // Vertical_Speed & FPA Functions
@@ -68,7 +71,9 @@ public:
     void setFPALabel(bool enabled);
     void setSignLabel(bool enabled);
     void showVerticalValue(int16_t value);
+    void showVerticalValue(float value);
     void showFPAValue(int8_t value);
+    void showFPAValue(float value);
     void showVerticalFPAValue(char* data);
 
     // Preset States
