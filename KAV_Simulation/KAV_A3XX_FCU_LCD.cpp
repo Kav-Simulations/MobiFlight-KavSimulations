@@ -101,22 +101,19 @@ void KAV_A3XX_FCU_LCD::setSpeedDot(int8_t state)
 void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
 {
     char bufferDigits[10] = {0};
+    if (value > 999) value = 999;
     setSpeedLabel(true);
     setMachLabel(false);
     snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
 }
 
-// value 0 to 999, dot will be set on first digit
-// no dot is shown
-void KAV_A3XX_FCU_LCD::setMachMode(int16_t value)
+// value 0 to 999, value = 420 will be shown as 0.42
 {
     char bufferDigits[10] = {0};
-    double temp = value;
-    temp /= 100;
     setSpeedLabel(false);
     setMachLabel(true);
-    snprintf(bufferDigits, 10, "%05.2f", 29.92 );
+    dtostrf((double)value/100, 1,2, bufferDigits);
     showSpeedMachValue(bufferDigits);
 }
 
@@ -137,7 +134,7 @@ void KAV_A3XX_FCU_LCD::showSpeedMachValue(float value)
 {
     char bufferDigits[10] = {0};
     if (value < 1)
-        snprintf(bufferDigits, 10, "%4.2f", ((double)value)/100);
+        dtostrf((double)value, 4,2, bufferDigits);
     else
         snprintf(bufferDigits, 10, "%3d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
