@@ -206,11 +206,12 @@ void KAV_A3XX_FCU_LCD::setHeadingDot(int8_t state)
 
 void KAV_A3XX_FCU_LCD::showHeadingValue(int16_t value)
 {
+    char bufferDigits[10] = {0};
+    
     if (value > 999) value = 999;
-    displayDigit(HDG_UNIT, (value % 10));
-    value = value / 10;
-    displayDigit(HDG_TEN, (value % 10));
-    displayDigit(HDG_HUN, (value / 10));
+    snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
+    getFCUDigitPattern(buffer, HDG_HUN, bufferDigits, 3);
+    refreshLCD(HDG_HUN, 3);
 }
 
 void KAV_A3XX_FCU_LCD::showHeadingValue(char* data)
