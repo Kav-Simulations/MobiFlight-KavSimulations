@@ -1,5 +1,5 @@
 #include "KAV_A3XX_FCU_LCD.h"
-#include "KAV_ReadChar.h"
+#include "KAV_GetDigitPattern.h"
 
 
 #define SPD_HUN  0

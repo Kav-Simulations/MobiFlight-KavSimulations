@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include "KAV_ReadChar.h"
 
 #ifdef __AVR__
 #include <avr/pgmspace.h>
@@ -11,7 +10,7 @@
 #endif
 
 
-// bit/segment sequence: ???????p
+// bit/segment sequence: DCBAEGFp
 //      A
 //     ---
 //  F |   | B
