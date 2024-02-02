@@ -1,5 +1,5 @@
 #include "KAV_A3XX_EFIS_LCD.h"
-#include "KAV_ReadChar.h"
+#include "KAV_GetDigitPattern.h"
 
 #define DIGIT_ONE   0
 #define DIGIT_TWO   1
