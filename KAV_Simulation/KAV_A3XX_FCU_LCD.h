@@ -41,24 +41,32 @@ public:
     void set(int16_t messageID, char *setPoint);
 
     // Speed and Mach functions
+    void setSpeedDashes(int8_t state);
     void setSpeedLabel(bool enabled);
     void setMachLabel(bool enabled);
     void setSpeedDot(int8_t state);
+    // Speed and Mach with setting labels
+    void setSpeedMode(int16_t value);
+    void setMachMode(int16_t value);
+    void setMachMode(float value);
+    // Speed and Mach without setting labels
     void showSpeedValue(uint16_t value);
+    void showMachValue(uint16_t value);
     void showSpeedMachValue(float value);
     void showSpeedMachValue(char* data);
     void toggleSpeedMachMode(int8_t state);
 
     // Heading, Track and Latitude Functions
+    void setHeadingDashes(int8_t state);
     void setHeadingLabel(bool enabled);
     void setTrackLabel(bool enabled);
     void setLatitudeLabel(bool enabled);
     void setHeadingDot(int8_t state);
     void showHeadingValue(int16_t value);
-    void showHeadingValue(float value);
     void showHeadingValue(char* data);
 
     // Altitude Functions
+    void setAltitudeDashes(int8_t state);
     void setAltitudeLabel(bool enabled);
     void setLvlChLabel(bool enabled);
     void setAltitudeDot(int8_t state);
@@ -67,6 +75,7 @@ public:
     void showAltitudeValue(char* data);
 
     // Vertical_Speed & FPA Functions
+    void setVrtSpdDashes(int8_t state);
     void setVrtSpdLabel(bool enabled);
     void setFPALabel(bool enabled);
     void setSignLabel(bool enabled);
@@ -77,15 +86,9 @@ public:
     void showVerticalFPAValue(char* data);
 
     // Preset States
-    void setSpeedDashes(int8_t state);
-    void setHeadingDashes(int8_t state);
-    void setAltitudeDashes(int8_t state);
-    void setVrtSpdDashes(int8_t state);
     void setStartLabels();
     void toggleTrkHdgMode(int8_t state);
     void setHeadingMode();
     void setTrackMode();
-    void setSpeedMode(int16_t value);
-    void setMachMode(int16_t value);
     void clearOrReset(bool enabled);
 };

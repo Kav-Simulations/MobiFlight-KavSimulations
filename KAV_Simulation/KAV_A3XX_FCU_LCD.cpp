@@ -96,35 +96,56 @@ void KAV_A3XX_FCU_LCD::setSpeedDot(int8_t state)
     refreshLCD(HDG_HUN);
 }
 
+//
+// With setting labels
+//
+
 // value 0 to 999
 // no dot is shown
 void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
 {
-    char bufferDigits[10] = {0};
     if (value > 999) value = 999;
     setSpeedLabel(true);
     setMachLabel(false);
-    snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
-    showSpeedMachValue(bufferDigits);
-}
-
-// value 0 to 999, value = 420 will be shown as 0.42
-{
-    char bufferDigits[10] = {0};
-    setSpeedLabel(false);
-    setMachLabel(true);
-    dtostrf((double)value/100, 1,2, bufferDigits);
-    showSpeedMachValue(bufferDigits);
+    showSpeedMachValue((float)value);
 }
 
 // value 0 to 999
-// dot will not be set
+// value = 42 will be shown as 0.42
+void KAV_A3XX_FCU_LCD::setMachMode(int16_t value)
+{
+    setSpeedLabel(false);
+    setMachLabel(true);
+    showSpeedMachValue((float)value/100);
+}
+
+// value 0 to 0.99
+// value = 0.42 will be shown as 0.42
+void KAV_A3XX_FCU_LCD::setMachMode(float value)
+{
+    setSpeedLabel(false);
+    setMachLabel(true);
+    showSpeedMachValue(value);
+}
+
+//
+// Without setting labels
+//
+
+// value 0 to 999
+// no dot is shown
 void KAV_A3XX_FCU_LCD::showSpeedValue(uint16_t value)
 {
-    char bufferDigits[10] = {0};
     if (value > 999) value = 999;
-    sprintf(bufferDigits, "%03d", value);
-    showSpeedMachValue(bufferDigits);
+    showSpeedMachValue((float)value);
+}
+
+// value 0 to 999
+// value = 42 will be shown as 0.42
+void KAV_A3XX_FCU_LCD::showMachValue(uint16_t value)
+{
+    if (value > 999) value = 999;
+    showSpeedMachValue((float)value/100);
 }
 
 // value 0 to 999 for Speed
@@ -134,7 +155,7 @@ void KAV_A3XX_FCU_LCD::showSpeedMachValue(float value)
 {
     char bufferDigits[10] = {0};
     if (value < 1)
-        dtostrf((double)value, 4,2, bufferDigits);
+        dtostrf((float)value, 4,2, bufferDigits);
     else
         snprintf(bufferDigits, 10, "%3d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
@@ -511,7 +532,7 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 0)
         setSpeedMode((uint16_t)data);
     else if (messageID == 1)
-        setMachMode((uint16_t)data);
+        setMachMode((int16_t)data);
     else if (messageID == 2)
         showHeadingValue((int16_t)data);
     else if (messageID == 3)
