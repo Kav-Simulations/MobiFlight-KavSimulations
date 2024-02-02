@@ -103,7 +103,7 @@ void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
     char bufferDigits[10] = {0};
     setSpeedLabel(true);
     setMachLabel(false);
-    sprintf(bufferDigits, "%03d", (uint16_t)value);
+    snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
 }
 
@@ -111,17 +111,12 @@ void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
 // no dot is shown
 void KAV_A3XX_FCU_LCD::setMachMode(int16_t value)
 {
-    char bufferDigits[100] = {0};
-    float temp = value;
+    char bufferDigits[10] = {0};
+    double temp = value;
     temp /= 100;
     setSpeedLabel(false);
     setMachLabel(true);
-    //sprintf(bufferDigits, "%05.2F", temp);
-    if (sprintf(bufferDigits, "%f", temp) < 0)
-        Serial.println("Fehler bei der Umwandlung!");
-Serial.print("Value is: "); Serial.println(value);
-Serial.print("Value is: "); Serial.println(temp);
-Serial.print("Buffer is: "); Serial.println(bufferDigits);
+    snprintf(bufferDigits, 10, "%05.2f", 29.92 );
     showSpeedMachValue(bufferDigits);
 }
 
@@ -142,9 +137,9 @@ void KAV_A3XX_FCU_LCD::showSpeedMachValue(float value)
 {
     char bufferDigits[10] = {0};
     if (value < 1)
-        sprintf(bufferDigits, "%4.2f", ((double)value)/100);
+        snprintf(bufferDigits, 10, "%4.2f", ((double)value)/100);
     else
-        sprintf(bufferDigits, "%3d", (uint16_t)value);
+        snprintf(bufferDigits, 10, "%3d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
 }
 
