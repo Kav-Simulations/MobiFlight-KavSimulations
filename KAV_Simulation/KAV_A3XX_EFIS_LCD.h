@@ -41,8 +41,7 @@ public:
     // Set QFE or QNH functions
     void setQFElabel(bool enabled);
     void setQNHlabel(bool enabled);
-    // Set Dot Function
-    void setDot(bool enabled);
+    
     // Show Std function
     void showStd(uint16_t state);
 
@@ -57,5 +56,6 @@ public:
 
     // Show QFE or QNH without setting labels
     void showQFEQNHValue(uint16_t value);
+    void showQFEQNHValue(float value);
     void showQFEQNHValue(char* value);
 };

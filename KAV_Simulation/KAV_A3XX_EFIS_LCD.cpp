@@ -70,129 +70,118 @@ void KAV_A3XX_EFIS_LCD::setQNHlabel(bool enabled)
     refreshLCD(DIGIT_FOUR);
 }
 
-void KAV_A3XX_EFIS_LCD::setDot(bool enabled)
-{
-    SET_BUFF_BIT(DIGIT_TWO, 4, enabled);
-    refreshLCD(DIGIT_TWO);
-}
-
 
 // Show Values
 
 void KAV_A3XX_EFIS_LCD::showStd(uint16_t state)
 {
-    if (state == 1) {
+    if (state == 1)
         getDigitPattern(buffer, DIGIT_ONE, (char*)"Std ", 4);
-    } else {
+    else
         getDigitPattern(buffer, DIGIT_ONE, (char*)"    ", 4);
-    }
+
     refreshLCD(DIGIT_ONE, 4);
-    setDot(false);
     setQFElabel(false);
     setQNHlabel(false);
 }
 
 // value as uint16_t
-// value = 2992 for hPA
-// value = 1023 for mBar
+// value = 2992 for 29.92 hPA
+// value = 1023 for 1023 mBar
+// labels get set
 void KAV_A3XX_EFIS_LCD::showQNHValue(uint16_t value)
 {
-    showQFEQNHValue(value);
     setQFElabel(false);
     setQNHlabel(true);
+    showQFEQNHValue(value);
 }
 
 // value as float
-// value = 29.92 for hPA
-// value = 1023 for mBar
+// value = 29.92 for 29.92 hPA
+// value = 1023 for 1023 mBar
+// labels get set
 void KAV_A3XX_EFIS_LCD::showQNHValue(float value)
 {
-    char bufferDigits[10] = {0};
-
-    if (value > 9999) value = 9999;
-
-    sprintf(bufferDigits, "%05.2f", (double)value);
-    showQFEQNHValue(bufferDigits);
-
     setQFElabel(false);
     setQNHlabel(true);
+    showQFEQNHValue(value);
 }
 
-// value as string
-// value = 29.92 for hPA
-// value = 1023 for mBar
+// value as string, format as required
+// labels get set
 void KAV_A3XX_EFIS_LCD::showQNHValue(char* value)
 {
-    getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
-    refreshLCD(DIGIT_ONE, 4);
-
     setQFElabel(false);
     setQNHlabel(true);
+    showQFEQNHValue(value);
 }
 
 // value as uint16_t
-// value = 2992 for hPA
-// value = 1023 for mBar
+// value = 2992 for 29.92 hPA
+// value = 1023 for 1023 mBar
+// labels get set
 void KAV_A3XX_EFIS_LCD::showQFEValue(uint16_t value)
 {
-    showQFEQNHValue(value);
     setQFElabel(true);
     setQNHlabel(false);
+    showQFEQNHValue(value);
 }
 
 // value as float
-// value = 29.92 for hPA
-// value = 1023 for mBar
+// value = 29.92 for 29.92 hPA
+// value = 1023 for 1023 mBar
+// labels get set
 void KAV_A3XX_EFIS_LCD::showQFEValue(float value)
+{
+    setQFElabel(true);
+    setQNHlabel(false);
+    showQFEQNHValue(value);
+}
+
+// value as string, format as required
+// labels get set
+void KAV_A3XX_EFIS_LCD::showQFEValue(char* value)
+{
+    setQFElabel(true);
+    setQNHlabel(false);
+    showQFEQNHValue(value);
+}
+
+// value as uint16_t
+// value = 2992 for 29.92 hPA
+// value = 1023 for 1013 mBar
+// no labels get set
+void KAV_A3XX_EFIS_LCD::showQFEQNHValue(uint16_t value)
+{
+    if (value < 2000)
+        showQFEQNHValue((float)value);
+    else
+        showQFEQNHValue((float)value/100);
+}
+
+// value as float
+// value = 29.92 for 29.92 hPA
+// value = 1023 for 1023 mBar
+// no labels get set
+void KAV_A3XX_EFIS_LCD::showQFEQNHValue(float value)
 {
     char bufferDigits[10] = {0};
 
     if (value > 9999) value = 9999;
+    if (value < 100)
+        dtostrf(value, 5, 2, bufferDigits);
+    else
+        snprintf(bufferDigits, 10, "%04d", (int)value);
 
-    sprintf(bufferDigits, "%05.2f", (double)value);
     showQFEQNHValue(bufferDigits);
-
-    setQFElabel(true);
-    setQNHlabel(false);
 }
 
-// value as string
-// value = 29.92 for hPA
-// value = 1023 for mBar
-void KAV_A3XX_EFIS_LCD::showQFEValue(char* value)
-{
-    getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
-    refreshLCD(DIGIT_ONE, 4);
-
-    setQFElabel(true);
-    setQNHlabel(false);
-}
-
-// value as string
-// value = 29.92 for hPA
-// value = 1023 for mBar
+// value as string, format as required
 // no labels get set
 void KAV_A3XX_EFIS_LCD::showQFEQNHValue(char* value)
 {
     getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
     refreshLCD(DIGIT_ONE, 4);
-}
-
-// value as uint16_t
-// value = 29.92 for hPA
-// value = 1023 for mBar
-// no labels get set
-void KAV_A3XX_EFIS_LCD::showQFEQNHValue(uint16_t value)
-{
-    char bufferDigits[10] = {0};
-
-    if (value > 9999) value = 9999;
-    if (value > 2000) {
-        sprintf(bufferDigits, "%05.2f", (double)value/100 );
-    } else {
-        sprintf(bufferDigits, "%04d", value);
-    }
-    showQFEQNHValue(bufferDigits);
 }
 
 // Global Functions
