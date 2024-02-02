@@ -210,8 +210,7 @@ void KAV_A3XX_FCU_LCD::showHeadingValue(int16_t value)
     
     if (value > 999) value = 999;
     snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
-    getFCUDigitPattern(buffer, HDG_HUN, bufferDigits, 3);
-    refreshLCD(HDG_HUN, 3);
+    showHeadingValue(bufferDigits);
 }
 
 void KAV_A3XX_FCU_LCD::showHeadingValue(char* data)
@@ -246,15 +245,10 @@ void KAV_A3XX_FCU_LCD::setAltitudeDot(int8_t state)
 
 void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
 {
-    if (value > 99999) value = 99999;
-    displayDigit(ALT_UNIT, (value % 10));
-    value = value / 10;
-    displayDigit(ALT_TEN, (value % 10));
-    value = value / 10;
-    displayDigit(ALT_HUN, (value % 10));
-    value = value / 10;
-    displayDigit(ALT_THO, (value % 10));
-    displayDigit(ALT_TTH, (value / 10));
+    char bufferDigits[10] = {0};
+
+    snprintf(bufferDigits, 10, "%05d", (int)value);
+    showAltitudeValue(bufferDigits);
 }
 
 void KAV_A3XX_FCU_LCD::showAltitudeValue(char* data)
