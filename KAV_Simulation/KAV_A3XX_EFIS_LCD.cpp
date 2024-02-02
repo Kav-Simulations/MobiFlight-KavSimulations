@@ -111,7 +111,7 @@ void KAV_A3XX_EFIS_LCD::showQNHValue(float value)
 
     if (value > 9999) value = 9999;
 
-    sprintf(bufferDigits, "%05.2f", value);
+    sprintf(bufferDigits, "%05.2f", (double)value);
     showQFEQNHValue(bufferDigits);
 
     setQFElabel(false);
@@ -149,7 +149,7 @@ void KAV_A3XX_EFIS_LCD::showQFEValue(float value)
 
     if (value > 9999) value = 9999;
 
-    sprintf(bufferDigits, "%05.2f", value);
+    sprintf(bufferDigits, "%05.2f", (double)value);
     showQFEQNHValue(bufferDigits);
 
     setQFElabel(true);
@@ -188,7 +188,7 @@ void KAV_A3XX_EFIS_LCD::showQFEQNHValue(uint16_t value)
 
     if (value > 9999) value = 9999;
     if (value > 2000) {
-        sprintf(bufferDigits, "%05.2f", (float)value/100 );
+        sprintf(bufferDigits, "%05.2f", (double)value/100 );
     } else {
         sprintf(bufferDigits, "%04d", value);
     }
