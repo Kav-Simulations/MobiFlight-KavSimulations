@@ -85,7 +85,6 @@ public:
     void setSignLabel(bool enabled);
     // Values
     void showVerticalValue(int16_t value);
-    void showVerticalValue(float value);
     void showFPAValue(int8_t value);
     void showFPAValue(float value);
     void showVerticalFPAValue(char* data);

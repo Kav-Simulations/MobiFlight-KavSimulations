@@ -155,7 +155,7 @@ void KAV_A3XX_FCU_LCD::showSpeedMachValue(float value)
 {
     char bufferDigits[10] = {0};
     if (value < 1)
-        dtostrf((float)value, 4,2, bufferDigits);
+        dtostrf(value, 4,2, bufferDigits);
     else
         snprintf(bufferDigits, 10, "%3d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
@@ -280,56 +280,50 @@ void KAV_A3XX_FCU_LCD::setSignLabel(bool enabled)
     vertSignEnabled = enabled;
 }
 
+// value 0 to +/-9999 for Vertical value
+// 'oo' will be handled inside function
 void KAV_A3XX_FCU_LCD::showVerticalValue(int16_t value)
 {
+    char bufferDigits[10] = {0};
+
     if (value > 9999) value = 9999;
     if (value < -9999) value = -9999;
     if (value < 0) {
-        value = -value;
-        SET_BUFF_BIT(VRT_TEN, 0, false);
-        SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
-        SET_BUFF_BIT(VRT_HUN, 0, false);
-    } else if (value == 0) {
-        SET_BUFF_BIT(VRT_TEN, 0, false);
-        SET_BUFF_BIT(VRT_UNIT, 0, false);
-        SET_BUFF_BIT(VRT_HUN, 0, false);
+        bufferDigits[0] = '-';
     } else {
-        SET_BUFF_BIT(VRT_TEN, 0, vertSignEnabled);
-        SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
-        SET_BUFF_BIT(VRT_HUN, 0, false);
+        bufferDigits[0] = '+';
     }
-
-    displayDigit(VRT_UNIT, 12);
-    value = value / 10;
-    displayDigit(VRT_TEN, 12);
-    value = value / 10;
-    displayDigit(VRT_HUN, (value % 10));
-    displayDigit(VRT_THO, (value / 10));
+    snprintf(&bufferDigits[1], 10, "%02doo", (uint16_t)value/100);
+    showVerticalFPAValue(bufferDigits);
 }
 
+// value 0 to +/-99 for FPA value
+// 99 will be displaye as 9.9
 void KAV_A3XX_FCU_LCD::showFPAValue(int8_t value)
 {
-    if (value > 99) value = 99;
-    if (value < -99) value = -99;
-    if (value < 0) {
-        value = -value;
-        SET_BUFF_BIT(VRT_TEN, 0, false);
-        SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
-        SET_BUFF_BIT(VRT_HUN, 0, true);
-    } else {
-        SET_BUFF_BIT(VRT_TEN, 0, vertSignEnabled);
-        SET_BUFF_BIT(VRT_UNIT, 0, vertSignEnabled);
-        SET_BUFF_BIT(VRT_HUN, 0, true);
-    }
-
-    displayDigit(VRT_HUN, (value % 10));
-    displayDigit(VRT_THO, (value / 10));
-    SET_BUFF_BITS(VRT_TEN, 0b11111110, 0);
-    SET_BUFF_BITS(VRT_UNIT, 0b11111110, 0);
-    refreshLCD(VRT_TEN);
-    refreshLCD(VRT_UNIT);
+    showFPAValue((float)value/10);
 }
 
+// value 0 to +/-9.9 for FPA value
+void KAV_A3XX_FCU_LCD::showFPAValue(float value)
+{
+    char bufferDigits[10] = {0};
+
+    if (value >= 10) value = 9.9;
+    if (value <= -10) value = -9.9;
+
+    if (value < 0) {
+        bufferDigits[0] = '-';
+    } else {
+        bufferDigits[0] = '+';
+    }
+    dtostrf(abs(value), 3,1, &bufferDigits[1]);
+    bufferDigits[4] = ' ';
+    bufferDigits[5] = ' ';
+    showVerticalFPAValue(bufferDigits);
+}
+
+// String will be displayed as it is
 void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
 {
     uint8_t dpMask = (1 << 0);
@@ -355,79 +349,34 @@ void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
 // Preset States
 void KAV_A3XX_FCU_LCD::setSpeedDashes(bool state)
 {
-    uint8_t val;
-    bool    enabled;
-    if (state == 0)
-        enabled = false;
+    if (state)
+        showSpeedMachValue((char*)"---");
     else
-        enabled = true;
-    if (enabled)
-        val = 10;
-    else
-        val = 11;
-    displayDigit(SPD_HUN, val);
-    displayDigit(SPD_TEN, val);
-    displayDigit(SPD_UNIT, val);
-    SET_BUFF_BIT(SPD_TEN, 0, false); // Clear Mach Decimal-point
-    refreshLCD(SPECIALS);
+        showSpeedMachValue((char*)"   ");
 }
 
 void KAV_A3XX_FCU_LCD::setHeadingDashes(bool state)
 {
-    uint8_t val;
-    bool    enabled;
-    if (state == 0)
-        enabled = false;
+    if (state)
+        showHeadingValue((char*)"---");
     else
-        enabled = true;
-    if (enabled)
-        val = 10;
-    else
-        val = 11;
-    displayDigit(HDG_HUN, val);
-    displayDigit(HDG_TEN, val);
-    displayDigit(HDG_UNIT, val);
+        showSpeedMachValue((char*)"   ");
 }
 
 void KAV_A3XX_FCU_LCD::setAltitudeDashes(bool state)
 {
-    uint8_t val;
-    bool    enabled;
-    if (state == 0)
-        enabled = false;
+    if (state)
+        showAltitudeValue((char*)"-----");
     else
-        enabled = true;
-    if (enabled)
-        val = 10;
-    else
-        val = 11;
-    displayDigit(ALT_TTH, val);
-    displayDigit(ALT_THO, val);
-    displayDigit(ALT_HUN, val);
-    displayDigit(ALT_TEN, val);
-    displayDigit(ALT_UNIT, val);
+        showAltitudeValue((char*)"     ");
 }
+
 void KAV_A3XX_FCU_LCD::setVrtSpdDashes(bool state)
 {
-    uint8_t val;
-    bool    enabled;
-    if (state == 0)
-        enabled = false;
+    if (state)
+        showVerticalFPAValue((char*)"-----");
     else
-        enabled = true;
-    if (enabled) {
-        val = 10;
-        SET_BUFF_BIT(VRT_UNIT, 0, true); // Set the plus/minus to minus
-        SET_BUFF_BIT(VRT_TEN, 0, false); // Remove the plus segment
-        SET_BUFF_BIT(VRT_HUN, 0, false); // Remove the decimal point
-    } else {
-        val = 11;
-        SET_BUFF_BIT(VRT_UNIT, 0, false); // Turn it off
-    }
-    displayDigit(VRT_THO, val);
-    displayDigit(VRT_HUN, val);
-    displayDigit(VRT_TEN, val);
-    displayDigit(VRT_UNIT, val);
+        showVerticalFPAValue((char*)"     ");
 }
 
 void KAV_A3XX_FCU_LCD::setStartLabels()
@@ -439,10 +388,10 @@ void KAV_A3XX_FCU_LCD::setStartLabels()
 
 void KAV_A3XX_FCU_LCD::toggleTrkHdgMode(bool state)
 {
-    if (state == 0)
-        setHeadingMode();
-    else
+    if (state)
         setTrackMode();
+    else
+        setHeadingMode();
 }
 
 void KAV_A3XX_FCU_LCD::setHeadingMode()
@@ -474,31 +423,6 @@ void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(bool state) {
 }
 
 // Global Functions
-uint8_t digitPatternFCU[13] = {
-    0b11111010, // 0
-    0b01100000, // 1
-    0b10111100, // 2
-    0b11110100, // 3
-    0b01100110, // 4
-    0b11010110, // 5
-    0b11011110, // 6
-    0b01110000, // 7
-    0b11111110, // 8
-    0b11110110, // 9
-    0b00000100, // -
-    0b00000000, // blank
-    0b11001100, // small 0 (For V/S)
-};
-
-void KAV_A3XX_FCU_LCD::displayDigit(uint8_t address, uint8_t digit)
-{
-    // This ensures that anything over 12 is turned to 'blank', and as it's unsigned, anything less than 0 will become 255, and therefore, 'blank'.
-    if (digit > 12) digit = 11;
-
-    buffer[address] = (buffer[address] & 1) | digitPatternFCU[digit];
-
-    refreshLCD(address);
-}
 
 void KAV_A3XX_FCU_LCD::clearOrReset(bool enabled)
 {
