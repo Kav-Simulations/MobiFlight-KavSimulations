@@ -85,13 +85,8 @@ void KAV_A3XX_FCU_LCD::setMachLabel(bool enabled)
     refreshLCD(SPECIALS);
 }
 
-void KAV_A3XX_FCU_LCD::setSpeedDot(bool state)
+void KAV_A3XX_FCU_LCD::setSpeedDot(bool enabled)
 {
-    bool enabled;
-    if (state == 0)
-        enabled = false;
-    else
-        enabled = true;
     SET_BUFF_BIT(HDG_HUN, 0, enabled);
     refreshLCD(HDG_HUN);
 }
@@ -193,13 +188,8 @@ void KAV_A3XX_FCU_LCD::setLatitudeLabel(bool enabled)
     refreshLCD(HDG_TEN);
 }
 
-void KAV_A3XX_FCU_LCD::setHeadingDot(bool state)
+void KAV_A3XX_FCU_LCD::setHeadingDot(bool enabled)
 {
-    bool enabled;
-    if (state == 0)
-        enabled = false;
-    else
-        enabled = true;
     SET_BUFF_BIT(HDG_UNIT, 0, enabled);
     refreshLCD(HDG_UNIT);
 }
@@ -232,13 +222,8 @@ void KAV_A3XX_FCU_LCD::setLvlChLabel(bool enabled)
     refreshLCD(SPECIALS);
 }
 
-void KAV_A3XX_FCU_LCD::setAltitudeDot(bool state)
+void KAV_A3XX_FCU_LCD::setAltitudeDot(bool enabled)
 {
-    bool enabled;
-    if (state == 0)
-        enabled = false;
-    else
-        enabled = true;
     SET_BUFF_BIT(VRT_THO, 0, enabled);
     refreshLCD(VRT_THO);
 }
