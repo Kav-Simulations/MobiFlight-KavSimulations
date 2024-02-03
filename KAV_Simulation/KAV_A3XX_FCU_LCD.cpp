@@ -152,7 +152,7 @@ void KAV_A3XX_FCU_LCD::showSpeedMachValue(float value)
     if (value < 1)
         dtostrf(value, 4,2, bufferDigits);
     else
-        snprintf(bufferDigits, 10, "%3d", (uint16_t)value);
+        snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
 }
 
@@ -278,7 +278,7 @@ void KAV_A3XX_FCU_LCD::showVerticalValue(int16_t value)
     } else {
         bufferDigits[0] = '+';
     }
-    snprintf(&bufferDigits[1], 10, "%02doo", (uint16_t)value/100);
+    snprintf(&bufferDigits[1], 10, "%02doo", abs(value)/100);
     showVerticalFPAValue(bufferDigits);
 }
 
@@ -345,7 +345,7 @@ void KAV_A3XX_FCU_LCD::setHeadingDashes(bool state)
     if (state)
         showHeadingValue((char*)"---");
     else
-        showSpeedMachValue((char*)"   ");
+        showHeadingValue((char*)"   ");
 }
 
 void KAV_A3XX_FCU_LCD::setAltitudeDashes(bool state)
