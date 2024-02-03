@@ -85,7 +85,7 @@ void KAV_A3XX_FCU_LCD::setMachLabel(bool enabled)
     refreshLCD(SPECIALS);
 }
 
-void KAV_A3XX_FCU_LCD::setSpeedDot(int8_t state)
+void KAV_A3XX_FCU_LCD::setSpeedDot(bool state)
 {
     bool enabled;
     if (state == 0)
@@ -102,7 +102,7 @@ void KAV_A3XX_FCU_LCD::setSpeedDot(int8_t state)
 
 // value 0 to 999
 // no dot is shown
-void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
+void KAV_A3XX_FCU_LCD::setSpeedMode(uint16_t value)
 {
     if (value > 999) value = 999;
     setSpeedLabel(true);
@@ -112,7 +112,7 @@ void KAV_A3XX_FCU_LCD::setSpeedMode(int16_t value)
 
 // value 0 to 999
 // value = 42 will be shown as 0.42
-void KAV_A3XX_FCU_LCD::setMachMode(int16_t value)
+void KAV_A3XX_FCU_LCD::setMachMode(uint16_t value)
 {
     setSpeedLabel(false);
     setMachLabel(true);
@@ -193,7 +193,7 @@ void KAV_A3XX_FCU_LCD::setLatitudeLabel(bool enabled)
     refreshLCD(HDG_TEN);
 }
 
-void KAV_A3XX_FCU_LCD::setHeadingDot(int8_t state)
+void KAV_A3XX_FCU_LCD::setHeadingDot(bool state)
 {
     bool enabled;
     if (state == 0)
@@ -204,7 +204,7 @@ void KAV_A3XX_FCU_LCD::setHeadingDot(int8_t state)
     refreshLCD(HDG_UNIT);
 }
 
-void KAV_A3XX_FCU_LCD::showHeadingValue(int16_t value)
+void KAV_A3XX_FCU_LCD::showHeadingValue(uint16_t value)
 {
     char bufferDigits[10] = {0};
     
@@ -232,7 +232,7 @@ void KAV_A3XX_FCU_LCD::setLvlChLabel(bool enabled)
     refreshLCD(SPECIALS);
 }
 
-void KAV_A3XX_FCU_LCD::setAltitudeDot(int8_t state)
+void KAV_A3XX_FCU_LCD::setAltitudeDot(bool state)
 {
     bool enabled;
     if (state == 0)
@@ -353,7 +353,7 @@ void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
 }
 
 // Preset States
-void KAV_A3XX_FCU_LCD::setSpeedDashes(int8_t state)
+void KAV_A3XX_FCU_LCD::setSpeedDashes(bool state)
 {
     uint8_t val;
     bool    enabled;
@@ -372,7 +372,7 @@ void KAV_A3XX_FCU_LCD::setSpeedDashes(int8_t state)
     refreshLCD(SPECIALS);
 }
 
-void KAV_A3XX_FCU_LCD::setHeadingDashes(int8_t state)
+void KAV_A3XX_FCU_LCD::setHeadingDashes(bool state)
 {
     uint8_t val;
     bool    enabled;
@@ -389,7 +389,7 @@ void KAV_A3XX_FCU_LCD::setHeadingDashes(int8_t state)
     displayDigit(HDG_UNIT, val);
 }
 
-void KAV_A3XX_FCU_LCD::setAltitudeDashes(int8_t state)
+void KAV_A3XX_FCU_LCD::setAltitudeDashes(bool state)
 {
     uint8_t val;
     bool    enabled;
@@ -407,7 +407,7 @@ void KAV_A3XX_FCU_LCD::setAltitudeDashes(int8_t state)
     displayDigit(ALT_TEN, val);
     displayDigit(ALT_UNIT, val);
 }
-void KAV_A3XX_FCU_LCD::setVrtSpdDashes(int8_t state)
+void KAV_A3XX_FCU_LCD::setVrtSpdDashes(bool state)
 {
     uint8_t val;
     bool    enabled;
@@ -437,7 +437,7 @@ void KAV_A3XX_FCU_LCD::setStartLabels()
     setLatitudeLabel(true);
 }
 
-void KAV_A3XX_FCU_LCD::toggleTrkHdgMode(int8_t state)
+void KAV_A3XX_FCU_LCD::toggleTrkHdgMode(bool state)
 {
     if (state == 0)
         setHeadingMode();
@@ -463,7 +463,7 @@ void KAV_A3XX_FCU_LCD::setTrackMode()
     trkActive = true;
 }
 
-void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(int8_t state) {
+void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(bool state) {
     if (state) {
         setMachLabel(true);
         setSpeedLabel(false);
@@ -527,9 +527,9 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 0)
         setSpeedMode((uint16_t)data);
     else if (messageID == 1)
-        setMachMode((int16_t)data);
+        setMachMode((uint16_t)data);
     else if (messageID == 2)
-        showHeadingValue((int16_t)data);
+        showHeadingValue((uint16_t)data);
     else if (messageID == 3)
         showAltitudeValue((uint32_t)data);
     else if (messageID == 4)
@@ -537,21 +537,21 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 5)
         showFPAValue((int8_t)data);
     else if (messageID == 6)
-        setSpeedDashes((int8_t)data);
+        setSpeedDashes((bool)data);
     else if (messageID == 7)
-        setHeadingDashes((int8_t)data);
+        setHeadingDashes((bool)data);
     else if (messageID == 8)
-        setAltitudeDashes((int8_t)data);
+        setAltitudeDashes((bool)data);
     else if (messageID == 9)
-        setVrtSpdDashes((int8_t)data);
+        setVrtSpdDashes((bool)data);
     else if (messageID == 10)
-        setSpeedDot((int8_t)data);
+        setSpeedDot((bool)data);
     else if (messageID == 11)
-        setHeadingDot((int8_t)data);
+        setHeadingDot((bool)data);
     else if (messageID == 12)
-        setAltitudeDot((int8_t)data);
+        setAltitudeDot((bool)data);
     else if (messageID == 13)
-        toggleTrkHdgMode((int8_t)data);
+        toggleTrkHdgMode((bool)data);
     else if (messageID == 14)
         setSpeedLabel((int8_t)data);
     else if (messageID == 15)

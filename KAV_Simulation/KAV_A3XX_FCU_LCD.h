@@ -41,44 +41,49 @@ public:
     void set(int16_t messageID, char *setPoint);
 
     // Speed and Mach functions
-    void setSpeedDashes(int8_t state);
+    void setSpeedDashes(bool state);
     void setSpeedLabel(bool enabled);
     void setMachLabel(bool enabled);
-    void setSpeedDot(int8_t state);
+    void setSpeedDot(bool state);
     // Speed and Mach with setting labels
-    void setSpeedMode(int16_t value);
-    void setMachMode(int16_t value);
+    void setSpeedMode(uint16_t value);
+    void setMachMode(uint16_t value);
     void setMachMode(float value);
     // Speed and Mach without setting labels
     void showSpeedValue(uint16_t value);
     void showMachValue(uint16_t value);
     void showSpeedMachValue(float value);
     void showSpeedMachValue(char* data);
-    void toggleSpeedMachMode(int8_t state);
+    void toggleSpeedMachMode(bool state);
 
     // Heading, Track and Latitude Functions
-    void setHeadingDashes(int8_t state);
+    // Labels
+    void setHeadingDashes(bool state);
     void setHeadingLabel(bool enabled);
     void setTrackLabel(bool enabled);
     void setLatitudeLabel(bool enabled);
-    void setHeadingDot(int8_t state);
-    void showHeadingValue(int16_t value);
+    void setHeadingDot(bool state);
+    // Values
+    void showHeadingValue(uint16_t value);
     void showHeadingValue(char* data);
 
     // Altitude Functions
-    void setAltitudeDashes(int8_t state);
+    // Labels
+    void setAltitudeDashes(bool state);
     void setAltitudeLabel(bool enabled);
     void setLvlChLabel(bool enabled);
-    void setAltitudeDot(int8_t state);
+    void setAltitudeDot(bool state);
+    // Values
     void showAltitudeValue(uint32_t value);
-    void showAltitudeValue(float value);
     void showAltitudeValue(char* data);
 
     // Vertical_Speed & FPA Functions
-    void setVrtSpdDashes(int8_t state);
+    // Labels
+    void setVrtSpdDashes(bool state);
     void setVrtSpdLabel(bool enabled);
     void setFPALabel(bool enabled);
     void setSignLabel(bool enabled);
+    // Values
     void showVerticalValue(int16_t value);
     void showVerticalValue(float value);
     void showFPAValue(int8_t value);
@@ -87,7 +92,7 @@ public:
 
     // Preset States
     void setStartLabels();
-    void toggleTrkHdgMode(int8_t state);
+    void toggleTrkHdgMode(bool state);
     void setHeadingMode();
     void setTrackMode();
     void clearOrReset(bool enabled);
