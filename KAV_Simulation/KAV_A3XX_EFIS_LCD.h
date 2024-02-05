@@ -25,6 +25,7 @@ private:
     // Methods
     void displayDigit(uint8_t address, uint8_t digit);
     void refreshLCD(uint8_t address);
+    void refreshLCD(uint8_t address, uint8_t digits);
 
 public:
     // Constructor
@@ -38,15 +39,23 @@ public:
     void set(int16_t messageID, char *setPoint);
 
     // Set QFE or QNH functions
-    void setQFE(bool enabled);
-    void setQNH(bool enabled);
-    // Set Dot Function
-    void setDot(bool enabled);
+    void setQFElabel(bool enabled);
+    void setQNHlabel(bool enabled);
+    
     // Show Std function
     void showStd(uint16_t state);
 
-    // Show QFE function
+    // Show QFE function, labels get set
     void showQFEValue(uint16_t value);
-    // Show QNH function
+    void showQFEValue(float value);
+    void showQFEValue(char* value);
+    // Show QNH function, labels get set
     void showQNHValue(uint16_t value);
+    void showQNHValue(float value);
+    void showQNHValue(char* value);
+
+    // Show QFE or QNH without setting labels
+    void showQFEQNHValue(uint16_t value);
+    void showQFEQNHValue(float value);
+    void showQFEQNHValue(char* value);
 };
