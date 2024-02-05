@@ -1,5 +1,4 @@
 #include "KAV_A3XX_EFIS_LCD.h"
-#include "KAV_GetDigitPattern.h"
 
 #define DIGIT_ONE   0
 #define DIGIT_TWO   1
@@ -42,14 +41,6 @@ void KAV_A3XX_EFIS_LCD::refreshLCD(uint8_t address)
 {
     ht_efis.write(address * 2, buffer[address], 8);
 }
-
-void KAV_A3XX_EFIS_LCD::refreshLCD(uint8_t address, uint8_t digits)
-{
-    for (uint8_t i = 0; i < digits; i++) {
-        refreshLCD(address + i);
-    }
-}
-
 void KAV_A3XX_EFIS_LCD::clearLCD()
 {
     for (uint8_t i = 0; i < ht_efis.MAX_ADDR; i++)
@@ -58,133 +49,113 @@ void KAV_A3XX_EFIS_LCD::clearLCD()
 }
 
 // QFE, QNH and Dot Functions
-void KAV_A3XX_EFIS_LCD::setQFElabel(bool enabled)
+void KAV_A3XX_EFIS_LCD::setQFE(bool enabled)
 {
     SET_BUFF_BIT(DIGIT_THREE, 4, enabled);
     refreshLCD(DIGIT_THREE);
 }
 
-void KAV_A3XX_EFIS_LCD::setQNHlabel(bool enabled)
+void KAV_A3XX_EFIS_LCD::setQNH(bool enabled)
 {
     SET_BUFF_BIT(DIGIT_FOUR, 4, enabled);
     refreshLCD(DIGIT_FOUR);
 }
 
-
-// Show Values
+void KAV_A3XX_EFIS_LCD::setDot(bool enabled)
+{
+    SET_BUFF_BIT(DIGIT_TWO, 4, enabled);
+    refreshLCD(DIGIT_TWO);
+}
 
 void KAV_A3XX_EFIS_LCD::showStd(uint16_t state)
 {
-    if (state == 1)
-        getDigitPattern(buffer, DIGIT_ONE, (char*)"Std ", 4);
-    else
-        getDigitPattern(buffer, DIGIT_ONE, (char*)"    ", 4);
-
-    refreshLCD(DIGIT_ONE, 4);
-    setQFElabel(false);
-    setQNHlabel(false);
+    if (state == 1) {
+        displayDigit(DIGIT_ONE, 5);
+        displayDigit(DIGIT_TWO, 11);
+        displayDigit(DIGIT_THREE, 12);
+        displayDigit(DIGIT_FOUR, 13);
+    } else {
+        displayDigit(DIGIT_ONE, 13);
+        displayDigit(DIGIT_TWO, 13);
+        displayDigit(DIGIT_THREE, 13);
+        displayDigit(DIGIT_FOUR, 13);
+    }
+    setDot(false);
+    setQFE(false);
+    setQNH(false);
 }
 
-// value as uint16_t
-// value = 2992 for 29.92 hPA
-// value = 1023 for 1023 mBar
-// labels get set
+// Show Values
 void KAV_A3XX_EFIS_LCD::showQNHValue(uint16_t value)
 {
-    setQFElabel(false);
-    setQNHlabel(true);
-    showQFEQNHValue(value);
+    if (value > 9999) value = 9999;
+    if (value < 2000) {
+        // If value is less than 2000, then it's hPa, so no decimal point.
+        setDot(false);
+    } else {
+        // If value is greater than 2000, then it's inHg, so decimal point.
+        setDot(true);
+    }
+
+    displayDigit(DIGIT_FOUR, (value % 10));
+    value = value / 10;
+    displayDigit(DIGIT_THREE, (value % 10));
+    value = value / 10;
+    displayDigit(DIGIT_TWO, (value % 10));
+    displayDigit(DIGIT_ONE, (value / 10));
+
+    setQFE(false);
+    setQNH(true);
 }
 
-// value as float
-// value = 29.92 for 29.92 hPA
-// value = 1023 for 1023 mBar
-// labels get set
-void KAV_A3XX_EFIS_LCD::showQNHValue(float value)
-{
-    setQFElabel(false);
-    setQNHlabel(true);
-    showQFEQNHValue(value);
-}
-
-// value as string, format as required
-// labels get set
-void KAV_A3XX_EFIS_LCD::showQNHValue(char* value)
-{
-    setQFElabel(false);
-    setQNHlabel(true);
-    showQFEQNHValue(value);
-}
-
-// value as uint16_t
-// value = 2992 for 29.92 hPA
-// value = 1023 for 1023 mBar
-// labels get set
 void KAV_A3XX_EFIS_LCD::showQFEValue(uint16_t value)
 {
-    setQFElabel(true);
-    setQNHlabel(false);
-    showQFEQNHValue(value);
-}
-
-// value as float
-// value = 29.92 for 29.92 hPA
-// value = 1023 for 1023 mBar
-// labels get set
-void KAV_A3XX_EFIS_LCD::showQFEValue(float value)
-{
-    setQFElabel(true);
-    setQNHlabel(false);
-    showQFEQNHValue(value);
-}
-
-// value as string, format as required
-// labels get set
-void KAV_A3XX_EFIS_LCD::showQFEValue(char* value)
-{
-    setQFElabel(true);
-    setQNHlabel(false);
-    showQFEQNHValue(value);
-}
-
-// value as uint16_t
-// value = 2992 for 29.92 hPA
-// value = 1023 for 1013 mBar
-// no labels get set
-void KAV_A3XX_EFIS_LCD::showQFEQNHValue(uint16_t value)
-{
-    if (value < 2000)
-        showQFEQNHValue((float)value);
-    else
-        showQFEQNHValue((float)value/100);
-}
-
-// value as float
-// value = 29.92 for 29.92 hPA
-// value = 1023 for 1023 mBar
-// no labels get set
-void KAV_A3XX_EFIS_LCD::showQFEQNHValue(float value)
-{
-    char bufferDigits[10] = {0};
-
     if (value > 9999) value = 9999;
-    if (value < 100)
-        dtostrf(value, 5, 2, bufferDigits);
-    else
-        snprintf(bufferDigits, 10, "%04d", (int)value);
+    if (value < 2000) {
+        // If value is less than 2000, then it's hPa, so no decimal point.
+        setDot(false);
+    } else {
+        // If value is greater than 2000, then it's inHg, so decimal point.
+        setDot(true);
+    }
 
-    showQFEQNHValue(bufferDigits);
-}
+    displayDigit(DIGIT_FOUR, (value % 10));
+    value = value / 10;
+    displayDigit(DIGIT_THREE, (value % 10));
+    value = value / 10;
+    displayDigit(DIGIT_TWO, (value % 10));
+    displayDigit(DIGIT_ONE, (value / 10));
 
-// value as string, format as required
-// no labels get set
-void KAV_A3XX_EFIS_LCD::showQFEQNHValue(char* value)
-{
-    getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
-    refreshLCD(DIGIT_ONE, 4);
+    setQFE(true);
+    setQNH(false);
 }
 
 // Global Functions
+uint8_t digitPatternEFIS[14] = {
+    0b11101011, // 0
+    0b01100000, // 1
+    0b11000111, // 2
+    0b11100101, // 3
+    0b01101100, // 4
+    0b10101101, // 5 or S
+    0b10101111, // 6
+    0b11100000, // 7
+    0b11101111, // 8
+    0b11101101, // 9
+    0b00000100, // -
+    0b00001111, // t
+    0b01100111, // d
+    0b00000000, // blank
+};
+void KAV_A3XX_EFIS_LCD::displayDigit(uint8_t address, uint8_t digit)
+{
+    // This ensures that anything over 12 is turned to 'blank', and as it's unsigned, anything less than 0 will become 255, and therefore, 'blank'.
+    if (digit > 13) digit = 13;
+
+    buffer[address] = (buffer[address] & 16) | digitPatternEFIS[digit];
+
+    refreshLCD(address);
+}
 
 void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
 {
@@ -208,10 +179,4 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         showQFEValue((uint16_t)data);
     else if (messageID == 2)
         showStd((uint16_t)data);
-    else if (messageID == 3)
-        setQNHlabel((bool)data);
-    else if (messageID == 4)
-        setQFElabel((bool)data);
-    else if (messageID == 5)
-        showQFEQNHValue(setPoint);
 }
