@@ -299,10 +299,11 @@ void KAV_A3XX_FCU_LCD::showFPAValue(float value)
 
     if (value < 0) {
         bufferDigits[0] = '-';
+        value = -value;
     } else {
         bufferDigits[0] = '+';
     }
-    dtostrf(abs(value), 3,1, &bufferDigits[1]);
+    dtostrf(value, 3,1, &bufferDigits[1]);
     bufferDigits[4] = ' ';
     bufferDigits[5] = ' ';
     showVerticalFPAValue(bufferDigits);
