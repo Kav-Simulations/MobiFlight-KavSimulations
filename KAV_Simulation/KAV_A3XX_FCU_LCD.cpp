@@ -478,4 +478,6 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         showAltitudeValue(setPoint);
     else if (messageID == 21)
         showVerticalFPAValue(setPoint);
+    else if (messageID == 22)
+        toggleSpeedMachMode((bool)data);
 }
