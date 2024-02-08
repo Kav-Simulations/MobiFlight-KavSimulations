@@ -171,15 +171,15 @@ void KAV_A3XX_BATTERY_LCD::showBattValue(float value)
 }
 
 // value as string, format as required
-// no labels get set
+// V label get set if first character is 'V'
 void KAV_A3XX_BATTERY_LCD::showBattValue(char* value)
 {
     if (value[0] == 'V') {
         setVoltSymbol(true);
-        getDigitPattern(&buffer[1], DIGIT_ONE, value, 3, (1<<1));
+        getDigitPattern(buffer, DIGIT_ONE, &value[1], 3, (1<<1));
     } else {
         setVoltSymbol(false);
-        getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
+        getDigitPattern(buffer, DIGIT_ONE, value, 3, (1<<1));
     }
     refreshLCD(DIGIT_ONE, 3);
 }
@@ -211,9 +211,9 @@ void KAV_A3XX_BATTERY_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == -2)
         return; // Ignore for now, handle this condition later.
     else if (messageID == 0)
-        setVoltSymbol((uint16_t)data);
+        setVoltSymbol((bool)data);
     else if (messageID == 1)
-        setDot((uint16_t)data);
+        setDot((bool)data);
     else if (messageID == 2)
         setValue((uint16_t)data);
     else if (messageID == 3)

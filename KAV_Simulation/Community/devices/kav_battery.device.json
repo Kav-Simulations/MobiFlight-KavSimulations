@@ -44,7 +44,7 @@
     {
       "id": 4,
       "label": "Set display",
-      "description": "$ as string will be displayed"
+      "description": "$ as string will be displayed, V gets set if first char is 'V'"
     }
   ]
 }
