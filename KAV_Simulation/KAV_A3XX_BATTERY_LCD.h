@@ -25,6 +25,7 @@ private:
   void handleMobiFlightCmd(char *string);
   void displayDigit(uint8_t address, uint8_t digit);
   void refreshLCD(uint8_t address);
+  void refreshLCD(uint8_t address, uint8_t digits);
   
 public:
   // Constructor
@@ -44,8 +45,11 @@ public:
   // Set Dot Function
   void setDot(bool enabled);
   // Set value function
-  void setValueInt(uint16_t value);
+  void setValue(uint16_t value);
+  void setValue(float value);
 
   // Show BATTERY Value function
-  void showBattValueInt(uint16_t value);
+  void showBattValue(uint16_t value);
+  void showBattValue(float value);
+  void showBattValue(char* value);
 };
