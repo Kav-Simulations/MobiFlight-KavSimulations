@@ -22,7 +22,7 @@
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_AUTOPILOT_SPEED_SELECTED, Number)" UUID="4c2007cc-7799-4220-b211-4cd22ff099d9" />
         <test type="Float" value="-1" />
         <modifiers>
-          <transformation active="True" expression="Round($,2)" />
+          <transformation active="True" expression="Round($,0)" />
           <comparison active="True" value="0" operand="&lt;" ifValue="'---'" elseValue="$" />
           <padding active="True" direction="Left" length="3" character="0" />
         </modifiers>
@@ -109,18 +109,6 @@
         <configrefs />
       </settings>
     </config>
-    <config guid="2f565d5a-1394-4b72-ad04-7f22d0bb2b68">
-      <active>false</active>
-      <description>-</description>
-      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.4.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <source type="SimConnect" VarType="LVAR" Value="" />
-        <test type="Float" value="1" />
-        <modifiers />
-        <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
-        <preconditions />
-        <configrefs />
-      </settings>
-    </config>
     <config guid="6af2a5a4-41bb-47eb-aabc-8dbe958a5de1">
       <active>true</active>
       <description>FCU - HDG Show Value</description>
@@ -130,7 +118,7 @@
         <modifiers>
           <transformation active="True" expression="Round($, 0)" />
           <comparison active="True" value="0" operand="&lt;" ifValue="'---'" elseValue="$" />
-          <comparison active="True" value="360" operand="=" ifValue="0" elseValue="" />
+          <comparison active="True" value="360" operand="=" ifValue="0" elseValue="$" />
           <padding active="True" direction="Left" length="3" character="0" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="FCU LCD" messageType="19" value="$" />
@@ -187,8 +175,7 @@
         <source type="SimConnect" VarType="CODE" Value="(A:AUTOPILOT ALTITUDE LOCK VAR:3,feet)" UUID="5edb0587-91e8-4fd1-8b59-77d639f3b0fa" />
         <test type="Float" value="1" />
         <modifiers>
-          <comparison active="True" value="1000" operand="&lt;" ifValue="'00$'" elseValue="'$'" />
-          <comparison active="True" value="10000" operand="&lt;" ifValue="'0$'" elseValue="'$'" />
+          <padding active="True" direction="Left" length="5" character="0" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="FCU LCD" messageType="20" value="$" />
         <preconditions>
@@ -231,11 +218,9 @@
         <test type="Float" value="-1.01" />
         <modifiers>
           <transformation active="True" expression="Abs($/100)" />
-          <comparison active="True" value="0" operand="=" ifValue="'00oo'" elseValue="$" />
-          <transformation active="True" expression="'$oo'" />
+          <comparison active="True" value="0" operand="=" ifValue="'00oo'" elseValue="'$oo'" />
           <padding active="True" direction="Left" length="4" character="0" />
           <transformation active="True" expression="if (# &lt; 0, '-$', '+$')" />
-          <transformation active="False" expression="if(#&lt;0, '-$', '+$')" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="FCU LCD" messageType="21" value="$" />
         <preconditions>
@@ -265,11 +250,11 @@
       <description>FCU - FPA Value</description>
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.4.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_AUTOPILOT_FPA_SELECTED)" UUID="78986662-976f-4743-9f21-4f9f191f5385" />
-        <test type="Float" value="1" />
+        <test type="Float" value="-0.1" />
         <modifiers>
-          <transformation active="True" expression="Round($, 1)" />
-          <comparison active="True" value="0" operand="=" ifValue="'+0.0'" elseValue="$" />
-          <comparison active="True" value="0" operand="&gt;" ifValue="'+$'" elseValue="'$'" />
+          <transformation active="True" expression="Round(Abs($), 1)" />
+          <transformation active="True" expression="if (Round($,1) - Round($,0) = 0, '$.0   0', '$   0')" />
+          <transformation active="True" expression="if (# &lt; 0, '-$' , '+$' )" />
           <padding active="True" direction="Right" length="6" character=" " />
         </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="FCU LCD" messageType="21" value="$" />
@@ -279,7 +264,7 @@
           <precondition type="config" active="true" ref="7f01367f-bbf2-491b-8711-eadbfb6c3a49" operand="=" value="1" logic="and" />
         </preconditions>
         <configrefs>
-          <configref active="True" ref="de956b07-4e88-4cbf-8bb8-a93814c94d2a" placeholder="#" testvalue="1" />
+          <configref active="True" ref="de956b07-4e88-4cbf-8bb8-a93814c94d2a" placeholder="#" testvalue="0" />
         </configrefs>
       </settings>
     </config>
@@ -289,9 +274,7 @@
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.4.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_AUTOPILOT_FPA_SELECTED)" UUID="78986662-976f-4743-9f21-4f9f191f5385" />
         <test type="Float" value="1" />
-        <modifiers>
-          <transformation active="True" expression="Round($, 1)" />
-        </modifiers>
+        <modifiers />
         <display type="-" serial="-" trigger="normal" pin="" pinBrightness="255" />
         <preconditions>
           <precondition type="config" active="true" ref="a9c996db-76cb-4e02-98bd-44df3da839a9" operand="&gt;=" value="1" logic="and" />
@@ -393,7 +376,9 @@
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.4.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
         <test type="Float" value="0.1234" />
-        <modifiers />
+        <modifiers>
+          <comparison active="True" value="1000" operand="&lt;" ifValue="'0$'" elseValue="$" />
+        </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="EFIS L" messageType="5" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7" operand="&lt;" value="2" logic="and" />
@@ -411,7 +396,8 @@
         <test type="Float" value="0.1234" />
         <modifiers>
           <transformation active="True" expression="Round($, 2)" />
-          <transformation active="True" expression="if (Round($,2) - Round($,0) = 0, '$.00', if (Round($,2) - Round($,1) = 0, '$0', $))" />
+          <transformation active="True" expression="if (Round($,2) - Round($,0) = 0, '$.00 o', if (Round($,2) - Round($,1) = 0, '$0 o', $))" />
+          <substring active="True" start="0" end="5" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="EFIS L" messageType="5" value="$" />
         <preconditions>
@@ -522,7 +508,9 @@
       <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.4.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <source type="SimConnect" VarType="CODE" Value="(L:XMLVAR_Baro1_Mode) 1 &gt; if{ 99 } els{ (L:XMLVAR_Baro_Selector_HPA_1,bool) ! if{ (A:KOHLSMAN SETTING HG, inHg) } els{ (A:KOHLSMAN SETTING HG, mbar) near } }" UUID="98d91496-0202-4e60-b0cc-5157ceb25af5" />
         <test type="Float" value="0.1234" />
-        <modifiers />
+        <modifiers>
+          <comparison active="True" value="1000" operand="&lt;" ifValue="'0$'" elseValue="$" />
+        </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="EFIS R" messageType="5" value="$" />
         <preconditions>
           <precondition type="config" active="true" ref="b0a94e56-8b62-4d9a-934a-0d1f1fc740d7" operand="&lt;" value="2" logic="and" />
@@ -540,7 +528,8 @@
         <test type="Float" value="0.1234" />
         <modifiers>
           <transformation active="True" expression="Round($, 2)" />
-          <transformation active="True" expression="if (Round($,2) - Round($,0) = 0, '$.00', if (Round($,2) - Round($,1) = 0, '$0', $))" />
+          <transformation active="True" expression="if (Round($,2) - Round($,0) = 0, '$.00 o', if (Round($,2) - Round($,1) = 0, '$0 o', $))" />
+          <substring active="True" start="0" end="5" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Glareshield/ SN-894-EA3" trigger="normal" customType="" customName="EFIS R" messageType="5" value="$" />
         <preconditions>
@@ -1254,7 +1243,7 @@
         <source type="SimConnect" VarType="CODE" Value="(L:A32NX_HYD_RUDDER_TRIM_FEEDBACK_ANGLE)" UUID="c8351461-2213-4eb0-9a77-fc7a2c27d677" />
         <test type="Float" value="1" />
         <modifiers>
-          <transformation active="True" expression="if($&lt;0,1,0)" />
+          <transformation active="True" expression="if($&lt;=0,1,0)" />
         </modifiers>
         <display type="CustomDevice" serial="Kav Mega Pedesta/ SN-2G6-C0F" trigger="normal" customType="" customName="RUDDER TRIM" messageType="0" value="$" />
         <preconditions />
