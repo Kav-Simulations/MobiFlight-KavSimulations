@@ -22,8 +22,6 @@ private:
   byte _DATA;
 
   // Methods
-  void handleMobiFlightCmd(char *string);
-  void displayDigit(uint8_t address, uint8_t digit);
   void refreshLCD(uint8_t address);
   void refreshLCD(uint8_t address, uint8_t digits);
   
@@ -37,7 +35,6 @@ public:
   void clearDigit(uint8_t address);
   void attach(byte CS, byte CLK, byte DATA);
   void detach();
-  void handleMobiFlightRaw(char *string);
   void set(int16_t messageID, char *setPoint);
 
   // Set 'V' function
