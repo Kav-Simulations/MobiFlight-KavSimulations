@@ -24,6 +24,7 @@ private:
   // Methods
   void displayDigit(uint8_t address, uint8_t digit);
   void refreshLCD(uint8_t address);
+  void refreshLCD(uint8_t address, uint8_t digits);
   
 public:
   // Constructor
@@ -43,10 +44,13 @@ public:
   // Set Dot Function
   void setDot(bool enabled);
   // Set value function
-  void setValueInt(int16_t value);
+  void setValue(int16_t value);
+  void setValue(float value);
 
   // Show Rudder Value function
-  void showLeftValueInt(uint16_t value);
-  void showRightValueInt(uint16_t value);
+  void showLeftValue(uint16_t value);
+  void showRightValue(uint16_t value);
   void showLandRValue(int16_t value);
+  void showLandRValue(float value);
+  void showLandRValue(char* value);
 };
