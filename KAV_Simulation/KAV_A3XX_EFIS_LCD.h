@@ -1,6 +1,6 @@
 /**
- * Kav A3XX EFIS LCD
- * Written by: James Kavanagh & Keith Greenwood
+ * KAV A3XX EFIS LCD
+ * Written by: James Kavanagh, Ralf (@elral), & Keith Greenwood
  * This library has been written to drive the 'Kav Simulations' EFIS LCD Display.
  */
 

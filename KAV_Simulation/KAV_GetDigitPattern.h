@@ -1,3 +1,8 @@
+/**
+ * KAV A3XX Digit Pattern
+ * Written by: James Kavanagh & Ralf (@elral)
+ */
+
 #pragma once
 
 #include <Arduino.h>

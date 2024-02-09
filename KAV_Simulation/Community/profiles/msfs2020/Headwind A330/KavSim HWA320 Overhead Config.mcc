@@ -1,6 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <MobiflightConnector>
   <outputs>
+    <config guid="2bb4c7f7-b0a9-4060-a0c2-f23155d0209f">
+      <active>true</active>
+      <description>OVERHEAD CONFIG</description>
+      <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=10.1.4.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <source type="SimConnect" VarType="LVAR" Value="" />
+        <test type="Float" value="1" />
+        <modifiers>
+          <comparison active="True" value="" operand="=" ifValue="1" elseValue="0" />
+        </modifiers>
+        <display type="" serial="-" trigger="change" pin="" pinBrightness="255" />
+        <preconditions />
+        <configrefs />
+      </settings>
+    </config>
     <config guid="24ad43e7-bbc5-4ea2-8293-9ecf4a289cfa">
       <active>true</active>
       <description>BAT 1 Voltage</description>
@@ -215,3 +229,4 @@
   </outputs>
   <inputs />
 </MobiflightConnector>
+<!-- Created by James Kavanagh and Ralf (@Elral) -->
