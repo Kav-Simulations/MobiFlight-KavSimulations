@@ -27,7 +27,8 @@
         <test type="Float" value="0.1234" />
         <modifiers>
           <transformation active="True" expression="Round($, 2)" />
-          <transformation active="True" expression="if (Round($,2) - Round($,0) = 0, '$.00', if (Round($,2) - Round($,1) = 0, '$0', $))" />
+          <transformation active="True" expression="if (Round($,2) - Round($,0) = 0, '$.00 o', if (Round($,2) - Round($,1) = 0, '$0 o', $))" />
+          <substring active="True" start="0" end="5" />
         </modifiers>
         <display type="CustomDevice" serial="KAV ALL/ SN-E661640843667B27" trigger="normal" customType="" customName="EFIS L" messageType="5" value="$" />
         <preconditions>
