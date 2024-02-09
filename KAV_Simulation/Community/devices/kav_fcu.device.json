@@ -125,6 +125,11 @@
       "id": 21,
       "label": "Show Vertical/FPA/Dash",
       "description": "$ will be displayed as Vertical/FPA/Dash"
+    },
+    {
+      "id": 22,
+      "label": "Toggle Speed/Mach mode",
+      "description": "$ = 1 will display Mach labels, $ = 2 will display Speed labels"
     }
   ]
 }
