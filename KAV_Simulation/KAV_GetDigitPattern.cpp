@@ -1,3 +1,8 @@
+/**
+ * KAV A3XX Digit Pattern
+ * Written by: James Kavanagh & Ralf (@elral)
+ */
+
 #include <Arduino.h>
 
 #ifdef __AVR__

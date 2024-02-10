@@ -1,3 +1,9 @@
+/**
+ * KAV A3XX FCU LCD
+ * Written by: James Kavanagh, Ralf (@elral), & Keith Greenwood
+ * This library has been written to drive the 'Kav Simulations' FCU LCD Display.
+ */
+
 #include "KAV_A3XX_FCU_LCD.h"
 #include "KAV_GetDigitPattern.h"
 
@@ -299,10 +305,11 @@ void KAV_A3XX_FCU_LCD::showFPAValue(float value)
 
     if (value < 0) {
         bufferDigits[0] = '-';
+        value = -value;
     } else {
         bufferDigits[0] = '+';
     }
-    dtostrf(abs(value), 3,1, &bufferDigits[1]);
+    dtostrf(value, 3,1, &bufferDigits[1]);
     bufferDigits[4] = ' ';
     bufferDigits[5] = ' ';
     showVerticalFPAValue(bufferDigits);
@@ -477,4 +484,6 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         showAltitudeValue(setPoint);
     else if (messageID == 21)
         showVerticalFPAValue(setPoint);
+    else if (messageID == 22)
+        toggleSpeedMachMode((bool)data);
 }

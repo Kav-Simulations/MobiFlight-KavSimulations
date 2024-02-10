@@ -1,3 +1,9 @@
+/**
+ * KAV A3XX EFIS LCD
+ * Written by: James Kavanagh, Ralf (@elral), & Keith Greenwood
+ * This library has been written to drive the 'Kav Simulations' EFIS LCD Display.
+ */
+
 #include "KAV_A3XX_EFIS_LCD.h"
 #include "KAV_GetDigitPattern.h"
 
