@@ -1,6 +1,6 @@
 /**
  * KAV A3XX FCU LCD
- * Written by: James Kavanagh & Keith Greenwood
+ * Written by: James Kavanagh, Ralf (@elral), & Keith Greenwood
  * This library has been written to drive the 'Kav Simulations' FCU LCD Display.
  */
 
