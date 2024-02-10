@@ -22,9 +22,8 @@ private:
   byte _DATA;
 
   // Methods
-  void handleMobiFlightCmd(char *string);
-  void displayDigit(uint8_t address, uint8_t digit);
   void refreshLCD(uint8_t address);
+  void refreshLCD(uint8_t address, uint8_t digits);
   
 public:
   // Constructor
@@ -36,7 +35,6 @@ public:
   void clearDigit(uint8_t address);
   void attach(byte CS, byte CLK, byte DATA);
   void detach();
-  void handleMobiFlightRaw(char *string);
   void set(int16_t messageID, char *setPoint);
 
   // Set 'V' function
@@ -44,8 +42,11 @@ public:
   // Set Dot Function
   void setDot(bool enabled);
   // Set value function
-  void setValueInt(uint16_t value);
+  void setValue(uint16_t value);
+  void setValue(float value);
 
   // Show BATTERY Value function
-  void showBattValueInt(uint16_t value);
+  void showBattValue(uint16_t value);
+  void showBattValue(float value);
+  void showBattValue(char* value);
 };
