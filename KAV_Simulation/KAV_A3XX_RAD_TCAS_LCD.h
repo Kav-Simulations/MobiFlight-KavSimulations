@@ -22,9 +22,9 @@ private:
   byte _DATA;
 
   // Methods
-  void handleMobiFlightCmd(char *string);
   void displayDigit(uint8_t address, uint8_t digit);
   void refreshLCD(uint8_t address);
+  void refreshLCD(uint8_t address, uint8_t digits);
   
 public:
   // Constructor
@@ -46,8 +46,9 @@ public:
   void setRadioValue(uint32_t value);
   void setTcasValue(uint16_t value);
 
-  // Show Rudder Value function
+  // Show Radio Value function
   void showRadio(uint32_t value);
   void showTcas(uint16_t value);
   void showTest(bool enabled);
+  void showValue(char* value);
 };

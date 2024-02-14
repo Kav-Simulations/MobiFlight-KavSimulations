@@ -40,6 +40,11 @@
         "id": 3,
         "label": "Set value TCAS",
         "description": "$ will show the value on the display for TCAS"
+      },
+      {
+        "id": 4,
+        "label": "Set value as string",
+        "description": "$ is shown as string"
       }
     ]
   }

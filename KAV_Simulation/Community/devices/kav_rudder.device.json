@@ -55,6 +55,11 @@
         "id": 6,
         "label": "Set value w/ 'L' or 'R'",
         "description": "$ will set the value of the display with the 'L' or 'R' character"
+      },
+      {
+        "id": 7,
+        "label": "Set value w/ 'L' or 'R'",
+        "description": "$ as string will be displayed with the 'L' or 'R' character, e.g. 'L12.3'"
       }
     ]
   }
