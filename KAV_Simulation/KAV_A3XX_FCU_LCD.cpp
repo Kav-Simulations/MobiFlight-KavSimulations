@@ -238,7 +238,7 @@ void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
 {
     char bufferDigits[10] = {0};
 
-    snprintf(bufferDigits, 10, "%05d", (int)value);
+    snprintf(bufferDigits, 10, "%05u", (uint16_t)value);
     showAltitudeValue(bufferDigits);
 }
 
