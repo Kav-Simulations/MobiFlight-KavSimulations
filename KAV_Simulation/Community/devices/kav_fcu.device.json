@@ -5,7 +5,7 @@
     "Type": "KAV_FCU",
     "Author": "Jak Kav",
     "URL": "https://github.com/MobiFlight/MobiFlight-CustomDevices/tree/main/KAV_Simulation/EFIS_FCU",
-    "Version": "1.0.1"
+    "Version": "1.5.0"
   },
   "Config": {
     "Pins": [
