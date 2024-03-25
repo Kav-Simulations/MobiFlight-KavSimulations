@@ -424,6 +424,16 @@ void KAV_A3XX_FCU_LCD::clearOrReset(bool enabled)
         clearLCD();
 }
 
+void KAV_A3XX_FCU_LCD::setAnnunciatorTest(bool enabled)
+{
+    if (enabled) {
+        for (uint8_t i = 0; i < ht.MAX_ADDR; i++)
+            ht.write(i, 0xFF);
+    } else {
+        clearLCD();
+    }
+}
+
 void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
 {
     int32_t data = strtol(setPoint, NULL, 10);
@@ -486,4 +496,6 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         showVerticalFPAValue(setPoint);
     else if (messageID == 22)
         toggleSpeedMachMode((bool)data);
+    else if (messageID == 23)
+        setAnnunciatorTest((bool)data);
 }

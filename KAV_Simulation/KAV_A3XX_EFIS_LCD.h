@@ -58,4 +58,7 @@ public:
     void showQFEQNHValue(uint16_t value);
     void showQFEQNHValue(float value);
     void showQFEQNHValue(char* value);
+
+    // Annunciator Test Function
+    void setAnnunciatorTest(bool enabled);
 };

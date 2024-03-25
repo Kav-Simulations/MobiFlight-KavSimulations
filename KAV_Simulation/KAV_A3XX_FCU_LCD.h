@@ -95,4 +95,5 @@ public:
     void setHeadingMode();
     void setTrackMode();
     void clearOrReset(bool enabled);
+    void setAnnunciatorTest(bool enabled);
 };
