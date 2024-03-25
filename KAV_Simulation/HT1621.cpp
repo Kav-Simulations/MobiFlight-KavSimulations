@@ -32,12 +32,13 @@ void HT1621::begin()
 void HT1621::writeBits(uint8_t data, uint8_t cnt)
 {
     for (uint8_t i = 0; i < cnt; i++, data <<= 1) {
+        // minimum OutputPulseWidth is 3.34 microseconds for writing data on 3V
+        // data is read from the chip on the rising edge from _RW_pin
         digitalWrite(_RW_pin, LOW);
-        delayMicroseconds(20);
         digitalWrite(_DATA_pin, data & 0x80 ? HIGH : LOW);
-        delayMicroseconds(20);
+        delayMicroseconds(4);
         digitalWrite(_RW_pin, HIGH);
-        delayMicroseconds(20);
+        delayMicroseconds(4);
     }
 }
 
@@ -45,11 +46,10 @@ void HT1621::writeBitsReverse(uint32_t data, uint8_t cnt)
 {
     for (uint8_t i = 0; i < cnt; i++, data >>= 1) {
         digitalWrite(_RW_pin, LOW);
-        delayMicroseconds(20);
         digitalWrite(_DATA_pin, data & 1 ? HIGH : LOW);
-        delayMicroseconds(20);
+        delayMicroseconds(4);
         digitalWrite(_RW_pin, HIGH);
-        delayMicroseconds(20);
+        delayMicroseconds(4);
     }
 }
 
@@ -61,11 +61,13 @@ uint8_t HT1621::readBits(uint8_t cnt)
 
     uint8_t data = 0;
     for (uint8_t i = 0; i < cnt; data <<= 1, i++) {
+        // minimum InputPulseWidth is 6.67 microseconds for reading data on 3V
+        // data is valid from the chip on the rising edge from _RW_pin
         digitalWrite(_RW_pin, LOW);
-        delayMicroseconds(20);
+        delayMicroseconds(7);
         data |= (digitalRead(_DATA_pin) == HIGH);
         digitalWrite(_RW_pin, HIGH);
-        delayMicroseconds(20);
+        delayMicroseconds(7);
     }
 
     pinMode(_DATA_pin, OUTPUT);
