@@ -14,7 +14,7 @@
 class KAV_A3XX_RUDDER_LCD {
 private:
   // Fields
-  HT1621 ht_rad_tcas;
+  HT1621 ht_rudder;
   uint8_t buffer[BUFFER_SIZE_MAX];
   bool _initialised;
   byte _CS;
@@ -28,7 +28,7 @@ private:
 public:
   // Constructor
   // 'CLK' is sometimes referred to as 'RW'
-  KAV_A3XX_RUDDER_LCD(uint8_t CS, uint8_t CLK, uint8_t DATA) : ht_rad_tcas(CS, CLK, DATA) { };
+  KAV_A3XX_RUDDER_LCD(uint8_t CS, uint8_t CLK, uint8_t DATA) : ht_rudder(CS, CLK, DATA) { };
 
   void begin();
   void clearLCD();
@@ -49,4 +49,7 @@ public:
   void showLeftValueInt(uint16_t value);
   void showRightValueInt(uint16_t value);
   void showLandRValue(int16_t value);
+
+  // Set Annunciator Test
+  void setAnnunciatorTest(bool enabled);
 };
