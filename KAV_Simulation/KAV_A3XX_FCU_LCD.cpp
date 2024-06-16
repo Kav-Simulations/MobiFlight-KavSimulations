@@ -7,7 +7,6 @@
 #include "KAV_A3XX_FCU_LCD.h"
 #include "KAV_GetDigitPattern.h"
 
-
 #define SPD_HUN  0
 #define SPD_TEN  1
 #define SPD_UNIT 2
@@ -83,18 +82,21 @@ void KAV_A3XX_FCU_LCD::setSpeedLabel(bool enabled)
 {
     SET_BUFF_BIT(SPECIALS, 7, enabled);
     refreshLCD(SPECIALS);
+    _lastSpeedLabel = enabled;
 }
 
 void KAV_A3XX_FCU_LCD::setMachLabel(bool enabled)
 {
     SET_BUFF_BIT(SPECIALS, 6, enabled);
     refreshLCD(SPECIALS);
+    _lastMachLabel = enabled;
 }
 
 void KAV_A3XX_FCU_LCD::setSpeedDot(bool enabled)
 {
     SET_BUFF_BIT(HDG_HUN, 0, enabled);
     refreshLCD(HDG_HUN);
+    _lastSpeedDot = enabled;
 }
 
 //
@@ -117,7 +119,7 @@ void KAV_A3XX_FCU_LCD::setMachMode(uint16_t value)
 {
     setSpeedLabel(false);
     setMachLabel(true);
-    showSpeedMachValue((float)value/100);
+    showSpeedMachValue((float)value / 100);
 }
 
 // value 0 to 0.99
@@ -146,7 +148,7 @@ void KAV_A3XX_FCU_LCD::showSpeedValue(uint16_t value)
 void KAV_A3XX_FCU_LCD::showMachValue(uint16_t value)
 {
     if (value > 999) value = 999;
-    showSpeedMachValue((float)value/100);
+    showSpeedMachValue((float)value / 100);
 }
 
 // value 0 to 999 for Speed
@@ -156,19 +158,20 @@ void KAV_A3XX_FCU_LCD::showSpeedMachValue(float value)
 {
     char bufferDigits[10] = {0};
     if (value < 1)
-        dtostrf(value, 4,2, bufferDigits);
+        dtostrf(value, 4, 2, bufferDigits);
     else
         snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
     showSpeedMachValue(bufferDigits);
 }
 
 // string will be displayed, build him as required
-void KAV_A3XX_FCU_LCD::showSpeedMachValue(char* data)
+void KAV_A3XX_FCU_LCD::showSpeedMachValue(char *data)
 {
     buffer[SPD_TEN] &= 0xFE;
     buffer[SPD_UNIT] &= 0xFE;
     getFCUDigitPattern(buffer, SPD_HUN, data, 3, (1 << 0));
     refreshLCD(SPD_HUN, 3);
+    strncpy(_lastSpeedMachValue, data, sizeof(_lastSpeedMachValue));
 }
 
 // Heading
@@ -198,21 +201,23 @@ void KAV_A3XX_FCU_LCD::setHeadingDot(bool enabled)
 {
     SET_BUFF_BIT(HDG_UNIT, 0, enabled);
     refreshLCD(HDG_UNIT);
+    _lastHeadingDot = enabled;
 }
 
 void KAV_A3XX_FCU_LCD::showHeadingValue(uint16_t value)
 {
     char bufferDigits[10] = {0};
-    
+
     if (value > 999) value = 999;
     snprintf(bufferDigits, 10, "%03d", (uint16_t)value);
     showHeadingValue(bufferDigits);
 }
 
-void KAV_A3XX_FCU_LCD::showHeadingValue(char* data)
+void KAV_A3XX_FCU_LCD::showHeadingValue(char *data)
 {
     getFCUDigitPattern(buffer, HDG_HUN, data, 3);
     refreshLCD(HDG_HUN, 3);
+    strncpy(_lastHeadingValue, data, sizeof(_lastHeadingValue));
 }
 
 // Altitude
@@ -232,6 +237,7 @@ void KAV_A3XX_FCU_LCD::setAltitudeDot(bool enabled)
 {
     SET_BUFF_BIT(VRT_THO, 0, enabled);
     refreshLCD(VRT_THO);
+    _lastAltitudeDot = enabled;
 }
 
 void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
@@ -242,11 +248,11 @@ void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
     showAltitudeValue(bufferDigits);
 }
 
-void KAV_A3XX_FCU_LCD::showAltitudeValue(char* data)
+void KAV_A3XX_FCU_LCD::showAltitudeValue(char *data)
 {
     getFCUDigitPattern(buffer, ALT_TTH, data, 5);
     refreshLCD(ALT_TTH, 5);
-
+    strncpy(_lastAltitudeValue, data, sizeof(_lastAltitudeValue));
 }
 
 // Vertical
@@ -284,7 +290,7 @@ void KAV_A3XX_FCU_LCD::showVerticalValue(int16_t value)
     } else {
         bufferDigits[0] = '+';
     }
-    snprintf(&bufferDigits[1], 10, "%02doo", abs(value)/100);
+    snprintf(&bufferDigits[1], 10, "%02doo", abs(value) / 100);
     showVerticalFPAValue(bufferDigits);
 }
 
@@ -292,7 +298,7 @@ void KAV_A3XX_FCU_LCD::showVerticalValue(int16_t value)
 // 99 will be displaye as 9.9
 void KAV_A3XX_FCU_LCD::showFPAValue(int8_t value)
 {
-    showFPAValue((float)value/10);
+    showFPAValue((float)value / 10);
 }
 
 // value 0 to +/-9.9 for FPA value
@@ -305,18 +311,18 @@ void KAV_A3XX_FCU_LCD::showFPAValue(float value)
 
     if (value < 0) {
         bufferDigits[0] = '-';
-        value = -value;
+        value           = -value;
     } else {
         bufferDigits[0] = '+';
     }
-    dtostrf(value, 3,1, &bufferDigits[1]);
+    dtostrf(value, 3, 1, &bufferDigits[1]);
     bufferDigits[4] = ' ';
     bufferDigits[5] = ' ';
     showVerticalFPAValue(bufferDigits);
 }
 
 // String will be displayed as it is
-void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
+void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char *data)
 {
     uint8_t dpMask = (1 << 0);
     if (data[0] == '-') {
@@ -336,39 +342,40 @@ void KAV_A3XX_FCU_LCD::showVerticalFPAValue(char* data)
         getFCUDigitPattern(buffer, VRT_THO, data, 4, dpMask);
     }
     refreshLCD(VRT_THO, 4);
+    strncpy(_lastVerticalFPAValue, data, sizeof(_lastVerticalFPAValue));
 }
 
 // Preset States
 void KAV_A3XX_FCU_LCD::setSpeedDashes(bool state)
 {
     if (state)
-        showSpeedMachValue((char*)"---");
+        showSpeedMachValue((char *)"---");
     else
-        showSpeedMachValue((char*)"   ");
+        showSpeedMachValue((char *)"   ");
 }
 
 void KAV_A3XX_FCU_LCD::setHeadingDashes(bool state)
 {
     if (state)
-        showHeadingValue((char*)"---");
+        showHeadingValue((char *)"---");
     else
-        showHeadingValue((char*)"   ");
+        showHeadingValue((char *)"   ");
 }
 
 void KAV_A3XX_FCU_LCD::setAltitudeDashes(bool state)
 {
     if (state)
-        showAltitudeValue((char*)"-----");
+        showAltitudeValue((char *)"-----");
     else
-        showAltitudeValue((char*)"     ");
+        showAltitudeValue((char *)"     ");
 }
 
 void KAV_A3XX_FCU_LCD::setVrtSpdDashes(bool state)
 {
     if (state)
-        showVerticalFPAValue((char*)"-----");
+        showVerticalFPAValue((char *)"-----");
     else
-        showVerticalFPAValue((char*)"     ");
+        showVerticalFPAValue((char *)"     ");
 }
 
 void KAV_A3XX_FCU_LCD::setStartLabels()
@@ -380,10 +387,14 @@ void KAV_A3XX_FCU_LCD::setStartLabels()
 
 void KAV_A3XX_FCU_LCD::toggleTrkHdgMode(bool state)
 {
-    if (state)
+    if (state) {
         setTrackMode();
-    else
+        _lastTrkHdgMode = true;
+    } else {
         setHeadingMode();
+        _lastTrkHdgMode = false;
+    }
+        
 }
 
 void KAV_A3XX_FCU_LCD::setHeadingMode()
@@ -404,14 +415,12 @@ void KAV_A3XX_FCU_LCD::setTrackMode()
     trkActive = true;
 }
 
-void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(bool state) {
-    if (state) {
-        setMachLabel(true);
-        setSpeedLabel(false);
-    } else {
-        setMachLabel(false);
-        setSpeedLabel(true);
-    }
+void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(bool state)
+{
+    setMachLabel(state);
+    setSpeedLabel(!state);
+    _lastMachLabel  = state;
+    _lastSpeedLabel = !state;
 }
 
 // Global Functions
@@ -419,9 +428,30 @@ void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(bool state) {
 void KAV_A3XX_FCU_LCD::clearOrReset(bool enabled)
 {
     if (enabled)
-        setStartLabels();
-    else
         clearLCD();
+    else
+        setStartLabels();
+    _running = !enabled;
+}
+
+void KAV_A3XX_FCU_LCD::setPowerSave(bool enabled) 
+{
+    if (enabled) {
+        clearLCD();
+    } else {
+        setStartLabels();
+        setSpeedDot(_lastSpeedDot);
+        setHeadingDot(_lastHeadingDot);
+        setAltitudeDot(_lastAltitudeDot);
+        toggleTrkHdgMode(_lastTrkHdgMode);
+        setSpeedLabel(_lastSpeedLabel);
+        setMachLabel(_lastMachLabel);
+        showSpeedMachValue(_lastSpeedMachValue);
+        showHeadingValue(_lastHeadingValue);
+        showAltitudeValue(_lastAltitudeValue);
+        showVerticalFPAValue(_lastVerticalFPAValue);
+        toggleSpeedMachMode(_lastSpeedMachValue);
+    }
 }
 
 void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
@@ -431,35 +461,50 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         Each messageID has it's own value
         check for the messageID and define what to do.
         Important Remark!
-        MessageID == -1 will be send from the connector when Mobiflight is closed
-        Put in your code to shut down your custom device (e.g. clear a display)
-        MessageID == -2 will be send from the connector when PowerSavingMode is entered
+        MessageID == -2 will be send from the board when PowerSavingMode is set
+            Message will be "0" for leaving and "1" for entering PowerSavingMode
+        MessageID == -1 will be send from the connector when Connector stops running
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
+    if (!_running) {
+        clearOrReset(false);
+        _running = true;
+    }
+
     if (messageID == -1)
-        return; // Ignore for now, handle this condition later.
+        clearOrReset(true);
     else if (messageID == -2)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave((bool)data);
     else if (messageID == 0)
-        setSpeedMode((uint16_t)data);
+        // setSpeedMode((uint16_t)data); deprecated
+        return;
     else if (messageID == 1)
-        setMachMode((uint16_t)data);
+        // setMachMode((uint16_t)data); deprecated
+        return;
     else if (messageID == 2)
-        showHeadingValue((uint16_t)data);
+        // showHeadingValue((uint16_t)data); deprecated
+        return;
     else if (messageID == 3)
-        showAltitudeValue((uint32_t)data);
+        // showAltitudeValue((uint32_t)data); deprecated
+        return;
     else if (messageID == 4)
-        showVerticalValue((int16_t)data);
+        // showVerticalValue((int16_t)data); deprecated
+        return;
     else if (messageID == 5)
-        showFPAValue((int8_t)data);
+        // showFPAValue((int8_t)data); deprecated
+        return;
     else if (messageID == 6)
-        setSpeedDashes((bool)data);
+        // setSpeedDashes((bool)data); deprecated
+        return;
     else if (messageID == 7)
-        setHeadingDashes((bool)data);
+        // setHeadingDashes((bool)data); deprecated
+        return;
     else if (messageID == 8)
-        setAltitudeDashes((bool)data);
+        // setAltitudeDashes((bool)data); deprecated
+        return;
     else if (messageID == 9)
-        setVrtSpdDashes((bool)data);
+        // setVrtSpdDashes((bool)data); deprecated
+        return;
     else if (messageID == 10)
         setSpeedDot((bool)data);
     else if (messageID == 11)
@@ -469,13 +514,14 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 13)
         toggleTrkHdgMode((bool)data);
     else if (messageID == 14)
-        setSpeedLabel((int8_t)data);
+        setSpeedLabel((bool)data);
     else if (messageID == 15)
-        setMachLabel((int8_t)data);
+        setMachLabel((bool)data);
     else if (messageID == 16)
-        showSpeedValue((uint16_t)data);
+        // showSpeedValue((uint16_t)data); deprecated
+        return;
     else if (messageID == 17)
-        clearOrReset((int8_t)data);
+        setPowerSave(!(bool)data);
     else if (messageID == 18)
         showSpeedMachValue(setPoint);
     else if (messageID == 19)

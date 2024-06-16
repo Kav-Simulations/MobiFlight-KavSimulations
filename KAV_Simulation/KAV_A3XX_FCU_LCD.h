@@ -23,6 +23,18 @@ private:
     byte    _CLK;
     byte    _DATA;
     bool    trkActive;
+    bool    _powerSave = false;
+    bool    _running = false;
+    bool    _lastSpeedDot = false;
+    bool    _lastHeadingDot = false;
+    bool    _lastAltitudeDot = false;
+    bool    _lastTrkHdgMode = true;
+    bool    _lastSpeedLabel = false;
+    bool    _lastMachLabel = false;
+    char    _lastSpeedMachValue[10] = {0};
+    char    _lastHeadingValue[10] = {0};
+    char    _lastAltitudeValue[10] = {0};
+    char    _lastVerticalFPAValue[10] = {0};
 
     // Methods
     void displayDigit(uint8_t address, uint8_t digit);
@@ -95,4 +107,5 @@ public:
     void setHeadingMode();
     void setTrackMode();
     void clearOrReset(bool enabled);
+    void setPowerSave(bool enabled);
 };
