@@ -17,31 +17,6 @@
   },
   "MessageTypes": [
     {
-      "id": -1,
-      "label": "Clear display",
-      "description": "will clear the display"
-    },
-    {
-      "id": 0,
-      "label": "Set volt symbol",
-      "description": "$ will set the volt symbol (0/1)"
-    },
-    {
-      "id": 1,
-      "label": "Set dot",
-      "description": "$ will be the dot (0/1)"
-    },
-    {
-      "id": 2,
-      "label": "Set value",
-      "description": "$ will set the value of the LCD"
-    },
-    {
-      "id": 3,
-      "label": "Set value w/ V",
-      "description": "$ will set the value of the LCD with 'V' character enabled"
-    },
-    {
       "id": 4,
       "label": "Set display",
       "description": "$ as string will be displayed, V gets set if first char is 'V'"

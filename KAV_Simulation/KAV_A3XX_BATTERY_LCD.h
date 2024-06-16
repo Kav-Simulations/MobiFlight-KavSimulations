@@ -20,6 +20,7 @@ private:
   byte _CS;
   byte _CLK;
   byte _DATA;
+  char _lastBattValue[10] = {};
 
   // Methods
   void refreshLCD(uint8_t address);
@@ -36,6 +37,7 @@ public:
   void attach(byte CS, byte CLK, byte DATA);
   void detach();
   void set(int16_t messageID, char *setPoint);
+  void setPowerSave(bool enabled);
 
   // Set 'V' function
   void setVoltSymbol(bool enabled);

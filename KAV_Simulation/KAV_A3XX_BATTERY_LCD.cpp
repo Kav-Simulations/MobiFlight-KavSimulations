@@ -182,9 +182,19 @@ void KAV_A3XX_BATTERY_LCD::showBattValue(char* value)
         getDigitPattern(buffer, DIGIT_ONE, value, 3, (1<<1));
     }
     refreshLCD(DIGIT_ONE, 3);
+    strncpy(_lastBattValue, value, sizeof(_lastBattValue));
 }
 
 // Global Functions
+
+void KAV_A3XX_BATTERY_LCD::setPowerSave(bool enabled) 
+{
+    if (enabled) {
+        clearLCD();
+    } else {
+        showBattValue(_lastBattValue);
+    }
+}
 
 /**
  * Handle MobiFlight Commands
@@ -201,23 +211,27 @@ void KAV_A3XX_BATTERY_LCD::set(int16_t messageID, char *setPoint)
         Each messageID has it's own value
         check for the messageID and define what to do.
         Important Remark!
-        MessageID == -1 will be send from the connector when Mobiflight is closed
-        Put in your code to shut down your custom device (e.g. clear a display)
-        MessageID == -2 will be send from the connector when PowerSavingMode is entered
+        MessageID == -2 will be send from the board when PowerSavingMode is set
+            Message will be "0" for leaving and "1" for entering PowerSavingMode
+        MessageID == -1 will be send from the connector when Connector stops running
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
     if (messageID == -1)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave(true);
     else if (messageID == -2)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave((bool)data);
     else if (messageID == 0)
-        setVoltSymbol((bool)data);
+        // setVoltSymbol((bool)data); deprecated
+        return;
     else if (messageID == 1)
-        setDot((bool)data);
+        // setDot((bool)data); deprecated
+        return;
     else if (messageID == 2)
-        setValue((uint16_t)data);
+        // setValue((uint16_t)data); deprecated
+        return;
     else if (messageID == 3)
-        showBattValue((uint16_t)data);
+        // showBattValue((uint16_t)data); deprecated
+        return;
     else if (messageID == 4)
         showBattValue(setPoint);
 }
