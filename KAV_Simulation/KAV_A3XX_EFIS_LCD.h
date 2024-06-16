@@ -21,6 +21,9 @@ private:
     byte    _CS;
     byte    _CLK;
     byte    _DATA;
+    bool    _lastQNHlabel = false;
+    bool    _lastQFElabel = false;
+    char    _lastQFEQNHValue[10] = {};
 
     // Methods
     void displayDigit(uint8_t address, uint8_t digit);
@@ -37,6 +40,7 @@ public:
     void attach(byte CS, byte CLK, byte DATA);
     void detach();
     void set(int16_t messageID, char *setPoint);
+    void setPowerSave(bool enabled);
 
     // Set QFE or QNH functions
     void setQFElabel(bool enabled);

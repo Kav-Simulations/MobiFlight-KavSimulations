@@ -17,26 +17,6 @@
     },
     "MessageTypes": [
       {
-        "id": -1,
-        "label": "Clear display",
-        "description": "will clear the display"
-      },
-      {
-        "id": 0,
-        "label": "Show QNH Value",
-        "description": "$ will be displayed as QNH value"
-      },
-      {
-        "id": 1,
-        "label": "Show QFE Value",
-        "description": "$ will be displayed as QFE value"
-      },
-      {
-        "id": 2,
-        "label": "Show STD",
-        "description": "0 = True, 1 = False"
-      },
-      {
         "id": 3,
         "label": "Show QNH Label",
         "description": "1 = True, 0 = False"
@@ -50,6 +30,11 @@
         "id": 5,
         "label": "Show Value",
         "description": "$ will be displayed"
+      },
+      {
+        "id": 6,
+        "label": "Clear display",
+        "description": "1 = clear the display, 0 = restore the display"
       }
     ]
   }
