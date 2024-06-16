@@ -425,15 +425,6 @@ void KAV_A3XX_FCU_LCD::toggleSpeedMachMode(bool state)
 
 // Global Functions
 
-void KAV_A3XX_FCU_LCD::clearOrReset(bool enabled)
-{
-    if (enabled)
-        clearLCD();
-    else
-        setStartLabels();
-    _running = !enabled;
-}
-
 void KAV_A3XX_FCU_LCD::setPowerSave(bool enabled) 
 {
     if (enabled) {
@@ -452,6 +443,7 @@ void KAV_A3XX_FCU_LCD::setPowerSave(bool enabled)
         showVerticalFPAValue(_lastVerticalFPAValue);
         toggleSpeedMachMode(_lastSpeedMachValue);
     }
+    _running = !enabled;
 }
 
 void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
@@ -467,12 +459,12 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
     if (!_running) {
-        clearOrReset(false);
+        setStartLabels();
         _running = true;
     }
 
     if (messageID == -1)
-        clearOrReset(true);
+        setPowerSave(true);
     else if (messageID == -2)
         setPowerSave((bool)data);
     else if (messageID == 0)

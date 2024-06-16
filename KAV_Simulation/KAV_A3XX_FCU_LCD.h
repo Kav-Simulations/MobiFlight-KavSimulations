@@ -31,10 +31,10 @@ private:
     bool    _lastTrkHdgMode = true;
     bool    _lastSpeedLabel = false;
     bool    _lastMachLabel = false;
-    char    _lastSpeedMachValue[10] = {0};
-    char    _lastHeadingValue[10] = {0};
-    char    _lastAltitudeValue[10] = {0};
-    char    _lastVerticalFPAValue[10] = {0};
+    char    _lastSpeedMachValue[10] = {};
+    char    _lastHeadingValue[10] = {};
+    char    _lastAltitudeValue[10] = {};
+    char    _lastVerticalFPAValue[10] = {};
 
     // Methods
     void displayDigit(uint8_t address, uint8_t digit);
@@ -106,6 +106,5 @@ public:
     void toggleTrkHdgMode(bool state);
     void setHeadingMode();
     void setTrackMode();
-    void clearOrReset(bool enabled);
     void setPowerSave(bool enabled);
 };
