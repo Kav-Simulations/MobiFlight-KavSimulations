@@ -213,6 +213,15 @@ void KAV_A3XX_RAD_TCAS_LCD::showRadioTcas(char *data)
 
 // Global Functions
 
+void KAV_A3XX_RAD_TCAS_LCD::setPowerSave(bool enabled) 
+{
+    if (enabled) {
+        clearLCD();
+    } else {
+        showRadioTcas(_lastRadioTCASValue);
+    }
+}
+
 /**
  * Handle MobiFlight Commands
  * This function shouldn't be called by a user, it should only be called by the
@@ -234,9 +243,9 @@ void KAV_A3XX_RAD_TCAS_LCD::set(int16_t messageID, char *setPoint)
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
     if (messageID == -1)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave(true);
     else if (messageID == -2)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave((bool)data);
     else if (messageID == 0)
         // setRadioDot((uint16_t)data); deprecated
         return;

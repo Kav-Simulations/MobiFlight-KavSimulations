@@ -14,12 +14,13 @@
 class KAV_A3XX_RAD_TCAS_LCD {
 private:
     // Fields
-    HT1621 ht_rad_tcas;
+    HT1621  ht_rad_tcas;
     uint8_t buffer[BUFFER_SIZE_MAX];
-    bool _initialised;
-    byte _CS;
-    byte _CLK;
-    byte _DATA;
+    bool    _initialised;
+    byte    _CS;
+    byte    _CLK;
+    byte    _DATA;
+    char    _lastRadioTCASValue[20] = {};
 
     // Methods
     void handleMobiFlightCmd(char *string);
@@ -36,6 +37,7 @@ public:
     void attach(byte CS, byte CLK, byte DATA);
     void detach();
     void set(int16_t messageID, char *setPoint);
+    void setPowerSave(bool enabled);
 
     // Set Dot Function
     void setRadioDot(bool enabled);
