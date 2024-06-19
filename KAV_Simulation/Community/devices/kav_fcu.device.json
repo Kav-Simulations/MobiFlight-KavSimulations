@@ -48,8 +48,8 @@
     },
     {
       "id": 17,
-      "label": "Clear or Reset LCD",
-      "description": "0 = Clear LCD, 1 = Reset starting labels"
+      "label": "Clear or restore LCD",
+      "description": "1 = Clear LCD, 0 = Show LCD"
     },
     {
       "id": 18,

@@ -513,7 +513,7 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         // showSpeedValue((uint16_t)data); deprecated
         return;
     else if (messageID == 17)
-        setPowerSave(!(bool)data);
+        setPowerSave((bool)data);
     else if (messageID == 18)
         showSpeedMachValue(setPoint);
     else if (messageID == 19)

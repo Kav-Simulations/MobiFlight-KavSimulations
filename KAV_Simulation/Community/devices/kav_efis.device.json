@@ -1,41 +1,40 @@
 {
-    "$schema": "./mfdevice.schema.json",
-    "Info": {
-      "Label": "Kav's EFIS LCD",
-      "Type": "KAV_EFIS",
-      "Author": "Jak Kav",
-      "URL": "https://github.com/MobiFlight/MobiFlight-CustomDevices/tree/main/KAV_Simulation/EFIS_FCU",
-      "Version": "1.0.0"
+  "$schema": "./mfdevice.schema.json",
+  "Info": {
+    "Label": "Kav's EFIS LCD",
+    "Type": "KAV_EFIS",
+    "Author": "Jak Kav",
+    "URL": "https://github.com/MobiFlight/MobiFlight-CustomDevices/tree/main/KAV_Simulation/EFIS_FCU",
+    "Version": "1.0.0"
+  },
+  "Config": {
+    "Pins": [
+      "Data",
+      "CS",
+      "CLK"
+    ],
+    "isI2C": false
+  },
+  "MessageTypes": [
+    {
+      "id": 3,
+      "label": "Show QNH Label",
+      "description": "1 = True, 0 = False"
     },
-    "Config": {
-      "Pins": [
-        "Data",
-        "CS",
-        "CLK"
-      ],
-      "isI2C": false
+    {
+      "id": 4,
+      "label": "Show QFE Label",
+      "description": "1 = True, 0 = False"
     },
-    "MessageTypes": [
-      {
-        "id": 3,
-        "label": "Show QNH Label",
-        "description": "1 = True, 0 = False"
-      },
-      {
-        "id": 4,
-        "label": "Show QFE Label",
-        "description": "1 = True, 0 = False"
-      },
-      {
-        "id": 5,
-        "label": "Show Value",
-        "description": "$ will be displayed"
-      },
-      {
-        "id": 6,
-        "label": "Clear display",
-        "description": "1 = clear the display, 0 = restore the display"
-      }
-    ]
-  }
-  
+    {
+      "id": 5,
+      "label": "Show Value",
+      "description": "$ will be displayed"
+    },
+    {
+      "id": 6,
+      "label": "Clear or restore LCD",
+      "description": "1 = Clear LCD, 0 = Show LCD"
+    }
+  ]
+}
