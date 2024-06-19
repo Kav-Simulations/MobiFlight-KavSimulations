@@ -16,14 +16,14 @@
  */
 void KAV_A3XX_RUDDER_LCD::begin()
 {
-    ht_rad_tcas.begin();
-    ht_rad_tcas.sendCommand(HT1621::RC256K);
-    ht_rad_tcas.sendCommand(HT1621::BIAS_THIRD_4_COM);
-    ht_rad_tcas.sendCommand(HT1621::SYS_EN);
-    ht_rad_tcas.sendCommand(HT1621::LCD_ON);
+    ht_rudder.begin();
+    ht_rudder.sendCommand(HT1621::RC256K);
+    ht_rudder.sendCommand(HT1621::BIAS_THIRD_4_COM);
+    ht_rudder.sendCommand(HT1621::SYS_EN);
+    ht_rudder.sendCommand(HT1621::LCD_ON);
     // This clears the LCD
-    for (uint8_t i = 0; i < ht_rad_tcas.MAX_ADDR; i++)
-        ht_rad_tcas.write(i, 0);
+    for (uint8_t i = 0; i < ht_rudder.MAX_ADDR; i++)
+        ht_rudder.write(i, 0);
 
     // Initialises the buffer to all 0's.
     memset(buffer, 0, BUFFER_SIZE_MAX);
@@ -64,7 +64,7 @@ void KAV_A3XX_RUDDER_LCD::detach()
  */
 void KAV_A3XX_RUDDER_LCD::refreshLCD(uint8_t address)
 {
-    ht_rad_tcas.write(address * 2, buffer[address], 8);
+    ht_rudder.write(address * 2, buffer[address], 8);
 }
 
 /**
@@ -87,14 +87,14 @@ void KAV_A3XX_RUDDER_LCD::refreshLCD(uint8_t address, uint8_t digits)
  */
 void KAV_A3XX_RUDDER_LCD::clearLCD()
 {
-    for (uint8_t i = 0; i < ht_rad_tcas.MAX_ADDR; i++)
-        ht_rad_tcas.write(i, 0);
+    for (uint8_t i = 0; i < ht_rudder.MAX_ADDR; i++)
+        ht_rudder.write(i, 0);
     memset(buffer, 0, BUFFER_SIZE_MAX);
 }
 
 void KAV_A3XX_RUDDER_LCD::clearDigit(uint8_t address)
 {
-    ht_rad_tcas.write(address * 2, 0);
+    ht_rudder.write(address * 2, 0);
     buffer[address] = 0;
 }
 

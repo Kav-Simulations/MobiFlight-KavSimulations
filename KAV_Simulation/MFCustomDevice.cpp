@@ -116,8 +116,8 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
             Next call the constructor of your custom device
             adapt it to the needs of your constructor
         ********************************************************************************** */
-        _FCU_LCD = new (allocateMemory(sizeof(KAV_A3XX_FCU_LCD))) KAV_A3XX_FCU_LCD(_pin2, _pin3, _pin1);
-        _FCU_LCD->attach(_pin2, _pin3, _pin1);
+        _FCU_LCD = new (allocateMemory(sizeof(KAV_A3XX_FCU_LCD))) KAV_A3XX_FCU_LCD(_pin3, _pin2, _pin1);
+        _FCU_LCD->attach(_pin3, _pin2, _pin1);
         _initialized = true;
     } else if (_lcdType == KAV_EFIS) {
         /* **********************************************************************************
@@ -149,8 +149,8 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
             Next call the constructor of your custom device
             adapt it to the needs of your constructor
         ********************************************************************************** */
-        _EFIS_LCD = new (allocateMemory(sizeof(KAV_A3XX_EFIS_LCD))) KAV_A3XX_EFIS_LCD(_pin2, _pin3, _pin1);
-        _EFIS_LCD->attach(_pin2, _pin3, _pin1);
+        _EFIS_LCD = new (allocateMemory(sizeof(KAV_A3XX_EFIS_LCD))) KAV_A3XX_EFIS_LCD(_pin3, _pin2, _pin1);
+        _EFIS_LCD->attach(_pin3, _pin2, _pin1);
         _initialized = true;
     } else if (_lcdType == KAV_BATTERY) {
         /* **********************************************************************************
@@ -182,8 +182,8 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
             Next call the constructor of your custom device
             adapt it to the needs of your constructor
         ********************************************************************************** */
-        _BATTERY_LCD = new (allocateMemory(sizeof(KAV_A3XX_BATTERY_LCD))) KAV_A3XX_BATTERY_LCD(_pin2, _pin3, _pin1);
-        _BATTERY_LCD->attach(_pin2, _pin3, _pin1);
+        _BATTERY_LCD = new (allocateMemory(sizeof(KAV_A3XX_BATTERY_LCD))) KAV_A3XX_BATTERY_LCD(_pin3, _pin2, _pin1);
+        _BATTERY_LCD->attach(_pin3, _pin2, _pin1);
         _initialized = true;
     } else if (_lcdType == KAV_RAD_TCAS) {
         /* **********************************************************************************
@@ -215,8 +215,8 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
             Next call the constructor of your custom device
             adapt it to the needs of your constructor
         ********************************************************************************** */
-        _RAD_TCAS_LCD = new (allocateMemory(sizeof(KAV_A3XX_RAD_TCAS_LCD))) KAV_A3XX_RAD_TCAS_LCD(_pin2, _pin3, _pin1);
-        _RAD_TCAS_LCD->attach(_pin2, _pin3, _pin1);
+        _RAD_TCAS_LCD = new (allocateMemory(sizeof(KAV_A3XX_RAD_TCAS_LCD))) KAV_A3XX_RAD_TCAS_LCD(_pin3, _pin2, _pin1);
+        _RAD_TCAS_LCD->attach(_pin3, _pin2, _pin1);
         _initialized = true;
     } else if (_lcdType == KAV_RUDDER) {
         /* **********************************************************************************
@@ -248,8 +248,8 @@ void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfi
             Next call the constructor of your custom device
             adapt it to the needs of your constructor
         ********************************************************************************** */
-        _RUDDER_LCD = new (allocateMemory(sizeof(KAV_A3XX_RUDDER_LCD))) KAV_A3XX_RUDDER_LCD(_pin2, _pin3, _pin1);
-        _RUDDER_LCD->attach(_pin2, _pin3, _pin1);
+        _RUDDER_LCD = new (allocateMemory(sizeof(KAV_A3XX_RUDDER_LCD))) KAV_A3XX_RUDDER_LCD(_pin3, _pin2, _pin1);
+        _RUDDER_LCD->attach(_pin3, _pin2, _pin1);
         _initialized = true;
     } else {
         cmdMessenger.sendCmd(kStatus, F("Custom Device is not supported by this firmware version"));
