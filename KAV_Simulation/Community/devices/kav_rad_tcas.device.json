@@ -20,6 +20,11 @@
         "id": 4,
         "label": "Set value for Radio or TCAS",
         "description": "$ will show the value on the display"
+      },
+      {
+        "id": 5,
+        "label": "Clear or restore LCD",
+        "description": "1 = Clear LCD, 0 = Show LCD"
       }
     ]
   }

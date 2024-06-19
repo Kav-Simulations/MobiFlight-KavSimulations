@@ -260,4 +260,6 @@ void KAV_A3XX_RAD_TCAS_LCD::set(int16_t messageID, char *setPoint)
         return;
     else if (messageID == 4)
         showRadioTcas(setPoint);
+    else if (messageID == 5)
+        setPowerSave((bool)data);
 }
