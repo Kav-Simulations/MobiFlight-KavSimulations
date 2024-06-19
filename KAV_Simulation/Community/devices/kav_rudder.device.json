@@ -60,6 +60,11 @@
         "id": 7,
         "label": "Set value w/ 'L' or 'R'",
         "description": "$ as string will be displayed with the 'L' or 'R' character, e.g. 'L12.3'"
+      },
+      {
+        "id": 8,
+        "label": "Clear or restore the display'",
+        "description": "1 = clear the display, 0 = restore the display"
       }
     ]
   }

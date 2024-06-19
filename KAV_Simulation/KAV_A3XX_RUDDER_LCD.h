@@ -14,12 +14,13 @@
 class KAV_A3XX_RUDDER_LCD {
 private:
   // Fields
-  HT1621 ht_rad_tcas;
+  HT1621  ht_rad_tcas;
   uint8_t buffer[BUFFER_SIZE_MAX];
-  bool _initialised;
-  byte _CS;
-  byte _CLK;
-  byte _DATA;
+  bool    _initialised;
+  byte    _CS;
+  byte    _CLK;
+  byte    _DATA;
+  char    _lastRudderValue[10] = {};
 
   // Methods
   void displayDigit(uint8_t address, uint8_t digit);
@@ -37,6 +38,7 @@ public:
   void attach(byte CS, byte CLK, byte DATA);
   void detach();
   void set(int16_t messageID, char *setPoint);
+  void setPowerSave(bool enabled);
 
   // Set 'L' and 'R' functions
   void setLeft(bool enabled);

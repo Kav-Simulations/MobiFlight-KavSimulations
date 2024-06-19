@@ -238,6 +238,16 @@ void KAV_A3XX_RUDDER_LCD::showLandRValue(char *value)
         getDigitPattern(buffer, DIGIT_TWO, value, 3, (1<<1));
     }
     refreshLCD(DIGIT_LR, 4);
+    strncpy(_lastRudderValue, value, sizeof(_lastRudderValue));
+}
+
+void KAV_A3XX_RUDDER_LCD::setPowerSave(bool enabled) 
+{
+    if (enabled) {
+        clearLCD();
+    } else {
+        showLandRValue(_lastRudderValue);
+    }
 }
 
 // Global Functions
@@ -264,26 +274,34 @@ void KAV_A3XX_RUDDER_LCD::set(int16_t messageID, char *setPoint)
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
     if (messageID == -1)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave(true);
     else if (messageID == -2)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave((bool)setPoint);
     else if (messageID == 0)
-        setLeft((uint16_t)data);
+        // setLeft((uint16_t)data); deprecated
+        return;
     else if (messageID == 1)
-        setRight((uint16_t)data);
+        // setRight((uint16_t)data); deprecated
+        return;
     else if (messageID == 2)
-        setDot((uint16_t)data);
+        // setDot((uint16_t)data); deprecated
+        return;
     else if (messageID == 3)
         // This one needs to keep it's sign, so using `int16_t`.
-        setValue((int16_t)data);
+        // setValue((int16_t)data); deprecated
+        return;
     else if (messageID == 4)
         showLeftValue((uint16_t)data);
     else if (messageID == 5)
-        showRightValue((uint16_t)data);
+        // showRightValue((uint16_t)data); deprecated
+        return;
     else if (messageID == 6)
         // This one needs to keep it's sign, so using `int16_t`.
-        showLandRValue((int16_t)data);
+        // showLandRValue((int16_t)data); deprecated
+        return;
     else if (messageID == 7)
         // This one shows the string and checks for 'L' or 'R' as first character
         showLandRValue(setPoint);
+    else if (messageID == 8)
+        setPowerSave((bool)setPoint);
 }
