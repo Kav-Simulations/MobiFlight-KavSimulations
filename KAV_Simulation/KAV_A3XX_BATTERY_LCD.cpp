@@ -188,6 +188,16 @@ void KAV_A3XX_BATTERY_LCD::displayDigit(uint8_t address, uint8_t digit)
     refreshLCD(address);
 }
 
+void KAV_A3XX_BATTERY_LCD::setAnnunciatorTest(bool enabled)
+{
+    if (enabled) {
+        for (uint8_t i = 0; i < ht_battery.MAX_ADDR; i++)
+            ht_battery.write(i, 0xFF);
+    } else {
+        clearLCD();
+    }
+}
+
 /**
  * Handle MobiFlight Commands
  * This function shouldn't be called be a user, it should only be called by the
@@ -220,4 +230,6 @@ void KAV_A3XX_BATTERY_LCD::set(int16_t messageID, char *setPoint)
         setValueInt((uint16_t)data);
     else if (messageID == 3)
         showBattValueInt((uint16_t)data);
+    else if(messageID == 4)
+        setAnnunciatorTest((bool)data);
 }

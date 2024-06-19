@@ -1,19 +1,30 @@
 {
-    "$schema": "./mfdevice.schema.json",
-    "Info": {
-      "Label": "Kav's RAD/TCAS LCD",
-      "Type": "KAV_RAD_TCAS",
-      "Author": "Jak Kav",
-      "URL": "https://github.com/MobiFlight/MobiFlight-CustomDevices/tree/main/KAV_Simulation/EFIS_FCU",
-      "Version" : "1.0.0"
+  "$schema": "./mfdevice.schema.json",
+  "Info": {
+    "Label": "Kav's RAD/TCAS LCD",
+    "Type": "KAV_RAD_TCAS",
+    "Author": "Jak Kav",
+    "URL": "https://github.com/MobiFlight/MobiFlight-CustomDevices/tree/main/KAV_Simulation/EFIS_FCU",
+    "Version" : "1.0.0"
+  },
+  "Config": {
+    "Pins": [
+      "Data",
+      "CLK",
+      "CS"
+    ],
+    "isI2C": false
+  },
+  "MessageTypes": [
+    {
+      "id": -1,
+      "label": "Clear display",
+      "description": "will clear the display"
     },
-    "Config": {
-      "Pins": [
-        "Data",
-        "CS",
-        "CLK"
-      ],
-      "isI2C": false
+    {
+      "id": 0,
+      "label": "Set dot",
+      "description": "$ sets the dot to show or hide (0/1)"
     },
     "MessageTypes": [
       {
