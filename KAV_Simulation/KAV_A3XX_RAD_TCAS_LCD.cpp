@@ -1,5 +1,4 @@
 #include "KAV_A3XX_RAD_TCAS_LCD.h"
-#include "KAV_GetDigitPattern.h"
 
 #define DIGIT_ONE 0
 #define DIGIT_TWO 1
@@ -70,28 +69,14 @@ void KAV_A3XX_RAD_TCAS_LCD::refreshLCD(uint8_t address)
 }
 
 /**
- * Refresh the LCD
- * After a change is made to a segment, the display must be refreshed so that
- * the change is visible.
- * @param address The address to refresh
- * @param digits The number of digits to refresh
- */
-void KAV_A3XX_RAD_TCAS_LCD::refreshLCD(uint8_t address, uint8_t digits)
-{
-    for (uint8_t i = 0; i < digits; i++) {
-        refreshLCD(address + i);
-    }
-}
-
-/**
  * Clear the LCD
  * This function clears the LCD and resets the buffer.
  */
 void KAV_A3XX_RAD_TCAS_LCD::clearLCD()
 {
-    char bufferDigits[12] = {0};
-    snprintf(bufferDigits, 12, "      ");
-    showValue(bufferDigits);
+    for (uint8_t i = 0; i < ht_rad_tcas.MAX_ADDR; i++)
+        ht_rad_tcas.write(i, 0);
+    memset(buffer, 0, BUFFER_SIZE_MAX);
 }
 
 void KAV_A3XX_RAD_TCAS_LCD::clearDigit(uint8_t address)
@@ -137,35 +122,48 @@ void KAV_A3XX_RAD_TCAS_LCD::setAllDots(bool enabled)
 
 /**
  * Set the value of the LCD using an integer for radio (6 characters).
- * The dots get NOT cleared. If required use showRadio()
  * @param value The value to display
  */
 void KAV_A3XX_RAD_TCAS_LCD::setRadioValue(uint32_t value)
 {
-    char bufferDigits[12] = {0};
     if (value == 0)
-        snprintf(bufferDigits, 12, "000000");
-    else
-        dtostrf((float)value/1000, 6, 3, bufferDigits);
-
-    getDigitPattern(buffer, DIGIT_ONE, bufferDigits, 6);
-    refreshLCD(DIGIT_ONE, 6);
+    {
+        displayDigit(DIGIT_ONE, 11);
+        displayDigit(DIGIT_TWO, 13);
+        displayDigit(DIGIT_THREE, 14);
+        displayDigit(DIGIT_FOUR, 15);
+        displayDigit(DIGIT_FIVE, 14);
+        displayDigit(DIGIT_SIX, 11);
+    } else {
+        if (value > 999999)
+            value = 999999;
+        displayDigit(DIGIT_SIX, (value % 10));
+        value = value / 10;
+        displayDigit(DIGIT_FIVE, (value % 10));
+        value = value / 10;
+        displayDigit(DIGIT_FOUR, (value % 10));
+        value = value / 10;
+        displayDigit(DIGIT_THREE, (value % 10));
+        value = value / 10;
+        displayDigit(DIGIT_TWO, (value % 10));
+        displayDigit(DIGIT_ONE, (value / 10));
+    }
 }
 
 /**
  * Set the value of the LCD using an integer for TCAS (4 characters).
- * The dots get NOT cleared. If required use showTcas()
  * @param value The value to display
  */
 void KAV_A3XX_RAD_TCAS_LCD::setTcasValue(uint16_t value)
 {
-    char bufferDigits[12] = {0};
     if (value > 9999)
         value = 9999;
-    
-    snprintf(bufferDigits, 12, " %04d ", value);
-    getDigitPattern(buffer, DIGIT_ONE, bufferDigits, 6);
-    refreshLCD(DIGIT_ONE, 6);
+    displayDigit(DIGIT_FIVE, (value % 10));
+    value = value / 10;
+    displayDigit(DIGIT_FOUR, (value % 10));
+    value = value / 10;
+    displayDigit(DIGIT_THREE, (value % 10));
+    displayDigit(DIGIT_TWO, (value / 10));
 }
 
 // Show values as a combined function
@@ -176,12 +174,11 @@ void KAV_A3XX_RAD_TCAS_LCD::setTcasValue(uint16_t value)
  */
 void KAV_A3XX_RAD_TCAS_LCD::showRadio(uint32_t value)
 {
-    char bufferDigits[12] = {0};
+    setRadioValue(value);
     if (value == 0)
-        snprintf(bufferDigits, 12, "000.000");
+        setRadioDot(false);
     else
-        dtostrf((float)value/1000, 6, 3, bufferDigits);
-    showValue(bufferDigits);
+        setRadioDot(true);
 }
 
 /**
@@ -191,11 +188,10 @@ void KAV_A3XX_RAD_TCAS_LCD::showRadio(uint32_t value)
  */
 void KAV_A3XX_RAD_TCAS_LCD::showTcas(uint16_t value)
 {
-    char bufferDigits[12] = {0};
-    if (value > 9999)
-        value = 9999;
-    snprintf(bufferDigits, 12, " %04d ", value);
-    showValue(bufferDigits);
+    setTcasValue(value);
+    displayDigit(DIGIT_ONE, 11);
+    displayDigit(DIGIT_SIX, 11);
+    setRadioDot(false);
 }
 
 /**
@@ -204,19 +200,57 @@ void KAV_A3XX_RAD_TCAS_LCD::showTcas(uint16_t value)
  */
 void KAV_A3XX_RAD_TCAS_LCD::showTest(bool enabled)
 {
-    char bufferDigits[12] = {0};
     if (enabled)
-        snprintf(bufferDigits, 12, "8.8.8.8.8.8");
+    {
+        setRadioValue(888888);
+        setAllDots(enabled);
+    }
     else
-        snprintf(bufferDigits, 12, "      ");
-    showValue(bufferDigits);
+    {
+        clearLCD();
+    }
 }
 
-void KAV_A3XX_RAD_TCAS_LCD::showValue(char* value) {
-    getDigitPattern(buffer, DIGIT_ONE, value, 6, (1<<0) | (1<<1) | (1<<2) | (1<<3) | (1<<4) | (1<<5));
-    refreshLCD(DIGIT_ONE, 6);
-}
+// Global Functions
+/**
+ * A list of the binary patterns to show different characters on the LCD.
+ */
+uint8_t digitPatternRadTcas[16] = {
+    0b11101011, // 0
+    0b01100000, // 1
+    0b11000111, // 2
+    0b11100101, // 3
+    0b01101100, // 4
+    0b10101101, // 5 or S
+    0b10101111, // 6
+    0b11100000, // 7
+    0b11101111, // 8
+    0b11101101, // 9
+    0b00000100, // -
+    0b00000000, // blank
+    0b11001100, // small 0 (For V/S)
+    // Below are characters for 'dAtA'
+    0b01100111, // d
+    0b11101110, // A
+    0b00001111, // t
+};
 
+/**
+ * Display a digit on a specific address.
+ * @param address The address to display the digit on
+ * @param digit The digit to display
+ * @see digitPatternRadTcas
+ */
+void KAV_A3XX_RAD_TCAS_LCD::displayDigit(uint8_t address, uint8_t digit)
+{
+    // This ensures that anything over 12 is turned to 'blank', and as it's unsigned, anything less than 0 will become 255, and therefore, 'blank'.
+    if (digit > 15)
+        digit = 11;
+
+    buffer[address] = digitPatternRadTcas[digit];
+
+    refreshLCD(address);
+}
 
 /**
  * Handle MobiFlight Commands
@@ -251,5 +285,5 @@ void KAV_A3XX_RAD_TCAS_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 3)
         showTcas((uint16_t)data);
     else if (messageID == 4)
-        showValue(setPoint);
+        showTest((bool)data);
 }
