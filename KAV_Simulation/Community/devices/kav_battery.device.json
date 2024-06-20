@@ -17,12 +17,12 @@
   },
   "MessageTypes": [
     {
-      "id": 4,
+      "id": 5,
       "label": "Set display",
       "description": "$ as string will be displayed, V gets set if first char is 'V'"
     },
     {
-      "id": 5,
+      "id": 6,
       "label": "Clear or restore LCD",
       "description": "1 = Clear LCD, 0 = Show LCD"
     }

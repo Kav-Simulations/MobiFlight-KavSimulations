@@ -51,4 +51,7 @@ public:
   void showBattValue(uint16_t value);
   void showBattValue(float value);
   void showBattValue(char* value);
+
+  // Annunciator Test Function
+  void setAnnunciatorTest(bool enabled);
 };
