@@ -58,13 +58,18 @@
       },
       {
         "id": 7,
+        "label": "(v2.5.3+) Annunciator Test Mode",
+        "description": "$ = 1 will display all Segments, $ = 0 will clear display"
+      },
+      {
+        "id": 8,
         "label": "Set value w/ 'L' or 'R'",
         "description": "$ as string will be displayed with the 'L' or 'R' character, e.g. 'L12.3'"
       },
       {
-        "id": 8,
-        "label": "Clear or restore the display'",
-        "description": "1 = clear the display, 0 = restore the display"
+        "id": 9,
+        "label": "Clear or restore LCD",
+        "description": "1 = Clear LCD, 0 = Show LCD"
       }
     ]
   }

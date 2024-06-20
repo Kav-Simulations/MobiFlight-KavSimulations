@@ -55,4 +55,7 @@ public:
   void showLandRValue(int16_t value);
   void showLandRValue(float value);
   void showLandRValue(char* value);
+
+  // Set Annunciator Test
+  void setAnnunciatorTest(bool enabled);
 };
