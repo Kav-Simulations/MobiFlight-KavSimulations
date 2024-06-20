@@ -46,7 +46,7 @@ public:
   void setRadioValue(uint32_t value);
   void setTcasValue(uint16_t value);
 
-  // Show Rudder Value function
+  // Show Value function
   void showRadio(uint32_t value);
   void showTcas(uint16_t value);
   void showTest(bool enabled);

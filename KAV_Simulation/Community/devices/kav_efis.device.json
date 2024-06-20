@@ -5,13 +5,13 @@
     "Type": "KAV_EFIS",
     "Author": "Jak Kav",
     "URL": "https://github.com/MobiFlight/MobiFlight-CustomDevices/tree/main/KAV_Simulation/EFIS_FCU",
-    "Version": "1.0.0"
+    "Version": "1.5.0"
   },
   "Config": {
     "Pins": [
       "Data",
-      "CS",
-      "CLK"
+      "CLK",
+      "CS"
     ],
     "isI2C": false
   },
@@ -28,13 +28,14 @@
     },
     {
       "id": 5,
-      "label": "Show Value",
+      "label": "(v2.5.4+) Show Value (STRING)",
       "description": "$ will be displayed"
     },
     {
       "id": 6,
-      "label": "Clear or restore LCD",
-      "description": "1 = Clear LCD, 0 = Show LCD"
+      "label": "(v2.5.3+) Annunciator Test Mode",
+      "description": "$ = 1 will display all EFIS Segments, $ = 0 will clear display"
     }
   ]
 }
+  

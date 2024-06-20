@@ -193,6 +193,16 @@ void KAV_A3XX_EFIS_LCD::showQFEQNHValue(char* value)
     strncpy(_lastQFEQNHValue, value, sizeof(_lastQFEQNHValue));
 }
 
+void KAV_A3XX_EFIS_LCD::setAnnunciatorTest(bool enabled)
+{
+    if (enabled) {
+        for (uint8_t i = 0; i < ht_efis.MAX_ADDR; i++)
+            ht_efis.write(i, 0xFF);
+    } else {
+        clearLCD();
+    }
+}
+
 // Global Functions
 
 void KAV_A3XX_EFIS_LCD::setPowerSave(bool enabled) 
@@ -237,6 +247,8 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         setQFElabel((bool)data);
     else if (messageID == 5)
         showQFEQNHValue(setPoint);
+    else if (messageID == 6)
+        setAnnunciatorTest((bool)data);
     else if (messageID == 6)
         setPowerSave((bool)data);
 }

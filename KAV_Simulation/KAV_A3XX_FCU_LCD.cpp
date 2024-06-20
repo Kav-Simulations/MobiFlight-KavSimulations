@@ -244,7 +244,7 @@ void KAV_A3XX_FCU_LCD::showAltitudeValue(uint32_t value)
 {
     char bufferDigits[10] = {0};
 
-    snprintf(bufferDigits, 10, "%05d", (int)value);
+    snprintf(bufferDigits, 10, "%05u", (uint16_t)value);
     showAltitudeValue(bufferDigits);
 }
 
@@ -446,6 +446,16 @@ void KAV_A3XX_FCU_LCD::setPowerSave(bool enabled)
     _running = !enabled;
 }
 
+void KAV_A3XX_FCU_LCD::setAnnunciatorTest(bool enabled)
+{
+    if (enabled) {
+        for (uint8_t i = 0; i < ht.MAX_ADDR; i++)
+            ht.write(i, 0xFF);
+    } else {
+        clearLCD();
+    }
+}
+
 void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
 {
     int32_t data = strtol(setPoint, NULL, 10);
@@ -524,4 +534,6 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
         showVerticalFPAValue(setPoint);
     else if (messageID == 22)
         toggleSpeedMachMode((bool)data);
+    else if (messageID == 23)
+        setAnnunciatorTest((bool)data);
 }

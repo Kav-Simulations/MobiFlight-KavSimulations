@@ -284,4 +284,6 @@ void KAV_A3XX_RAD_TCAS_LCD::set(int16_t messageID, char *setPoint)
         showRadio((uint32_t)data);
     else if (messageID == 3)
         showTcas((uint16_t)data);
+    else if (messageID == 4)
+        showTest((bool)data);
 }

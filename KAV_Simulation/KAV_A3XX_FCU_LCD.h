@@ -107,4 +107,6 @@ public:
     void setHeadingMode();
     void setTrackMode();
     void setPowerSave(bool enabled);
+    void clearOrReset(bool enabled);
+    void setAnnunciatorTest(bool enabled);
 };

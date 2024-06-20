@@ -48,4 +48,7 @@ public:
 
   // Show BATTERY Value function
   void showBattValueInt(uint16_t value);
+
+  // Annunciator Test Function
+  void setAnnunciatorTest(bool enabled);
 };
