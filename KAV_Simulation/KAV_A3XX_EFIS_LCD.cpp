@@ -199,7 +199,7 @@ void KAV_A3XX_EFIS_LCD::setAnnunciatorTest(bool enabled)
         for (uint8_t i = 0; i < ht_efis.MAX_ADDR; i++)
             ht_efis.write(i, 0xFF);
     } else {
-        clearLCD();
+        setPowerSave(false);
     }
 }
 

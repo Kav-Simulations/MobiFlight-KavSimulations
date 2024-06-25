@@ -452,7 +452,7 @@ void KAV_A3XX_FCU_LCD::setAnnunciatorTest(bool enabled)
         for (uint8_t i = 0; i < ht.MAX_ADDR; i++)
             ht.write(i, 0xFF);
     } else {
-        clearLCD();
+        setPowerSave(false);
     }
 }
 
