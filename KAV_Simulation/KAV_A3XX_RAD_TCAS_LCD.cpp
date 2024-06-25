@@ -214,8 +214,8 @@ void KAV_A3XX_RAD_TCAS_LCD::showRadioTcas(char *data)
 void KAV_A3XX_RAD_TCAS_LCD::setAnnunciatorTest(bool enabled)
 {
     if (enabled) {
-        for (uint8_t i = 0; i < ht_battery.MAX_ADDR; i++)
-            ht_battery.write(i, 0xFF);
+        for (uint8_t i = 0; i < ht_rad_tcas.MAX_ADDR; i++)
+            ht_rad_tcas.write(i, 0xFF);
     } else {
         clearLCD();
     }
