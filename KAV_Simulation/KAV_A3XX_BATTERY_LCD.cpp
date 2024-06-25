@@ -202,7 +202,7 @@ void KAV_A3XX_BATTERY_LCD::setAnnunciatorTest(bool enabled)
         for (uint8_t i = 0; i < ht_battery.MAX_ADDR; i++)
             ht_battery.write(i, 0xFF);
     } else {
-        clearLCD();
+        setPowerSave(false);
     }
 }
 
@@ -243,8 +243,7 @@ void KAV_A3XX_BATTERY_LCD::set(int16_t messageID, char *setPoint)
         // showBattValue((uint16_t)data); deprecated
         return;
     else if (messageID == 4)
-        // setAnnunciatorTest((bool)data); deprecated
-        return;
+        setAnnunciatorTest((bool)data);
     else if (messageID == 5)
         showBattValue(setPoint);
     else if (messageID == 6)
