@@ -211,6 +211,16 @@ void KAV_A3XX_RAD_TCAS_LCD::showRadioTcas(char *data)
     refreshLCD(DIGIT_ONE, 6);
 }
 
+void KAV_A3XX_RAD_TCAS_LCD::setAnnunciatorTest(bool enabled)
+{
+    if (enabled) {
+        for (uint8_t i = 0; i < ht_battery.MAX_ADDR; i++)
+            ht_battery.write(i, 0xFF);
+    } else {
+        clearLCD();
+    }
+}
+
 // Global Functions
 
 void KAV_A3XX_RAD_TCAS_LCD::setPowerSave(bool enabled) 
@@ -259,7 +269,9 @@ void KAV_A3XX_RAD_TCAS_LCD::set(int16_t messageID, char *setPoint)
         // showTcas((uint16_t)data); deprecated
         return;
     else if (messageID == 4)
-        showRadioTcas(setPoint);
+        setAnnunciatorTest((bool)data);
     else if (messageID == 5)
+        showRadioTcas(setPoint);
+    else if (messageID == 6)
         setPowerSave((bool)data);
 }

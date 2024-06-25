@@ -23,7 +23,6 @@ private:
     char    _lastRadioTCASValue[20] = {};
 
     // Methods
-    void handleMobiFlightCmd(char *string);
     void refreshLCD(uint8_t address);
     void refreshLCD(uint8_t address, uint8_t digits);
   
@@ -38,6 +37,7 @@ public:
     void detach();
     void set(int16_t messageID, char *setPoint);
     void setPowerSave(bool enabled);
+    void setAnnunciatorTest(bool enabled);
 
     // Set Dot Function
     void setRadioDot(bool enabled);
