@@ -17,14 +17,19 @@
   },
   "MessageTypes": [
     {
+      "id": 4,
+      "label": "(v2.5.3+) Annunciator Test Mode",
+      "description": "$ = 1 will display all Segments, $ = 0 will clear display"
+    },
+    {
       "id": 5,
-      "label": "Set display",
+      "label": "(v2.5.4+) Set display",
       "description": "$ as string will be displayed, V gets set if first char is 'V'"
     },
     {
       "id": 6,
-      "label": "Clear or restore LCD",
-      "description": "1 = Clear LCD, 0 = Show LCD"
+      "label": "(v2.5.4+) Clear or restore display",
+      "description": "$ = 1 will clear the display, $ = 0 will restore the display"
     }
   ]
 }
