@@ -258,7 +258,7 @@ void KAV_A3XX_RUDDER_LCD::setAnnunciatorTest(bool enabled)
         for (uint8_t i = 0; i < ht_rudder.MAX_ADDR; i++)
             ht_rudder.write(i, 0xFF);
     } else {
-        clearLCD();
+        setPowerSave(false);
     }
 }
 
@@ -310,7 +310,7 @@ void KAV_A3XX_RUDDER_LCD::set(int16_t messageID, char *setPoint)
         // showLandRValue((int16_t)data); deprecated
         return;
     else if (messageID == 7)
-        // setAnnunciatorTest((bool)data); deprecated
+        setAnnunciatorTest((bool)data); deprecated
         return;
     else if (messageID == 8)
         // This one shows the string and checks for 'L' or 'R' as first character
