@@ -249,6 +249,6 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         showQFEQNHValue(setPoint);
     else if (messageID == 6)
         setAnnunciatorTest((bool)data);
-    else if (messageID == 6)
+    else if (messageID == 7)
         setPowerSave((bool)data);
 }
