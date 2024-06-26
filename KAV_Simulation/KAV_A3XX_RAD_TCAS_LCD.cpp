@@ -209,6 +209,7 @@ void KAV_A3XX_RAD_TCAS_LCD::showRadioTcas(char *data)
 {
     getDigitPattern(buffer, DIGIT_ONE, data, 6, (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5));
     refreshLCD(DIGIT_ONE, 6);
+    strncpy(_lastRadioTCASValue, data, sizeof(_lastRadioTCASValue));
 }
 
 void KAV_A3XX_RAD_TCAS_LCD::setAnnunciatorTest(bool enabled)
