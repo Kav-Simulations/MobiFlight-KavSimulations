@@ -16,14 +16,16 @@ private:
   // Fields
   HT1621 ht_rudder;
   uint8_t buffer[BUFFER_SIZE_MAX];
-  bool _initialised;
-  byte _CS;
-  byte _CLK;
-  byte _DATA;
+  bool    _initialised;
+  byte    _CS;
+  byte    _CLK;
+  byte    _DATA;
+  char    _lastRudderValue[10] = {};
 
   // Methods
   void displayDigit(uint8_t address, uint8_t digit);
   void refreshLCD(uint8_t address);
+  void refreshLCD(uint8_t address, uint8_t digits);
   
 public:
   // Constructor
@@ -36,6 +38,7 @@ public:
   void attach(byte CS, byte CLK, byte DATA);
   void detach();
   void set(int16_t messageID, char *setPoint);
+  void setPowerSave(bool enabled);
 
   // Set 'L' and 'R' functions
   void setLeft(bool enabled);
@@ -43,12 +46,15 @@ public:
   // Set Dot Function
   void setDot(bool enabled);
   // Set value function
-  void setValueInt(int16_t value);
+  void setValue(int16_t value);
+  void setValue(float value);
 
   // Show Rudder Value function
-  void showLeftValueInt(uint16_t value);
-  void showRightValueInt(uint16_t value);
+  void showLeftValue(uint16_t value);
+  void showRightValue(uint16_t value);
   void showLandRValue(int16_t value);
+  void showLandRValue(float value);
+  void showLandRValue(char* value);
 
   // Set Annunciator Test
   void setAnnunciatorTest(bool enabled);
