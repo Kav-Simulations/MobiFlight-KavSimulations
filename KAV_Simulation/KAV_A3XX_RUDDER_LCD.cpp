@@ -243,11 +243,10 @@ void KAV_A3XX_RUDDER_LCD::showLandRValue(char *value)
 
 void KAV_A3XX_RUDDER_LCD::setPowerSave(bool enabled) 
 {
-    if (enabled) {
+    if (enabled)
         clearLCD();
-    } else {
+    else
         showLandRValue(_lastRudderValue);
-    }
 }
 
 // Global Functions
@@ -286,7 +285,7 @@ void KAV_A3XX_RUDDER_LCD::set(int16_t messageID, char *setPoint)
     if (messageID == -1)
         setPowerSave(true);
     else if (messageID == -2)
-        setPowerSave((bool)setPoint);
+        setPowerSave((bool)data);
     else if (messageID == 0)
         // setLeft((uint16_t)data); deprecated
         return;
@@ -301,7 +300,8 @@ void KAV_A3XX_RUDDER_LCD::set(int16_t messageID, char *setPoint)
         // setValue((int16_t)data); deprecated
         return;
     else if (messageID == 4)
-        showLeftValue((uint16_t)data);
+        // showLeftValue((uint16_t)data); deprecated
+        return;
     else if (messageID == 5)
         // showRightValue((uint16_t)data); deprecated
         return;
@@ -315,5 +315,5 @@ void KAV_A3XX_RUDDER_LCD::set(int16_t messageID, char *setPoint)
         // This one shows the string and checks for 'L' or 'R' as first character
         showLandRValue(setPoint);
     else if (messageID == 9)
-        setPowerSave((bool)setPoint);
+        setPowerSave((bool)data);
 }
