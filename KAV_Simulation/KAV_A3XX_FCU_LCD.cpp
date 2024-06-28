@@ -441,7 +441,7 @@ void KAV_A3XX_FCU_LCD::setPowerSave(bool enabled)
         showHeadingValue(_lastHeadingValue);
         showAltitudeValue(_lastAltitudeValue);
         showVerticalFPAValue(_lastVerticalFPAValue);
-        toggleSpeedMachMode(_lastSpeedMachValue);
+        toggleSpeedMachMode(_lastMachLabel);
     }
     _running = !enabled;
 }
