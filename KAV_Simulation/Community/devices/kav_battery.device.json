@@ -17,6 +17,26 @@
   },
   "MessageTypes": [
     {
+      "id": 0,
+      "label": "(deprecated) Set volt symbol",
+      "description": "$ will set the volt symbol (0/1)"
+    },
+    {
+      "id": 1,
+      "label": "(deprecated) Set dot",
+      "description": "$ will be the dot (0/1)"
+    },
+    {
+      "id": 2,
+      "label": "(deprecated) Set value",
+      "description": "$ will set the value of the LCD"
+    },
+    {
+      "id": 3,
+      "label": "(deprecated) Set value w/ V",
+      "description": "$ will set the value of the LCD with 'V' character enabled"
+    },
+    {
       "id": 4,
       "label": "(v2.5.3+) Annunciator Test Mode",
       "description": "$ = 1 will display all Segments, $ = 0 will clear display"

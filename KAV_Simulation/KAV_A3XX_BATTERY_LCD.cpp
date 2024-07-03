@@ -231,17 +231,13 @@ void KAV_A3XX_BATTERY_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == -2)
         setPowerSave((bool)data);
     else if (messageID == 0)
-        // setVoltSymbol((bool)data); deprecated
-        return;
+        setVoltSymbol((bool)data);      // deprecated
     else if (messageID == 1)
-        // setDot((bool)data); deprecated
-        return;
+        setDot((bool)data);             // deprecated
     else if (messageID == 2)
-        // setValue((uint16_t)data); deprecated
-        return;
+        setValue((uint16_t)data);       // deprecated
     else if (messageID == 3)
-        // showBattValue((uint16_t)data); deprecated
-        return;
+        showBattValue((uint16_t)data);  // deprecated
     else if (messageID == 4)
         setAnnunciatorTest((bool)data);
     else if (messageID == 5)
