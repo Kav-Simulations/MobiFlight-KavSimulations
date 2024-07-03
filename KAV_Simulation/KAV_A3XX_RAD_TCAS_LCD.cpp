@@ -258,17 +258,13 @@ void KAV_A3XX_RAD_TCAS_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == -2)
         setPowerSave((bool)data);
     else if (messageID == 0)
-        // setRadioDot((uint16_t)data); deprecated
-        return;
+        setRadioDot((uint16_t)data);    // deprecated
     else if (messageID == 1)
-        // setAllDots((uint16_t)data); deprecated
-        return;
+        setAllDots((uint16_t)data);     // deprecated
     else if (messageID == 2)
-        // showRadio((uint32_t)data); deprecated
-        return;
+        showRadio((uint32_t)data);      // deprecated
     else if (messageID == 3)
-        // showTcas((uint16_t)data); deprecated
-        return;
+        showTcas((uint16_t)data);       // deprecated
     else if (messageID == 4)
         setAnnunciatorTest((bool)data);
     else if (messageID == 5)

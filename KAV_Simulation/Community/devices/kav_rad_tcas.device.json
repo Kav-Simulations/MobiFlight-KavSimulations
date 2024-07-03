@@ -17,6 +17,21 @@
   },
     "MessageTypes": [
       {
+        "id": 0,
+        "label": "(deprecated) Set dot",
+        "description": "$ sets the dot to show or hide (0/1)"
+      },
+      {
+        "id": 1,
+        "label": "(deprecated) Set pattern",
+        "description": "$ will show the aircraft 'test' pattern (0/1)"
+      },
+      {
+        "id": 2,
+        "label": "(deprecated) Set value radio",
+        "description": "$ will show the value on the display for radio"
+      },
+      {
         "id": 4,
         "label": "(v2.5.4+) Annunciator Test Mode",
         "description": "$ = 1 will display all EFIS Segments, $ = 0 will clear display"
