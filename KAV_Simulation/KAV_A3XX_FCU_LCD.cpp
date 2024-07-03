@@ -478,35 +478,25 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == -2)
         setPowerSave((bool)data);
     else if (messageID == 0)
-        // setSpeedMode((uint16_t)data); deprecated
-        return;
+        setSpeedMode((uint16_t)data);       // deprecated
     else if (messageID == 1)
-        // setMachMode((uint16_t)data); deprecated
-        return;
+        setMachMode((uint16_t)data);        // deprecated
     else if (messageID == 2)
-        // showHeadingValue((uint16_t)data); deprecated
-        return;
+        showHeadingValue((uint16_t)data);   // deprecated
     else if (messageID == 3)
-        // showAltitudeValue((uint32_t)data); deprecated
-        return;
+        showAltitudeValue((uint32_t)data);  // deprecated
     else if (messageID == 4)
-        // showVerticalValue((int16_t)data); deprecated
-        return;
+        showVerticalValue((int16_t)data);   // deprecated
     else if (messageID == 5)
-        // showFPAValue((int8_t)data); deprecated
-        return;
+        showFPAValue((int8_t)data);         // deprecated
     else if (messageID == 6)
-        // setSpeedDashes((bool)data); deprecated
-        return;
+        setSpeedDashes((bool)data);         // deprecated
     else if (messageID == 7)
-        // setHeadingDashes((bool)data); deprecated
-        return;
+        setHeadingDashes((bool)data);       // deprecated
     else if (messageID == 8)
-        // setAltitudeDashes((bool)data); deprecated
-        return;
+        setAltitudeDashes((bool)data);      // deprecated
     else if (messageID == 9)
-        // setVrtSpdDashes((bool)data); deprecated
-        return;
+        setVrtSpdDashes((bool)data);        // deprecated
     else if (messageID == 10)
         setSpeedDot((bool)data);
     else if (messageID == 11)
@@ -520,8 +510,7 @@ void KAV_A3XX_FCU_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == 15)
         setMachLabel((bool)data);
     else if (messageID == 16)
-        // showSpeedValue((uint16_t)data); deprecated
-        return;
+        showSpeedValue((uint16_t)data);     // deprecated
     else if (messageID == 17)
         setPowerSave((bool)data);
     else if (messageID == 18)

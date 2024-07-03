@@ -17,6 +17,21 @@
   },
   "MessageTypes": [
     {
+      "id": 0,
+      "label": "(deprecated) Show QNH Value",
+      "description": "$ will be displayed as QNH value"
+    },
+    {
+      "id": 1,
+      "label": "(deprecated) Show QFE Value",
+      "description": "$ will be displayed as QFE value"
+    },
+    {
+      "id": 2,
+      "label": "(deprecated) Show STD",
+      "description": "0 = True, 1 = False"
+    },
+    {
       "id": 3,
       "label": "Show QNH Label",
       "description": "1 = True, 0 = False"

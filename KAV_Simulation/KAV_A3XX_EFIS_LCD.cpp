@@ -233,14 +233,11 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == -2)
         setPowerSave((bool)data);
     else if (messageID == 0)
-        //  showQNHValue((uint16_t)data); deprecated
-        return;
+        showQNHValue((uint16_t)data);   // deprecated
     else if (messageID == 1)
-        // showQFEValue((uint16_t)data); deprecated
-        return;
+        showQFEValue((uint16_t)data);   // deprecated
     else if (messageID == 2)
-        // showStd((uint16_t)data); deprecated
-        return;
+        showStd((uint16_t)data);        // deprecated
     else if (messageID == 3)
         setQNHlabel((bool)data);
     else if (messageID == 4)
