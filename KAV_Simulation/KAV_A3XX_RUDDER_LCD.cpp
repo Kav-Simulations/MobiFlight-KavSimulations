@@ -287,28 +287,21 @@ void KAV_A3XX_RUDDER_LCD::set(int16_t messageID, char *setPoint)
     else if (messageID == -2)
         setPowerSave((bool)data);
     else if (messageID == 0)
-        // setLeft((uint16_t)data); deprecated
-        return;
+        setLeft((uint16_t)data);        // deprecated
     else if (messageID == 1)
-        // setRight((uint16_t)data); deprecated
-        return;
+        setRight((uint16_t)data);       // deprecated
     else if (messageID == 2)
-        // setDot((uint16_t)data); deprecated
-        return;
+        setDot((uint16_t)data);         // deprecated
     else if (messageID == 3)
         // This one needs to keep it's sign, so using `int16_t`.
-        // setValue((int16_t)data); deprecated
-        return;
+        setValue((int16_t)data);        // deprecated
     else if (messageID == 4)
-        // showLeftValue((uint16_t)data); deprecated
-        return;
+        showLeftValue((uint16_t)data);  // deprecated
     else if (messageID == 5)
-        // showRightValue((uint16_t)data); deprecated
-        return;
+        showRightValue((uint16_t)data); // deprecated
     else if (messageID == 6)
         // This one needs to keep it's sign, so using `int16_t`.
-        // showLandRValue((int16_t)data); deprecated
-        return;
+        showLandRValue((int16_t)data);  // deprecated
     else if (messageID == 7)
         setAnnunciatorTest((bool)data);
     else if (messageID == 8)
