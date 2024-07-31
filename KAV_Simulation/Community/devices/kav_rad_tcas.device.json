@@ -32,6 +32,11 @@
         "description": "$ will show the value on the display for radio"
       },
       {
+        "id": 3,
+        "label": "Set value TCAS",
+        "description": "$ will show the value on the display for TCAS"
+      },
+      {
         "id": 4,
         "label": "(v2.5.4+) Annunciator Test Mode",
         "description": "$ = 1 will display all EFIS Segments, $ = 0 will clear display"
