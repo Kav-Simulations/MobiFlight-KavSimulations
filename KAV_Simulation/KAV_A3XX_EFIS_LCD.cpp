@@ -68,12 +68,14 @@ void KAV_A3XX_EFIS_LCD::setQFElabel(bool enabled)
 {
     SET_BUFF_BIT(DIGIT_THREE, 4, enabled);
     refreshLCD(DIGIT_THREE);
+    _lastQFElabel = enabled;
 }
 
 void KAV_A3XX_EFIS_LCD::setQNHlabel(bool enabled)
 {
     SET_BUFF_BIT(DIGIT_FOUR, 4, enabled);
     refreshLCD(DIGIT_FOUR);
+    _lastQNHlabel = enabled;
 }
 
 
@@ -188,6 +190,7 @@ void KAV_A3XX_EFIS_LCD::showQFEQNHValue(char* value)
 {
     getDigitPattern(buffer, DIGIT_ONE, value, 4, (1<<1));
     refreshLCD(DIGIT_ONE, 4);
+    strncpy(_lastQFEQNHValue, value, sizeof(_lastQFEQNHValue));
 }
 
 void KAV_A3XX_EFIS_LCD::setAnnunciatorTest(bool enabled)
@@ -196,11 +199,22 @@ void KAV_A3XX_EFIS_LCD::setAnnunciatorTest(bool enabled)
         for (uint8_t i = 0; i < ht_efis.MAX_ADDR; i++)
             ht_efis.write(i, 0xFF);
     } else {
-        clearLCD();
+        setPowerSave(false);
     }
 }
 
 // Global Functions
+
+void KAV_A3XX_EFIS_LCD::setPowerSave(bool enabled) 
+{
+    if (enabled) {
+        clearLCD();
+    } else {
+        setQNHlabel(_lastQNHlabel);
+        setQFElabel(_lastQFElabel);
+        showQFEQNHValue(_lastQFEQNHValue);
+    }
+}
 
 void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
 {
@@ -209,21 +223,21 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         Each messageID has it's own value
         check for the messageID and define what to do.
         Important Remark!
-        MessageID == -1 will be send from the connector when Mobiflight is closed
-        Put in your code to shut down your custom device (e.g. clear a display)
-        MessageID == -2 will be send from the connector when PowerSavingMode is entered
+        MessageID == -2 will be send from the board when PowerSavingMode is set
+            Message will be "0" for leaving and "1" for entering PowerSavingMode
+        MessageID == -1 will be send from the connector when Connector stops running
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
     if (messageID == -1)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave(true);
     else if (messageID == -2)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave((bool)data);
     else if (messageID == 0)
-        showQNHValue((uint16_t)data);
+        showQNHValue((uint16_t)data);   // deprecated
     else if (messageID == 1)
-        showQFEValue((uint16_t)data);
+        showQFEValue((uint16_t)data);   // deprecated
     else if (messageID == 2)
-        showStd((uint16_t)data);
+        showStd((uint16_t)data);        // deprecated
     else if (messageID == 3)
         setQNHlabel((bool)data);
     else if (messageID == 4)
@@ -232,4 +246,6 @@ void KAV_A3XX_EFIS_LCD::set(int16_t messageID, char *setPoint)
         showQFEQNHValue(setPoint);
     else if (messageID == 6)
         setAnnunciatorTest((bool)data);
+    else if (messageID == 7)
+        setPowerSave((bool)data);
 }
