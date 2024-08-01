@@ -1,4 +1,5 @@
 #include "KAV_A3XX_BATTERY_LCD.h"
+#include "KAV_GetDigitPattern.h"
 
 #define DIGIT_ONE 0
 #define DIGIT_TWO 1
@@ -66,6 +67,20 @@ void KAV_A3XX_BATTERY_LCD::refreshLCD(uint8_t address)
 }
 
 /**
+ * Refresh the LCD
+ * After a change is made to a segment, the display must be refreshed so that
+ * the change is visible.
+ * @param address The address to refresh
+ * @param digits The number of digits to refresh
+ */
+void KAV_A3XX_BATTERY_LCD::refreshLCD(uint8_t address, uint8_t digits)
+{
+    for (uint8_t i = 0; i < digits; i++) {
+        refreshLCD(address + i);
+    }
+}
+
+/**
  * Clear the LCD
  * This function clears the LCD and resets the buffer.
  */
@@ -111,81 +126,74 @@ void KAV_A3XX_BATTERY_LCD::setDot(bool enabled)
 
 /**
  * Set the value of the LCD using an integer.
- * @param value The value to display
+ * @param value The value to display, 273 will be displayed as 27.3
  */
-void KAV_A3XX_BATTERY_LCD::setValueInt(uint16_t value)
+void KAV_A3XX_BATTERY_LCD::setValue(uint16_t value)
 {
-    if (value > 999)
-        value = 999;
-    displayDigit(DIGIT_THREE, (value % 10));
-    if (value > 9)
-    {
-        value = value / 10;
-        displayDigit(DIGIT_TWO, (value % 10));
-    }
-    else
-    {
-        displayDigit(DIGIT_TWO, 0);
-    }
-    if (value > 9)
-    {
-        displayDigit(DIGIT_ONE, (value / 10));
-    }
-    else
-    {
-        displayDigit(DIGIT_ONE, 13);
-    }
+    setValue((float)value/10);
+}
 
-    setDot(true);
+/**
+ * Set the value of the LCD using an integer.
+ * @param value The value to display, 27.3 will be displayed as 27.3
+ */
+void KAV_A3XX_BATTERY_LCD::setValue(float value)
+{
+    char bufferDigits[10] = {0};
+    if (value > 99.9)
+        value = 99.9;
+    dtostrf(value, 4, 1, bufferDigits);
+    showBattValue(bufferDigits);
 }
 
 // Show values as a combined function
 /**
- * Show the value on the display with the 'L' character enabled using an integer.
- * @param value The value to display
+ * Show the value on the display with the 'V' character enabled using an integer.
+ * @param value The value to display, 273 will be displayed as 27.3
  */
-void KAV_A3XX_BATTERY_LCD::showBattValueInt(uint16_t value)
+void KAV_A3XX_BATTERY_LCD::showBattValue(uint16_t value)
 {
-    setValueInt(value);
-    setVoltSymbol(true);
+    showBattValue((float)value/10);
+}
+
+/**
+ * Show the value on the display with the 'V' character enabled using an integer.
+ * @param value The value to display, 27.3 will be displayed as 27.3
+ */
+void KAV_A3XX_BATTERY_LCD::showBattValue(float value)
+{
+    char bufferDigits[10] = {0};
+    if (value > 99.9)
+        value = 99.9;
+    bufferDigits[0] = 'V';
+    dtostrf(value, 4, 1, &bufferDigits[1]);
+    showBattValue(bufferDigits);
+}
+
+// value as string, format as required
+// V label get set if first character is 'V'
+void KAV_A3XX_BATTERY_LCD::showBattValue(char* value)
+{
+    if (value[0] == 'V') {
+        setVoltSymbol(true);
+        getDigitPattern(buffer, DIGIT_ONE, &value[1], 3, (1<<1));
+    } else {
+        setVoltSymbol(false);
+        getDigitPattern(buffer, DIGIT_ONE, value, 3, (1<<1));
+    }
+    refreshLCD(DIGIT_ONE, 3);
+    strncpy(_lastBattValue, value, sizeof(_lastBattValue));
 }
 
 // Global Functions
-/**
- * A list of the binary patterns to show different characters on the LCD.
- */
-uint8_t digitPatternBattery[14] = {
-    0b11101011, // 0
-    0b01100000, // 1
-    0b11000111, // 2
-    0b11100101, // 3
-    0b01101100, // 4
-    0b10101101, // 5 or S
-    0b10101111, // 6
-    0b11100000, // 7
-    0b11101111, // 8
-    0b11101101, // 9
-    0b00000100, // -
-    0b00001000, // '\'
-    0b00001000, // '/'
-    0b00000000, // blank
-};
 
-/**
- * Display a digit on a specific address.
- * @param address The address to display the digit on
- * @param digit The digit to display
- * @see digitPatternBattery
- */
-void KAV_A3XX_BATTERY_LCD::displayDigit(uint8_t address, uint8_t digit)
+void KAV_A3XX_BATTERY_LCD::setPowerSave(bool enabled) 
 {
-    // This ensures that anything over 13 is turned to 'blank', and as it's unsigned, anything less than 0 will become 255, and therefore, 'blank'.
-    if (digit > 13)
-        digit = 13;
-
-    buffer[address] = digitPatternBattery[digit];
-
-    refreshLCD(address);
+    if (enabled) {
+        clearLCD();
+    } else {
+        showBattValue(_lastBattValue);
+    }
 }
 
 void KAV_A3XX_BATTERY_LCD::setAnnunciatorTest(bool enabled)
@@ -194,7 +202,7 @@ void KAV_A3XX_BATTERY_LCD::setAnnunciatorTest(bool enabled)
         for (uint8_t i = 0; i < ht_battery.MAX_ADDR; i++)
             ht_battery.write(i, 0xFF);
     } else {
-        clearLCD();
+        setPowerSave(false);
     }
 }
 
@@ -213,23 +221,27 @@ void KAV_A3XX_BATTERY_LCD::set(int16_t messageID, char *setPoint)
         Each messageID has it's own value
         check for the messageID and define what to do.
         Important Remark!
-        MessageID == -1 will be send from the connector when Mobiflight is closed
-        Put in your code to shut down your custom device (e.g. clear a display)
-        MessageID == -2 will be send from the connector when PowerSavingMode is entered
+        MessageID == -2 will be send from the board when PowerSavingMode is set
+            Message will be "0" for leaving and "1" for entering PowerSavingMode
+        MessageID == -1 will be send from the connector when Connector stops running
         Put in your code to enter this mode (e.g. clear a display)
     ********************************************************************************** */
     if (messageID == -1)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave(true);
     else if (messageID == -2)
-        return; // Ignore for now, handle this condition later.
+        setPowerSave((bool)data);
     else if (messageID == 0)
-        setVoltSymbol((uint16_t)data);
+        setVoltSymbol((bool)data);      // deprecated
     else if (messageID == 1)
-        setDot((uint16_t)data);
+        setDot((bool)data);             // deprecated
     else if (messageID == 2)
-        setValueInt((uint16_t)data);
+        setValue((uint16_t)data);       // deprecated
     else if (messageID == 3)
-        showBattValueInt((uint16_t)data);
-    else if(messageID == 4)
+        showBattValue((uint16_t)data);  // deprecated
+    else if (messageID == 4)
         setAnnunciatorTest((bool)data);
+    else if (messageID == 5)
+        showBattValue(setPoint);
+    else if (messageID == 6)
+        setPowerSave((bool)data);
 }

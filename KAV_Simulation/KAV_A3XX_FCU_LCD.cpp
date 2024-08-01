@@ -88,7 +88,9 @@ void KAV_A3XX_FCU_LCD::setSpeedLabel(bool enabled)
 void KAV_A3XX_FCU_LCD::setMachLabel(bool enabled)
 {
     SET_BUFF_BIT(SPECIALS, 6, enabled);
+    SET_BUFF_BIT(SPD_TEN, 0, enabled);
     refreshLCD(SPECIALS);
+    refreshLCD(SPD_TEN);
 }
 
 void KAV_A3XX_FCU_LCD::setSpeedDot(bool enabled)
