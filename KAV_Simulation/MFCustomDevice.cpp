@@ -57,7 +57,7 @@ MFCustomDevice::MFCustomDevice()
     will be called
 ********************************************************************************** */
 
-void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfig)
+void MFCustomDevice::attach(uint16_t adrPin, uint16_t adrType, uint16_t adrConfig, bool configFromFlash)
 {
     if (adrPin == 0) return;
 
